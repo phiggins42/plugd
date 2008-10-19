@@ -331,7 +331,7 @@
 		// as to not break with a stray comma after exlude block removal.
 		
 		//>>excludeEnd("redundant")
-		
+				
 		//>>excludeStart("compat", kwArgs.compat == "off")
 		
 		// a way to mark we've included the compat code for unit tests
@@ -392,6 +392,7 @@
 	d.conflict = function(){
 		// summary: Create our $
 		$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
+		$.fn.ready = d.addOnLoad;
 	}
 	// set djConfig = { bling:true } to enable auto-bling
 	if(d.config.bling){ d.conflict(); }
