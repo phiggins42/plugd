@@ -1,4 +1,4 @@
-//dojo.provide("plugins.ajax");
+//dojo.provide("plugd.ajax");
 ;(function(){
 	
 	var d = dojo

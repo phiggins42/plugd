@@ -1,5 +1,5 @@
 ;(function(){
-	//d.provide("plugins.base");
+	//d.provide("plugd.base");
 		
 	// first, some simple aliases
 	var d = dojo, 

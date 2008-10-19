@@ -19,11 +19,18 @@ dependencies = {
 	// this way, the build will provide compressed
 	// and uncompressed versions of each file for us:
 	layers:[
+		// uncomment if you want to roll a dojo.js with plugins included
+		//{
+		//	name:"dojo.js",
+		//	dependencies:[
+		//		"plugd.base"
+		//	]
+		//},
 		{
 			// our base plugin file (in case we grow)
-			name:"../plugins/base.js",
+			name:"../plugd/plugins.js",
 			dependencies:[
-				"plugins.base"
+				"plugd.base"
 			]
 		}
 	],
@@ -31,6 +38,6 @@ dependencies = {
 	// define the prefix for this namespace (which is only
 	// used by provide()/require() as we only use Base Dojo)
 	prefixes: [
-		[ "plugins", "../plugins" ]
+		[ "plugd", "../plugd" ]
 	]
 }
