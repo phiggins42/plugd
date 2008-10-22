@@ -127,7 +127,7 @@
 		dojo.query("#hoverList li")
 			.hover(function(e){
 				var endColor = (e.type == "mouseover" ? "#000" : "#666");
-				dojo.style(e.target, "color", endColor); 
+				dojo.anim(e.target, { color: endColor }); 
 			})
 			.style("color","#666").style("cursor","pointer")
 			.onclick(function(e){

@@ -6,7 +6,7 @@
 	;
 	
 	d.extend(d.NodeList, {
-	
+			// experimental: DO NOT USE
 		_xhr: function(method, args, callback){
 			var dfd = d.xhr(method, args);
 			if(callback){

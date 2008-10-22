@@ -3,6 +3,8 @@
 		
 	// first, some simple aliases
 	var d = dojo, 
+		place = d.place,
+		style = d.style,
 		
 		// shrinksafe loves this
 		display = "display",
@@ -58,12 +60,12 @@
 		// arg: a String to tell which speed to use
 		//		officially supported: "slow", "fast", "mild"
 		if(!arg){
-			d.style(n, styleProperty, showProperty);
+			style(n, styleProperty, showProperty);
 		}else{
 			// we have an arg!
 			if(d.isString(arg)){
 				// "fast" and "slow" seem good, default to "fast", use fade
-				d.style(n, "opacity", 0)
+				style(n, "opacity", 0)
 				d.show(n)
 				d.anim(n, { opacity: 1 }, _getDuration(arg));
 			}
@@ -75,12 +77,12 @@
 		// arg: a String to tell which speed to use
 		//		officially supported: "slow", "fast", "mild"
 		if(!arg){
-			d.style(n, styleProperty, hideProperty);
+			style(n, styleProperty, hideProperty);
 		}else{
 			// we have an arg!
 			if(d.isString(arg)){
 				// "fast" and "slow" seem good, default to "fast", use fade
-				d.style(n, "opacity", 1);
+				style(n, "opacity", 1);
 				d.anim(n, { opacity: 0 }, _getDuration(arg), null, d.hitch(d, "hide", n));
 			}
 		}// else{ fail silently! }
@@ -104,8 +106,8 @@
 		//		the newly created node. 
 		//
 		var element = d.doc.createElement(nodeType);
-		d.place(element, n, "before");
-		d.place(n, element, "first");
+		place(element, n, "before");
+		place(n, element, "first");
 		return element;
 	}
 	
@@ -168,7 +170,7 @@
 			});
 		},
 		
-		toggle: function(arg){
+		toggle: function(/* String? */arg){
 			// summary: Toggle this list of nodes by calling show() or hide() 
 			// 		to invert their state.
 			return this.forEach(function(n){
@@ -237,9 +239,9 @@
 		},
 		
 		// i've always liked $(...).wrap()
-		wrap: function(/* String */nodeType){
-			// summary: Wrap a list of nodes in a nodeType, returning a new `dojo.NodeList`
-			//		of the newly created elements.
+		wrap: function(/* String */nodeType, /* newList? */newList){
+			// summary: Wrap a list of nodes in a nodeType, returning this NodeList, or
+			//		a new `dojo.NodeList` of the newly created elements by setting a parameter
 			//
 			// description:
 			//		So this makes the most sense in the single-node list, but applies
@@ -251,6 +253,10 @@
 			//		No cross-browser magic going on in here, so be careful with
 			//		tables and related elements. 
 			//
+			// newList: Boolean
+			//		If true, a new NodeList is returned from this call.
+			//		If false, null, or omitted this NodeList is returned
+			//
 			// example:
 			//		Wrap an additional DIV element around all DIVs with class="foo",
 			//		and connect a function to the click event to the wrapper node:
@@ -259,13 +265,13 @@
 			//	|		console.log('clicked', e.target); 
 			//	|	});
 			//
-			//	returns: A new NodeList of the wrapping elements.
+			//	returns: A NodeList of the wrapping elements or This same NodeList
 			//
 			var nl = new NodeList();
 			this.forEach(function(n){
 				nl.push(d.wrap(n, nodeType));
 			});
-			return nl; // dojo.NodeList
+			return !newList ? this : this._stash(nl); // dojo.NodeList
 		},
 		
 		appendTo: function(/* String|DomNode */selector){
@@ -277,11 +283,10 @@
 			//		of the selector query will be used.
 			//
 			
-			var place = d.query(selector);
-			if(place.length >= 0){
-				place = place[0];
+			var aplace = d.query(selector);
+			if(aplace.length >= 0){
 				this.forEach(function(n){
-					d.place(n, place);
+					place(n, aplace[0]);
 				});
 			}
 			// Fails silently, too - hooray for convenience 
@@ -302,7 +307,7 @@
 			if(refNode.length >= 0){
 				refNode = refNode[0];
 				this.forEach(function(n){
-					d.place((clone ? d.clone(refNode) : refNode), n);
+					place((clone ? d.clone(refNode) : refNode), n);
 				});
 			}
 			return this; // dojo.NodeList
@@ -318,15 +323,7 @@
 			this.forEach(d._destroyElement);
 			return true; // Boolean
 		},
-		
-		// this seems silly, NodeList is just and Array ...
-		get: function(/* Integer */index){
-			// summary: Return an actual DomNode (rather than a list) at some 
-			//		index in this selector
-			if(index == undefined){ index = 0 }
-			return this[index]; // DomNode
-		},
-		
+				
 		// END REDUNDANT REMOVAL, make sure there is one after this always we intend to keep
 		// as to not break with a stray comma after exlude block removal.
 		
@@ -340,6 +337,13 @@
 		each: mirror.forEach, // no. each sets the context to the node. not 1:1
 		css: mirror.style, // yes. 
 		bind: mirror.connect, // no .unbind(), can't disconnect() from NodeList
+		// this seems silly, NodeList is just and Array ...
+		get: function(/* Integer */index){
+			// summary: Return an actual DomNode (rather than a list) at some 
+			//		index in this selector
+			if(index == undefined){ index = 0 }
+			return this[index]; // DomNode
+		},
 		// now I'm just making stuff up, this may or may not be the API:
 		val: function(/* String? */set){
 			// summary: Get or set a list of values of this list.
@@ -382,20 +386,53 @@
 			//	|			dojo[(over ? "addClass" : "removeClass")](e.target, "over");
 			//	| 		});
 			//
-			return this.onmouseenter(over) // doesn't fail silently.
-				.onmouseleave(out ? out : over) // dojo.NodeList
+			return this.onmouseenter(over).onmouseleave(out || over) // dojo.NodeList
+		},
+		
+		_stash: function(/* dojo.NodeList */nl){
+			// summary: Stash this NodeList on the next NodeList returned
+			//  	so .end() has somewhere to go.
+			//
+			// example:
+			//	|	dojo.extend(dojo.NodeList, {
+			//	|		interesting: function(){
+			//	|			var nl = this._stash(new dojo.NodeList();
+			//	|			// do something interesting to make a new list
+			//	|			return nl;
+			//	|		}
+			//	|	})	;
+			//	
+			nl.__last = this;
+			return nl; // dojo.NodeList
+		},
+		
+		end: function(){
+			// summary: Break out of this current depth of chaining, returning
+			//		to the last most sequential NodeList
+			//
+			// example:
+			//	|	dojo.query("a")
+			//	|		.wrap("div", true)
+			//	|			// connect click to the divs
+			//	|			.onclick(function(e){ .. }))
+			//	|			.addClass("onADiv")
+			//	|		.end()
+			//	|		// jump back to the list of anchors
+			//  |		.style(...)
+			//
+			return this.__last || this; // dojo.NodeList
 		}
 		
 	});
 	
 	//>>excludeStart("noConflict", kwArgs.conflict == "off");
-	d.conflict = function(){
-		// summary: Create our $
+	d.conflict = function(bling){
+		// summary: Create our $:
 		$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
 		$.fn.ready = d.addOnLoad;
 	}
-	// set djConfig = { bling:true } to enable auto-bling
-	if(d.config.bling){ d.conflict(); }
+	// set djConfig = { conflict:true } to enable auto-bling
+	if(d.config.conflict){ d.conflict(); }
 	//>>excludeEnd("noConflict");
 
 })();
