@@ -28,7 +28,7 @@ dependencies = {
 		//},
 		{
 			// our base plugin file (in case we grow)
-			name:"../plugd/plugins.js",
+			name:"../plugd/base.js",
 			dependencies:[
 				"plugd.base"
 			]
