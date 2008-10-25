@@ -111,10 +111,16 @@
 		return element;
 	}
 	
+	d.toggle = function(n, speed){
+		// summary: Toggle the visibility state of a passed node
+		//
+		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](speed);	
+	}
+	
 	// wrap them into dojo.NodeList
 	d.extend(NodeList, {
 		
-		show: function(/* String? */arg){
+		show: function(/* String? */speed){
 			// summary: Makes this list of nodes visible.
 			// 
 			// description:
@@ -125,7 +131,7 @@
 			//		defining djConfig.keepLayout = true enables `visibility`, defaults
 			//		to false, meaning `display`. 
 			//
-			// arg: String?
+			// speed: String?
 			//		If omitted, showing is done immediately. If a String is passed,
 			//		uses a default duration supplied in the speedMap. Valid parameters
 			//		are: "fast", "slow", "granny" and "racecar" (defaults to "fast", 
@@ -136,11 +142,11 @@
 			// | dojo.query("#foo li").show();
 			
 			return this.forEach(function(n){
-				d.show(n, arg);
+				d.show(n, speed);
 			}); // dojo.NodeList
 		},
 		
-		hide: function(/* String? */arg){
+		hide: function(/* String? */speed){
 			// summary: Makes this list of nodes invisible.
 			// 
 			// description:
@@ -151,7 +157,7 @@
 			//		defining djConfig.keepLayout = true enables `visibility`, defaults
 			//		to false, meaning `display`. 
 			//
-			// arg: String?
+			// speed: String?
 			//		If omitted, hiding is done immediately. If a String is passed,
 			//		uses a default duration supplied in the speedMap. Valid parameters
 			//		are: "fast", "slow", "granny" and "racecar" (defaults to "fast", 
@@ -166,15 +172,15 @@
 			
 			// so older users of show() keep backwards compatibility
 			return this.forEach(function(n){
-				d.hide(n, arg); 
+				d.hide(n, speed); 
 			});
 		},
 		
-		toggle: function(/* String? */arg){
+		toggle: function(/* String? */speed){
 			// summary: Toggle this list of nodes by calling show() or hide() 
 			// 		to invert their state.
 			return this.forEach(function(n){
-				d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](arg);
+				d.toggle(n, speed);
 			}); // dojo.NodeList
 		},
 		
@@ -233,7 +239,7 @@
 				// we could _toArray and slice, huh?
 				var anim = d.anim(n, props, duration, easing);
 				if(onEnd && i == a.length - 1){
-					d.connect(anim, "onEnd", this, onEnd);
+					d.connect(anim, "onEnd", onEnd);
 				}
 			}, this); // dojo.NodeList
 		},
@@ -306,6 +312,7 @@
 			var refNode = d.query(selector);
 			if(refNode.length >= 0){
 				refNode = refNode[0];
+				// FIXME: do we want to optionally return a list of the appended clones?
 				this.forEach(function(n){
 					place((clone ? d.clone(refNode) : refNode), n);
 				});
@@ -343,14 +350,15 @@
 			//		index in this selector
 			if(index == undefined){ index = 0 }
 			return this[index]; // DomNode
-		},
+		}, // use .at()
+		//>>excludeEnd("compat");
+
 		// now I'm just making stuff up, this may or may not be the API:
 		val: function(/* String? */set){
 			// summary: Get or set a list of values of this list.
 			//	see: `dojo.attr` 
 			return this.attr("value", set); 
 		},
-		//>>excludeEnd("compat");
 		
 		// this is a fun one, and down here to avoid comma issues:
 		hover: function(/* Function */over, /* Function? */out){
@@ -426,10 +434,12 @@
 	});
 	
 	//>>excludeStart("noConflict", kwArgs.conflict == "off");
-	d.conflict = function(bling){
+	d.conflict = function(){
 		// summary: Create our $:
 		$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
 		$.fn.ready = d.addOnLoad;
+		// FIXME: d.global[bling] would be cool. d.conflict("pete");
+		//	pete(".hasClass").wrap("span");
 	}
 	// set djConfig = { conflict:true } to enable auto-bling
 	if(d.config.conflict){ d.conflict(); }

@@ -1,152 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
-	
-	<script src="../../dojo/dojo.js"></script>
-	<script src="../base.js"></script>	
+	<head>
+		<title>Testing dojo.fx</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../base.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
 
-</head>
-<body>
-
-	<h1>Base Plugins QuickTest</h1>
-
-	<ul id="foo"><li class="bar">one</li></ul>
-	<ul id="bar"><li class="inbar">one</li></ul>
-
-	<!-- appendTo test --> 
-	<script type="text/javascript">
-		dojo.addOnLoad(function(){
-
-			dojo.query("#bar > li").appendTo("#foo");
-			if(dojo.query("#foo > li").length !== 2){
-				console.warn("FAILED: appendTo test");
-			}
-
-			dojo.query("#bar").destroy();
-			if(dojo.byId("bar")){
-				console.warn("FAILED: destroy Test");
-			}
-
-		});
-	</script>
-	
-	<!-- show / hide test -->
-	<script type="text/javascript">
-		dojo.addOnLoad(function(){
-			
-			dojo.query("#foo > li")
-				.hide()
-				.style("marginLeft", "200px")
-				.show("slow")
-				.animate({ "color":"red", marginLeft:0 })
-				.style({
-					lineHeight:"2.3em",
-					paddingTop:"15px"
-				})
-				.hide("slow")
-			;
-			
-			dojo.query("#foo")
-				.wrap('div')
-				.style({ 
-					position:"absolute", 
-					top:"50px", 
-					left:"75px", 
-					border:"1px solid #ededed" 
-				})
-				.animate({ height:300, width:300 }, 2000)
-			;
-			
-		});
-	</script>
-	
-	<div id="cloneTest">
-		<div class="needsData"></div>
-		<div class="needsData"></div>
-		<div class="needsData"></div>
-		<p class="cloneMe">sample</p>
-	</div>
-	
-	<div id="appendTest"></div> <div id="appendMe">now</div>
-	
-	<script type="text/javascript">
-		dojo.addOnLoad(function(){
-			dojo.query("div.needsData").append("p.cloneMe", true);
-			if(dojo.query("#cloneTest p").length != 4){
-				console.warn("ERROR: Failed append/clone test");
-			}
-
-			dojo.query("#appendTest").append("#appendMe");
-			var id = dojo.query("#appendTest > #appendMe")[0].id;
-			if(id != "appendMe"){
-				console.warn("FAILED: Basic append test");
-			}
-
-			if(dojo.byId("appendTest") != dojo.query("#appendTest").get()){
-				console.warn("FAILED: Get node test");
-			}
-		});
-	</script>
-	
-	<style style="text/css">
-		.wrap div {
-			padding:8px; height:1.3em; width:100px;
-			border:1px solid #000;
-			background:yellow;
-			cursor:pointer;
-		}
-		.wrap .hovered {
-			background:blue;
-		}
-	</style>
-	<div class="wrap">
-		<div id="hoverTest">Hover Me</div>
-		<div id="hoverTestToo">Me too</div>
-	</div>
-	
-	<ul id="hoverList">
-		<li>one</li>
-		<li>two</li>
-		<li>three</li>
-	<ul>
-	
-	<script type="text/javascript">
-	
-		// registering two functions
-		dojo.query("#hoverTest").hover(function(e){
-			dojo.addClass(e.target, "hovered");
-		}, function(e){
-			dojo.removeClass(e.target, "hovered");
-		});
-		
-		// single function delegates both:
-		dojo.query("#hoverTestToo").hover(function(e){
-			console.log(e.type);
-			dojo[(e.type == "mouseover" ? "addClass" : "removeClass")](e.target, "hovered");
-		});
-	
-		dojo.query("#hoverList li")
-			.hover(function(e){
-				var endColor = (e.type == "mouseover" ? "#000" : "#666");
-				dojo.anim(e.target, { color: endColor }); 
-			})
-			.style("color","#666").style("cursor","pointer")
-			.onclick(function(e){
-				console.log("clicked", e.target);
-			})
-		;
-	</script>
-	
-	<script type="text/javascript">
-		if(dojo["conflict"]){
-			dojo.conflict();
 			dojo.addOnLoad(function(){
-				$("body").addClass("rockin");
-				if(!dojo.hasClass(dojo.body(), "rockin")){
-					console.warn("FAILED conflict test");
-				}
+				doh.register("t", 
+					[
+						function appendTo(t){
+							
+							dojo.query("#bar > li").appendTo("#foo");
+							t.is(2, dojo.query("#foo > li").length);
+							
+						},
+
+						function append(t){
+						
+							dojo.query("#appendTest").append("#appendMe");
+							var id = dojo.query("#appendTest > #appendMe")[0].id;
+							t.is(id, "appendMe");
+							
+						},
+
+						function appendClone(t){
+							dojo.query("div.needsData").append("p.cloneMe", true);
+							t.is(4, dojo.query("#cloneTest p").length);
+						},
+						
+						function destroy(t){
+							
+							dojo.query("#bar").destroy();
+							t.is(undefined, dojo.byId("bar"));
+							
+						},
+						
+						function wrap(t){
+							
+							var n = dojo.query("#foo").wrap("div")[0].id;
+							// returned the right list:
+							t.is(n, "foo");
+							// parent is a div
+							t.is(dojo.byId("foo").parentNode.nodeName.toLowerCase(), "div")
+							
+						},
+						
+						function wrapList(t){
+							
+							dojo.query("#foo")
+								.wrap("div", true)
+									.addClass("hasBar")
+								.end()
+								.addClass("innerBar")
+							;
+								
+							var n = dojo.query(".hasBar > .innerBar").length;
+							t.is(1, n);
+							
+						},
+						
+						function get(t){
+							t.is(dojo.byId("appendTest"), dojo.query("#appendTest").get());
+						},
+						
+						function hoverAPI_both(t){
+							dojo.query("#foo > li").hover(function(e){ 
+								t.is("mouseover", e.type);
+							}, function(e){ 
+								t.is("mouseout", e.type);
+							});
+						},
+						
+						function hoverAPI_one(t){
+							dojo.query("#foo > li").hover(function(e){ 
+								
+							});
+							// if no errors thrown ...
+						},
+						
+						// globals are borked after this test:
+						function conflict(t){
+							dojo.conflict();
+							t.t(dojo.isFunction($));
+						},
+						
+						function conflict_query(t){
+							t.is(1, $("#foo").length);
+						}
+					]
+				);
+				doh.run();
 			});
-		}
-	</script>
-	
-</body>
+		</script>
+	<body>
+
+		<h1>Base Plugins QuickTest</h1>
+
+		<ul id="foo"><li class="bar">one</li></ul>
+		<ul id="bar"><li class="inbar">one</li></ul>
+
+		<div id="cloneTest">
+			<div class="needsData"></div>
+			<div class="needsData"></div>
+			<div class="needsData"></div>
+			<p class="cloneMe">sample</p>
+		</div>
+
+		<div id="appendTest"></div> <div id="appendMe">now</div>
+
+	</body>
 </html>

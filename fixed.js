@@ -1,5 +1,5 @@
 dojo.require("dijit._base.place");
-;(function(){
+(function(){
 	
 	var pos = "position", d = dojo, 
 		prop = d.isIE < 7 ? "absolute" : "fixed";

@@ -1,7 +1,7 @@
 <html>
 <head>
 	
-	<script djConfig="conflict:true" src="../../dojo/dojo.js"></script>
+	<script djConfig="conflict:true" src="http://o.aolcdn.com/dojo/1.2/dojo/dojo.xd.js"></script>
 	<script src="../base.js"></script>
 	<script src="../ajax.js"></script>	
 	
@@ -19,19 +19,7 @@
 	<script>
 		$(document).ready(function(){
 			$("#foo")
-				// as a setter
-				.content("Hi, Boss.")
-				.forEach(console.log)
-				
-				// as a getter
-				.content()
-					// the innerHTML as an array
-					.forEach(console.log)
-					
-				.end()
-
-				// back in orig list:
-				.forEach(console.log)
+				.load("_snippet.html")
 			;
 		});
 	</script>
