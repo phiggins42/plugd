@@ -37,6 +37,7 @@
 				// mixin our styles. I'd prefer to do this purly in CSS, but that would 
 				// require external css somehow, and is an extra file. ;)
 				.style({
+					// FIXME: can't we do all of this except opacity in .dojoBlockOverlay ?
 					backgroundColor: this.backgroundColor,
 					position: "absolute",
 					zIndex: this.zIndex,
@@ -98,10 +99,8 @@
 
 	// Generates a unique id for a node
 	var id_count = 0,
-
 		_uniqueId = function(){
-			var id_base = "dojo_blocked",
-				id;
+			var id_base = "dojo_blocked", id;
 			do{
 				id = id_base + "_" + (++id_count);
 			}while(d.byId(id));

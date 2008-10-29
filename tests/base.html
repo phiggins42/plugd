@@ -11,6 +11,32 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
+					
+						function show(t){
+							
+							dojo.show("showMe");
+							var s = dojo.style("showMe","display");
+							t.f(s == "none");
+							
+						},
+						
+						function hide(t){
+							
+							dojo.hide("showMe");
+							var s = dojo.style("showMe","display");
+							t.is(s, "none");
+							
+						},
+						
+						function toggle(t){
+
+							dojo.toggle("showMe");
+							var s = dojo.style("showMe","display");
+							t.f(s == "none");
+						},
+						
+						// FIXME: need async tests for "slow", "fast", and "mild" -- ugh
+						
 						function appendTo(t){
 							
 							dojo.query("#bar > li").appendTo("#foo");
@@ -45,6 +71,17 @@
 							t.is(n, "foo");
 							// parent is a div
 							t.is(dojo.byId("foo").parentNode.nodeName.toLowerCase(), "div")
+							
+						},
+						
+						function create(t){
+						
+							var n = dojo.create("div");
+							dojo.addClass(n,"createdDiv");
+							t.t(dojo.hasClass(n,"createdDiv"));
+							dojo.place(n, dojo.body());
+							t.is(n, dojo.query("div.createdDiv")[0]);
+							
 							
 						},
 						
@@ -111,5 +148,7 @@
 
 		<div id="appendTest"></div> <div id="appendMe">now</div>
 
+		<p id="showMe" style="display:none">I'm hidden</p>
+		
 	</body>
 </html>

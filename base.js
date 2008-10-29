@@ -17,14 +17,12 @@
 			"fast"    : 420,
 	
 			//>>excludeStart("sillyness", kwArgs.silly == "off");
-	
 			// these are just to be silly:
 			"granny"  : 7600,
 			"racecar" : 200,
 			"snail"   : 1200,
 			"rocket"  : 100,
 			"peller"  : 3500,
-	
 			// this is "public API" bewlow, down here so we can build-exclude 
 			// the above silly-ness and not worry about the comma breaking 
 			// after build.
@@ -88,7 +86,7 @@
 		}// else{ fail silently! }
 	};
 	
-	d.wrap = function(n, nodeType){
+	d.wrap = function(/* String|DomNode */n, /* String */nodeType){
 		// summary: Wrap a node in some other created node
 		//
 		// n: String|DomNode
@@ -105,16 +103,67 @@
 		// returns: DomNode
 		//		the newly created node. 
 		//
-		var element = d.doc.createElement(nodeType);
+		var element = d.create(nodeType);
 		place(element, n, "before");
 		place(n, element, "first");
 		return element;
 	}
 	
-	d.toggle = function(n, speed){
+	d.toggle = function(/* String|DomNode */n, /* String? */speed){
 		// summary: Toggle the visibility state of a passed node
 		//
-		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](speed);	
+		// n: DomNode
+		//		The node, or string ID of a node, to toggle.
+		//
+		// speed: String
+		//		One of "slow", "fast", or "mild"
+		//
+		// example:
+		// 	dojo.toggle("someId");
+		//
+		// example:
+		// 	dojo.toggle("someId", "fast");
+		//alert("no n?");
+		n = d.byId(n);
+		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](n, speed);	
+	}
+	
+	d.create = function(/* String */nodeType, /* Object? */attrs){
+		// summary: Creates an element, optionally setting any number
+		//		of attributes. Important to note, there is not cross-browser
+		//		sanity checking going on during the creation. This will
+		//		fail violently if you attempt to do something that needs
+		//		extra attention to browser detection (eg: enc-type forms)
+		//
+		// nodeType: String
+		//		The type of node to create. Something like "div", "a", "ul". 
+		//
+		// attrs: Object?
+		//		An object-hash (property bag) of attributes
+		//		to set on the newly created node.
+		//		Supports anything `dojo.attr` can handle.
+		//
+		// example:
+		//	Create a [div class="bar"], then place it in a node with id="someId"
+		//	|	var div = dojo.create("div", { className:"bar" });
+		//	|	dojo.place(div, "someId", "first");
+		//
+		// example:
+		//	Just create an anchor:
+		//	| var anchor = dojo.create("a");
+		//
+		// example:
+		//  Create an anchor with a title, href and onclick handler:
+		// |	var anchor = dojo.create("a",{
+		// |		href:"foo.php", title:"A Link",
+		// |		onclick:function(e){
+		// |			// define click event
+		// |		}
+		// |	});
+		//
+		var n = d.doc.createElement(nodeType);
+		if(attrs){ d.attr(n, attrs); }
+		return n; // DomNode
 	}
 	
 	// wrap them into dojo.NodeList
@@ -134,8 +183,8 @@
 			// speed: String?
 			//		If omitted, showing is done immediately. If a String is passed,
 			//		uses a default duration supplied in the speedMap. Valid parameters
-			//		are: "fast", "slow", "granny" and "racecar" (defaults to "fast", 
-			//		"racecar" is faster than "fast")
+			//		are: "fast", "slow", and "mild" (defaults to "fast", 
+			//		"racecar" is faster than "fast", but only supported in silly-mode)
 			//		
 			// example:
 			// 	Show all list-items in a list with id="foo" visible:
@@ -160,17 +209,15 @@
 			// speed: String?
 			//		If omitted, hiding is done immediately. If a String is passed,
 			//		uses a default duration supplied in the speedMap. Valid parameters
-			//		are: "fast", "slow", "granny" and "racecar" (defaults to "fast", 
+			//		are: "fast", "slow", and "mild" (defaults to "fast", 
 			//		"racecar" is faster than "fast")
 			//		
-			//		hide() is called after the animation omitting this arg to set
-			//		the display or visibility property after the effect
+			//		hide() is called after the animation. 
 			//
 			// example:
 			// 	Hide all list-items in a list with id="foo" visible:
 			// | dojo.query("#foo li").hide();
 			
-			// so older users of show() keep backwards compatibility
 			return this.forEach(function(n){
 				d.hide(n, speed); 
 			});
@@ -182,6 +229,38 @@
 			return this.forEach(function(n){
 				d.toggle(n, speed);
 			}); // dojo.NodeList
+		},
+		
+		create: function(/* String */tagName){
+			// summary: Create a new element for each of the nodes in this list
+			//		returning a new NodeList of the newly selected nodes.
+			//		The returned list is a stashed-NodeList, and will return 
+			//		from and .end() call back to the original NodeList.
+			//
+			//	tagName: String
+			//		A type of node to create. eg: "div", "a", "li"
+			//
+			//	TODO: implement attrs? why?
+			//
+			// example:
+			//	dojo.query("li.tooltip")
+			//		.create("div")
+			//			.appendTo("ul#bar")
+			//			.addClass("tooltip")
+			//		.end()
+			//		.removeClass("tooltip")
+			//		.onclick(function(e){
+			//			// handle click for the node
+			//		})
+			//		.hover(function(e){
+			//			// or just use .toggle(), hmmm.
+			//			var action = e.type == "mouseover" ? "show" : "hide";
+			//			dojo.query("div.tooltip", e.target)[action]();
+			//		})
+			//	;
+			return this._stash(this.map(function(){
+				return d.create(tagName);
+			})); // dojo.NodeList
 		},
 		
 		// no need for combine or chain, we'll let you make choppy animations, too:
@@ -259,7 +338,7 @@
 			//		No cross-browser magic going on in here, so be careful with
 			//		tables and related elements. 
 			//
-			// newList: Boolean
+			// newList: Boolean?
 			//		If true, a new NodeList is returned from this call.
 			//		If false, null, or omitted this NodeList is returned
 			//
@@ -390,7 +469,7 @@
 			//	Same as before, but with one function:
 			//	|	dojo.query("#myList li")
 			//	|		.hover(function(e){ 
-			//	|			var over = (e.type == "mouseenter");
+			//	|			var over = (e.type == "mouseover");
 			//	|			dojo[(over ? "addClass" : "removeClass")](e.target, "over");
 			//	| 		});
 			//
@@ -416,7 +495,8 @@
 		
 		end: function(){
 			// summary: Break out of this current depth of chaining, returning
-			//		to the last most sequential NodeList
+			//		to the last most sequential NodeList (or this NodeList if no
+			//		previous NodeList was stashed)
 			//
 			// example:
 			//	|	dojo.query("a")
