@@ -80,8 +80,31 @@
 							dojo.addClass(n,"createdDiv");
 							t.t(dojo.hasClass(n,"createdDiv"));
 							dojo.place(n, dojo.body());
-							t.is(n, dojo.query("div.createdDiv")[0]);
+							t.is(n, dojo.query("div.createdDiv")[0]);	
+						},
+						
+						function createFromString(t){
 							
+							var n = dojo.create("<div class='bar'><p class='baz'>hi</p></div>");
+							dojo.place(n, dojo.body());
+							t.is(1, dojo.query("div.bar > p.baz").length);
+							
+						},
+						
+						function createTwice(t){
+						
+							var holder = dojo.create("div");
+							dojo.place(holder, dojo.body());
+							
+							// create two nodes before placing them anywhere:
+							var n1 = dojo.create("<p class='once'>hi</p>");
+							var n2 = dojo.create("<div class='once'>hi</div>");
+							
+							dojo.place(n1, holder);
+							dojo.place(n2, holder);
+							t.is(1, dojo.query("p.once").length);
+							t.is(1, dojo.query("div.once").length);
+							t.is(2, dojo.query(".once").length);
 							
 						},
 						

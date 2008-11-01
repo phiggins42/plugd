@@ -49,7 +49,8 @@
 		
 		// these too are for ShrinkSafe's benefit. 
 		NodeList = d.NodeList,
-		mirror = NodeList.prototype
+		mirror = NodeList.prototype,
+		creationNode = null
 	;
 	
 	// namespace-polluting functions:
@@ -128,6 +129,20 @@
 		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](n, speed);	
 	}
 	
+	d._createFrom = function(/* String */frag){
+		// summary: Creates an element from a String DOM Fragment with the
+		//		caveat you are only able to create one top-level item, 
+		//		which will be returned from this call. This is a private 
+		//		function, meant to assist `dojo.create`
+		//
+		if(!creationNode){ creationNode = d.create('div') } 
+		creationNode.innerHTML = frag;
+		// removing leaves it in limbo. You are expected to place this somewhere
+		// ... doing this to prevent two sequential create() calls from destroying
+		// the generated DOM from the first.
+		return creationNode.removeChild(creationNode.firstChild); // DomNode
+	}
+	
 	d.create = function(/* String */nodeType, /* Object? */attrs){
 		// summary: Creates an element, optionally setting any number
 		//		of attributes. Important to note, there is not cross-browser
@@ -136,7 +151,8 @@
 		//		extra attention to browser detection (eg: enc-type forms)
 		//
 		// nodeType: String
-		//		The type of node to create. Something like "div", "a", "ul". 
+		//		The type of node to create. Something like "div", "a", "ul",
+		//		or a valid DOM structure like: "<div class='bar'></div>" 
 		//
 		// attrs: Object?
 		//		An object-hash (property bag) of attributes
@@ -147,6 +163,11 @@
 		//	Create a [div class="bar"], then place it in a node with id="someId"
 		//	|	var div = dojo.create("div", { className:"bar" });
 		//	|	dojo.place(div, "someId", "first");
+		//
+		// example: 
+		//	Same as before, but with valid Dom:
+		// | 	var div = dojo.create("<div class='bar'></div>");
+		// | 	dojo.place(div, dojo.body());
 		//
 		// example:
 		//	Just create an anchor:
@@ -161,7 +182,8 @@
 		// |		}
 		// |	});
 		//
-		var n = d.doc.createElement(nodeType);
+		var n = nodeType.charAt(0) == "<" ? 
+			d._createFrom(nodeType) : d.doc.createElement(nodeType);
 		if(attrs){ d.attr(n, attrs); }
 		return n; // DomNode
 	}
