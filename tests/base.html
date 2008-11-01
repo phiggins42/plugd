@@ -99,12 +99,31 @@
 							// create two nodes before placing them anywhere:
 							var n1 = dojo.create("<p class='once'>hi</p>");
 							var n2 = dojo.create("<div class='once'>hi</div>");
-							
+							// _now_ place them:
 							dojo.place(n1, holder);
 							dojo.place(n2, holder);
+							
 							t.is(1, dojo.query("p.once").length);
 							t.is(1, dojo.query("div.once").length);
 							t.is(2, dojo.query(".once").length);
+							
+						},
+						
+						function createStringQuery(t){
+						
+							dojo.query("#foo")
+								.create("<p class='created'>created</p>")
+									.removeClass('created')
+									.addClass('changed')
+									.appendTo(".inbar")
+								.end()
+								// do more with id="foo" matches:
+								// ...
+							;
+								
+							var n = dojo.query("p.changed");
+							t.is(1, n.length)
+							t.f(dojo.hasClass(n[0], "created"));
 							
 						},
 						
@@ -123,7 +142,11 @@
 						},
 						
 						function get(t){
-							t.is(dojo.byId("appendTest"), dojo.query("#appendTest").get());
+							if(dojo.NodeList.prototype.__compatMode){
+								t.is(dojo.byId("appendTest"), dojo.query("#appendTest").get());
+							}else{
+								t.t(true); // always pass in non-compat mode, function doesn't exist
+							}
 						},
 						
 						function hoverAPI_both(t){
