@@ -455,10 +455,25 @@
 		//>>excludeEnd("compat");
 
 		// now I'm just making stuff up, this may or may not be the API:
-		val: function(/* String? */set){
+		val: function(/* String? */value){
 			// summary: Get or set a list of values of this list.
-			//	see: `dojo.attr` 
-			return this.attr("value", set); 
+			//
+			// set: String?
+			//		If passed, will set all the matched elements 
+			//		to this new value
+			//	
+			//		If omitted, will return an Array of new values,
+			//		or in the case of a single-element list, will
+			//		just return the string value of the node.
+			//
+			//	see: `dojo.attr`
+			var v, a = "value";
+			if(value){
+				return this.attr(a, value)
+			}else{
+				v = this.attr(a);
+				return (v.length == 1) ? v[0] : v;
+			}
 		},
 		
 		// this is a fun one, and down here to avoid comma issues:

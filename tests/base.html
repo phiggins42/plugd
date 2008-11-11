@@ -164,6 +164,32 @@
 							// if no errors thrown ...
 						},
 						
+						function val_get(t){
+							var v = dojo.query("#withval").val();
+							t.is(v, "baz");
+						},
+						
+						function val_set(t){
+							dojo.query("#withval").val("bar");
+							var v = dojo.query("#withval").val();
+							t.is(v, "bar");
+						},
+						
+						function val_multi(t){
+						
+							var l = dojo.query("#withval, #newval").val();
+							t.is(2, l.length);
+							t.is(l[0], dojo.byId("withval").value);
+							t.is(l[1], dojo.byId("newval").value);
+						},
+						
+						function val_multi_set(t){
+							var n = "newValue";
+							dojo.query("#withval, #newval").val(n);
+							t.is(n, dojo.byId("withval").value);
+							t.is(n, dojo.byId("newval").value);
+						},
+						
 						// globals are borked after this test:
 						function conflict(t){
 							dojo.conflict();
@@ -195,6 +221,10 @@
 		<div id="appendTest"></div> <div id="appendMe">now</div>
 
 		<p id="showMe" style="display:none">I'm hidden</p>
+		
+		<input id="withval" value="baz" type="text"> 
+		<input id="nullval" value="" type="text">
+		<input id="newval" value="baz" type="text">
 		
 	</body>
 </html>
