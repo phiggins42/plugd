@@ -30,6 +30,7 @@ dojo.require("dijit._base.place");
 			if(d.isIE || this.slide){
 				if(!d.isIE){ d.style(node, pos, "absolute"); }
 				this._xy = d._abs(this.node = d.byId(node));
+				//console.log(this._xy); // FIXME: if scrollTop !== 0, this is off
 				d.connect(window, "onscroll", this, "_onscroll");
 			}
 		},
@@ -37,12 +38,13 @@ dojo.require("dijit._base.place");
 		_onscroll: function(/* Event */e){
 			// summary: Event handler for window.onscroll. Calls _doScroll
 			//		immediately or on a delay depending on the slide:"" attribute.
-			if(this.slide && this._timeout){ return; }
-			if(this.slide){
-				this._anim && this._anim.stop();
-				this._timeout = setTimeout(d.hitch(this, "_doscroll"), this.timeout);
+			var s = this;
+			if(s.slide && s._timeout){ return; }
+			if(s.slide){
+				s._anim && s._anim.stop();
+				s._timeout = setTimeout(d.hitch(this, "_doscroll"), s.timeout);
 			}else{
-				this._doscroll(e);
+				s._doscroll(e);
 			}
 		},
 		
