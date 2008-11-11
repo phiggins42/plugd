@@ -65,7 +65,7 @@ dojo.require("dijit._base.place");
 		fixed: function(args){
 			// summary: Turn this list of nodes into position:fixed nodes
 			//		as per `dojo.FixedNode` API
-			return this.instantiate("dojo._FixedNode", args);
+			return this.instantiate("dojo.FixedNode", args);
 		}
 	});
 	
