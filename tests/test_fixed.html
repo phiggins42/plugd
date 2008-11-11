@@ -1,0 +1,74 @@
+<html>
+<head>
+
+	<!-- required CSS -->
+	<style type='text/css'>
+		.dojoFixed {
+			position:fixed;
+			#position:absolute;
+		}
+	</style>
+
+	<!-- required JS -->
+	<script src="../../dojo/dojo.js"></script>
+	<script src="../fixed.js"></script>
+
+	<!-- test css -->
+	<style type='text/css'>
+	
+		/* just to ensure scrollbars */
+		body, html { height:4000px; }
+	
+		#simple {
+			/* bottom/right not supported */
+			top:25px;
+			left:25px;
+			
+			/* just some junk */
+			border:1px solid #ededed;
+			background:#ccc;
+			width:3em;
+			height:1.2em;
+			cursor:pointer;
+		}
+		
+		#animated {
+			top:25px;
+			left:175px;
+			height:150px;
+			width:150px;
+			background:#ccc;
+		}
+		
+		#wayDown {
+			top:700px;
+			position:absolute;
+			left:300px;
+			background:red;
+			margin-top:25px;
+		}
+		
+	</style>
+	
+	<script type="text/javascript">
+		dojo.addOnLoad(function(){
+			dojo.query("#simple").fixed();
+			dojo.query("#animated").fixed({ slide: true });
+		});
+	</script>
+	
+</head>
+<body>
+	
+	<div id="simple" class="dojoFixed">
+		<p>Hi!</p>
+	</div>
+	
+	<div id="animated" class="dojoFixed"><p>Slidey!</p></div>
+	
+	<div id="wayDown">
+		Hi!
+	</div>
+	
+	
+</body>
