@@ -550,6 +550,23 @@
 		
 	});
 	
+	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
+	var oldQuery = d.query;
+	d.query = function(/* String|DomNode */query, /* String?|DomNode? */scope){
+		// Summary: overloads the normal dojo.query to include dom-creation 
+		// 		capabilitites. can be removed all together by setting magicQuery="off"
+		//		in the build profile. Otherwise, enables one to transparently use dojo.query
+		//		as a dom-lookup function as well as a dom creation function, and is 
+		//		offered as a convenience. 
+		//
+		//	example:
+		//	| dojo.query("<div class='foo'>bar</div>").removeClass("foo").appendTo("#baz");
+		//
+		var c = d.isString(query) && query.charAt(0) == "<";
+		return oldQuery(c ? d.create(query) : query, scope)
+	}
+	//>>excludeEnd("magicQuery");
+	
 	//>>excludeStart("noConflict", kwArgs.conflict == "off");
 	d.conflict = function(){
 		// summary: Create our $:

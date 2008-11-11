@@ -190,6 +190,25 @@
 							t.is(n, dojo.byId("newval").value);
 						},
 						
+						function magic_query(t){
+							dojo.query("<div class='fazzle'>poo</div>")
+								.place(dojo.body());
+								
+							var n = dojo.query(".fazzle");
+							
+							t.is(n.length, 1)	
+							t.is(n[0].innerHTML,"poo");
+						},
+						
+						function magic_chain(t){
+							dojo.query("<a href='foo.html'>bar</a>")
+								.addClass("link")
+								.onclick(dojo.stopEvent)
+								.place(dojo.body())
+							;
+							t.is(dojo.query(".link").length, 1)
+						},
+						
 						// globals are borked after this test:
 						function conflict(t){
 							dojo.conflict();

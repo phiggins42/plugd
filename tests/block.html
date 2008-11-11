@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../block.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[					
+						function exists(t){
+							t.t(dojo.isFunction(dojo.block));
+							t.t(dojo.isFunction(dojo.unblock));
+						},
+						
+						function simple(t){
+							var b = new dojo._Blocker("p");
+							t.is(b.declaredClass, "dojo._Blocker");
+						},
+						
+						function block(t){
+							dojo.block("byId");
+						},
+						
+						function blockUnfound(t){
+							try{
+								dojo.block("notById");
+								t.t(false, "didn't throw!");
+							}catch(e){
+								t.t(true, "throws exception!");
+							}
+							
+						},
+						
+						function blockByClass(t){
+							dojo.query(".byClass").block();
+						},
+						
+						function unblockByClass(t){
+							dojo.query(".byClass").unblock();
+						},
+						
+						function unblock(t){
+							dojo.unblock("byId");
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+
+		<h1>Block Plugin QuickTest</h1>
+
+		<div id="byId">foo!</div>
+		<div class="byClass">bar!</div>
+		
+		<p id="foo">p</p>
+		
+	</body>
+</html>

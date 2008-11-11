@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+
+		<script type="text/javascript" src="../escape.js"></script>
+
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			var testStr = '<div class="foobar"><a href="p.php?a=12345&amp;b=bomb">bar</a></div>';
+			
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						function encode(t){
+							t.is("&amp;", dojo.html_entities("&"));
+						},
+						
+						function decode(t){
+							t.is("&", dojo.html_entities("&amp;", true));
+						},
+						
+						function isstring(t){
+							var result = dojo.html_entities(testStr);
+							t.t(dojo.isString(result));
+						},
+						
+						function xhrIt(t){
+							dojo.xhrGet({
+								url: window.location.href,
+								sync:true,
+								load:function(data){
+									var n = dojo.body().appendChild(dojo.doc.createElement('pre'));
+									dojo.style(n, { width:"200px", height:"200px", overflow:"auto" })
+									n.innerHTML = dojo.html_entities(data);
+									t.is(dojo.query("*", n).length, 0)
+								}
+							});
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+
+		<h1>String Escaping QuickTest</h1>
+		
+	</body>
+</html>
