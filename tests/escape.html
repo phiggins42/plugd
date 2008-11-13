@@ -36,6 +36,7 @@
 									var n = dojo.body().appendChild(dojo.doc.createElement('pre'));
 									dojo.style(n, { width:"200px", height:"200px", overflow:"auto" })
 									n.innerHTML = dojo.html_entities(data);
+									// there should be no nodes inside the <pre>, it's all escaped
 									t.is(dojo.query("*", n).length, 0)
 								}
 							});

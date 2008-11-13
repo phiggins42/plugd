@@ -15,7 +15,6 @@ dependencies = {
 	// disable dojo.conflict() usage (off disables)
 	conflict:"on",
 	
-	// FIXME: decide if this is base-worthy?
 	// set to "off" to disable dojo.query("<div><p></p></div>") capabilities
 	// (slight performance hit for having it "on")
 	magicQuery:"on",
