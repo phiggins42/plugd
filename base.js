@@ -1,5 +1,5 @@
+//dojo.provide("plugd.base");
 ;(function(){
-	//d.provide("plugd.base");
 		
 	// first, some simple aliases
 	var d = dojo, 
@@ -435,6 +435,36 @@
 		// END REDUNDANT REMOVAL, make sure there is one after this always we intend to keep
 		// as to not break with a stray comma after exlude block removal.
 		
+		first: function(callback, thisObj){
+			//	summary:
+			//		Call some function, but only on the first element in this NodeList,
+			//		and without raising an exception if the NodeList is empty.
+			//
+			// example:
+			// | dojo.query(".foo").first(function(){ .. });
+			
+			// FIXME: should the args match "dojo.hitch" ? 
+			//		first(this, "foo") // this.foo() in scope of this
+			//		first(function(){}) // anon in global
+			//		first(this, this.foo) // this.foo() in scope of this
+			//		first(foo, this.foos) // this.foos() in scope of foo
+			
+			if(this.length) {
+				callback.call(thisObj || dojo.global, this[0]);
+			}
+			return this; // dojo.NodeList 
+		},
+		
+		last: function(callback, thisObj){
+			//	summary:
+			//		Call some function, but only on the last element in the NodeList,
+			//		and without raising an exception if the NodeList is empty
+			if(this.length) {
+				callback.call(thisObj || dojo.global, this[this.length - 1]);
+			}
+			return this; // dojo.NodeList 
+		},
+		
 		//>>excludeEnd("redundant")
 				
 		//>>excludeStart("compat", kwArgs.compat == "off")
@@ -546,7 +576,7 @@
 			//  |		.style(...)
 			//
 			return this.__last || this; // dojo.NodeList
-		}
+		}		
 		
 	});
 	
@@ -557,7 +587,7 @@
 		// 		capabilitites. can be removed all together by setting magicQuery="off"
 		//		in the build profile. Otherwise, enables one to transparently use dojo.query
 		//		as a dom-lookup function as well as a dom creation function, and is 
-		//		offered as a convenience. 
+		//		offered as a convenience (with significant performance hits). 
 		//
 		//	example:
 		//	| dojo.query("<div class='foo'>bar</div>").removeClass("foo").appendTo("#baz");
