@@ -12,10 +12,8 @@
 		
 		// used for the "smart" show()/hide()/toggle()
 		speedMap = {
-	
 			"slow"    : 1800,
 			"fast"    : 420,
-	
 			//>>excludeStart("sillyness", kwArgs.silly == "off");
 			// these are just to be silly:
 			"granny"  : 7600,
@@ -27,7 +25,6 @@
 			// the above silly-ness and not worry about the comma breaking 
 			// after build.
 			//>>excludeEnd("sillyness");
-	
 			"mild"    : 900
 		},
 		
@@ -81,11 +78,15 @@
 		//
 		do{ globalId = (b || base) + (++id_count) }
 		while(d.byId(globalId))
-		return globalId;
+		return globalId; // String
 	}
 	
 	d.show = function(/* String|DomNode */n, /* String? */arg){
 		// summary: Put some node in a visible state
+		//
+		// n: String|DomNode
+		//		A string ID or DomNode to show
+		//
 		// arg: a String to tell which speed to use
 		//		officially supported: "slow", "fast", "mild"
 		if(!arg){
@@ -103,6 +104,10 @@
 	
 	d.hide = function(/* String|DomNode */n, /* String? */arg){
 		// summary: Put some node in a hidden state
+		//
+		// n: String|DomNode
+		//		A string ID or DomNode to show
+		//
 		// arg: a String to tell which speed to use
 		//		officially supported: "slow", "fast", "mild"
 		if(!arg){
@@ -156,7 +161,7 @@
 		// 	dojo.toggle("someId", "fast");
 		//alert("no n?");
 		n = d.byId(n);
-		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](n, speed);	
+		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](n, speed);
 	}
 	
 	d._createFrom = function(/* String */frag){
@@ -272,7 +277,7 @@
 			
 			return this.forEach(function(n){
 				d.hide(n, speed); 
-			});
+			}); // dojo.NodeList
 		},
 		
 		toggle: function(/* String? */speed){
@@ -613,17 +618,23 @@
 	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
 	var oldQuery = d.query;
 	d.query = function(/* String|DomNode */query, /* String?|DomNode? */scope){
-		// Summary: overloads the normal dojo.query to include dom-creation 
-		// 		capabilitites. can be removed all together by setting magicQuery="off"
+		// summary: overloads the normal dojo.query to include dom-creation 
+		//		capabilitites. can be removed all together by setting magicQuery="off"
 		//		in the build profile. Otherwise, enables one to transparently use dojo.query
 		//		as a dom-lookup function as well as a dom creation function, and is 
 		//		offered as a convenience (with significant performance hits). 
+		//
+		//	query:
+		//		A DomNode, String CSS selector, or HTML markup to create
+		//
+		//	scope:
+		//		a node reference to start the query from.
 		//
 		//	example:
 		//	| dojo.query("<div class='foo'>bar</div>").removeClass("foo").appendTo("#baz");
 		//
 		var c = d.isString(query) && query.charAt(0) == "<";
-		return oldQuery(c ? d.create(query) : query, scope)
+		return oldQuery(c ? d.create(query) : query, scope) // dojo.NodeList
 	}
 	//>>excludeEnd("magicQuery");
 	
