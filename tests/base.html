@@ -190,6 +190,17 @@
 							t.is(n, dojo.byId("newval").value);
 						},
 						
+						function generate_custom(t){
+							var id = dojo.generateId("my_");
+							t.is("my_4", id);
+						},
+						
+						function generate_plain(t){
+							var id = dojo.generateId();
+							t.t(dojo.isString(id));
+							t.is(undefined, dojo.byId(id));
+						},
+						
 						function magic_query(t){
 							dojo.query("<div class='fazzle'>poo</div>")
 								.place(dojo.body());
@@ -244,6 +255,10 @@
 		<input id="withval" value="baz" type="text"> 
 		<input id="nullval" value="" type="text">
 		<input id="newval" value="baz" type="text">
+		
+		<ul>
+			<li id="my_1">1</li><li id="my_2">2</li><li id="my_3">3</li>
+		</ul>
 		
 	</body>
 </html>

@@ -50,10 +50,40 @@
 		// these too are for ShrinkSafe's benefit. 
 		NodeList = d.NodeList,
 		mirror = NodeList.prototype,
-		creationNode = null
+		creationNode,
+		
+		// for dojo.generateId
+		globalId, id_count = 0, base = "djid_"
 	;
 	
 	// namespace-polluting functions:
+	d.generateId = function(/* String? */b){
+		// summary: Generate an ID for a domNode, ensuring the id does not
+		//		exist previously in the DOM.
+		//
+		// description:
+		//		Generates a unique ID, ensuring the id returned does not 
+		//		exist in the DOM at the time of execution. A unique number 
+		//		is appended to some string, and checked for uniqueness.
+		//
+		//	b: String?
+		//		An optional base string to use for the id prefix. Defaults
+		//		to `djid_`
+		//
+		// example:
+		//	|	var id = dojo.generateId(); // djid_1
+		//
+		// example:
+		//	|	var id = dojo.generateId("my_"); // my_2
+		//
+		// example:
+		//	| dojo.create("div", { id: dojo.generateId() })
+		//
+		do{ globalId = (b || base) + (++id_count) }
+		while(d.byId(globalId))
+		return globalId;
+	}
+	
 	d.show = function(/* String|DomNode */n, /* String? */arg){
 		// summary: Put some node in a visible state
 		// arg: a String to tell which speed to use
