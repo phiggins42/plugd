@@ -1,0 +1,34 @@
+<html>
+<head>
+
+	<!-- required CSS -->
+	<style type='text/css'>
+		body, html { padding:1em; }
+		p { float: left; }
+	</style>
+
+	<!-- required JS -->
+	<script src="../../dojo/dojo.js"></script>
+	<script src="../hover.js"></script>
+	
+	<script type="text/javascript">
+		dojo.addOnLoad(function(){
+			dojo.query("img.hoverable").rollOver();
+		});
+	</script>
+	
+</head>
+<body>
+	
+	<h1>Hover thing test</h1>
+	
+	<p>B&amp;W, Color on hover:<br/>
+	<img src="images/averycutedog_bw.jpg" rel="images/averycutedog.jpg" class="hoverable" />
+	</p>
+	
+	<p>Color, B&amp;W on Hover:<br/>
+	<img src="images/averycutedog.jpg" rel="images/averycutedog_bw.jpg" class="hoverable" />
+	</p>
+	
+</body>
+</html>
