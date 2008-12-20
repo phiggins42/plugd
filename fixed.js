@@ -1,3 +1,4 @@
+// dojo.provide("plugd.fixed");
 dojo.require("dijit._base.place");
 (function(){
 	
@@ -24,14 +25,18 @@ dojo.require("dijit._base.place");
 			// params: Object?
 			// 		Object mixed into each instance to override provided
 			//		defaults and functions
-			// node: DomNode
+			//
+			// node: DomNode|String
 			//		A Node to make fixed, or to apply this widget-try to. 
+			//
+			// example:
+			//	| new dojox.FixedNode({}, "someId");
+			
 			d.mixin(this, params);
 			if(d.isIE || this.slide){
 				if(!d.isIE){ d.style(node, pos, "absolute"); }
 				this._xy = d._abs(this.node = d.byId(node));
-				//console.log(this._xy); // FIXME: if scrollTop !== 0, this is off
-				d.connect(window, "onscroll", this, "_onscroll");
+				d.connect(d.global, "onscroll", this, "_onscroll");
 			}
 		},
 		
@@ -42,13 +47,13 @@ dojo.require("dijit._base.place");
 			if(s.slide && s._timeout){ return; }
 			if(s.slide){
 				s._anim && s._anim.stop();
-				s._timeout = setTimeout(d.hitch(this, "_doscroll"), s.timeout);
+				s._timeout = setTimeout(d.hitch(s, "_doscroll"), s.timeout);
 			}else{
 				s._doscroll(e);
 			}
 		},
 		
-		_doscroll: function(e){
+		_doscroll: function(){
 			// summary: Place the node where it needs to be, either animated or 
 			//		as efficiently as possible; 
 			var vp = dijit.getViewport(),
@@ -63,8 +68,9 @@ dojo.require("dijit._base.place");
 	
 	});	
 	
+	// make it a "plugin"
 	d.extend(d.NodeList, {
-		fixed: function(args){
+		fixed: function(/* Object */args){
 			// summary: Turn this list of nodes into position:fixed nodes
 			//		as per `dojo.FixedNode` API
 			return this.instantiate("dojo.FixedNode", args);

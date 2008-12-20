@@ -100,7 +100,7 @@
 				d.anim(n, { opacity: 1 }, _getDuration(arg));
 			}
 		}// else{ fail silently! }
-	};
+	}
 	
 	d.hide = function(/* String|DomNode */n, /* String? */arg){
 		// summary: Put some node in a hidden state
@@ -120,7 +120,7 @@
 				d.anim(n, { opacity: 0 }, _getDuration(arg), null, d.hitch(d, "hide", n));
 			}
 		}// else{ fail silently! }
-	};
+	}
 	
 	d.wrap = function(/* String|DomNode */n, /* String */nodeType){
 		// summary: Wrap a node in some other created node
@@ -320,9 +320,14 @@
 			})); // dojo.NodeList
 		},
 		
-		// no need for combine or chain, we'll let you make choppy animations, too:
-		// no callbacks, this is all async
+		clone: function(){
+			// summary: Clone the matched nodes, and return a stashed NodeList of the new nodes
+			return this._stash(this.map(function(n){
+				return d.clone(n);
+			})); // dojo.NodeList
+		},
 		
+		// no need for combine or chain, we'll let you make choppy animations, too:
 		animate: function(/* Object */props, /* Integer? */duration, /* Function? */easing, /* Function? */onEnd){
 			// summary: Animate the CSS properties passed on all nodes in this list, using
 			//		the same API as `dojo.anim`, assuming this node as the target.
@@ -377,7 +382,7 @@
 				if(onEnd && i == a.length - 1){
 					d.connect(anim, "onEnd", onEnd);
 				}
-			}, this); // dojo.NodeList
+			}); // dojo.NodeList
 		},
 		
 		// i've always liked $(...).wrap()
@@ -426,13 +431,12 @@
 			//
 			
 			var aplace = d.query(selector);
-			if(aplace.length >= 0){
+
+			return aplace.length >= 0 ? 
 				this.forEach(function(n){
 					place(n, aplace[0]);
-				});
-			}
-			// Fails silently, too - hooray for convenience 
-			return this; // dojo.NodeList
+				}) : this; // dojo.NodeList
+				// Fails silently, too - hooray for convenience 
 		},
 		
 		append: function(/* String|DomNode */selector, /* Boolean? */clone){
@@ -444,7 +448,15 @@
 			//		If not cloning, the found node will be added to the last
 			//		element in this list, which could be a single-element list
 			//		anyway. 
-			//		
+			//
+			// example:
+			//	|	dojo.query(".bar").append(d.create('div'));
+			//
+			// example:
+			//		If 'magic query' is enabled:
+			//	| 	dojo.query(".bar").append("<li>foo!</li>");
+			//
+			
 			var refNode = d.query(selector);
 			if(refNode.length >= 0){
 				refNode = refNode[0];
@@ -476,7 +488,7 @@
 			//		and without raising an exception if the NodeList is empty.
 			//
 			// example:
-			// | dojo.query(".foo").first(function(){ .. });
+			// | dojo.query(".foo").first(function(n){ .. });
 			
 			// FIXME: should the args match "dojo.hitch" ? 
 			//		first(this, "foo") // this.foo() in scope of this
@@ -485,7 +497,7 @@
 			//		first(foo, this.foos) // this.foos() in scope of foo
 			
 			if(this.length) {
-				callback.call(thisObj || dojo.global, this[0]);
+				callback.call(thisObj || d.global, this[0]);
 			}
 			return this; // dojo.NodeList 
 		},
@@ -495,7 +507,7 @@
 			//		Call some function, but only on the last element in the NodeList,
 			//		and without raising an exception if the NodeList is empty
 			if(this.length) {
-				callback.call(thisObj || dojo.global, this[this.length - 1]);
+				callback.call(thisObj || d.global, this[this.length - 1]);
 			}
 			return this; // dojo.NodeList 
 		},
@@ -583,22 +595,35 @@
 			//  	so .end() has somewhere to go.
 			//
 			// example:
+			//	A Partially redundant example. Make an "odd" method which returns a
+			//	stashed `dojo.NodeList`: 
 			//	|	dojo.extend(dojo.NodeList, {
-			//	|		interesting: function(){
-			//	|			var nl = this._stash(new dojo.NodeList();
-			//	|			// do something interesting to make a new list
-			//	|			return nl;
+			//	|		odd: function(){
+			//	|			return this._stash(this.filter(function(n,i){ return i % 2 == 0 }));
 			//	|		}
-			//	|	})	;
-			//	
+			//	|	});
+			//  |	// then see how _stash applies a sub-list, to be .end()'ed out of
+			//	|   dojo.query(".foo")
+			//	|		.odd()
+			//	|			.addClass("stripe")
+			//	|		.end()
+			//	|		// access to the orig .foo list
+			//	|		.removeClass("foo")
+			//  | 
+			//
 			nl.__last = this;
 			return nl; // dojo.NodeList
 		},
 		
 		end: function(){
 			// summary: Break out of this current depth of chaining, returning
+			//		to the last most sequential NodeList, or this.
+			//
+			// description:
+			//		Break out of this current depth of chaining, returning 
 			//		to the last most sequential NodeList (or this NodeList if no
-			//		previous NodeList was stashed)
+			//		previous NodeList was stashed). Works in conjunction with
+			//		`dojo.NodeList._stash` to control a NodeList in advanced ways.
 			//
 			// example:
 			//	|	dojo.query("a")
@@ -618,7 +643,7 @@
 	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
 	var oldQuery = d.query;
 	d.query = function(/* String|DomNode */query, /* String?|DomNode? */scope){
-		// summary: overloads the normal dojo.query to include dom-creation 
+		// summary: Overloads the normal dojo.query to include dom-creation 
 		//		capabilitites. can be removed all together by setting magicQuery="off"
 		//		in the build profile. Otherwise, enables one to transparently use dojo.query
 		//		as a dom-lookup function as well as a dom creation function, and is 
