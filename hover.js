@@ -1,4 +1,4 @@
-// dojo.provide("plugd.hover");
+// dojo.provide("plugd.hover"); // this is a feature, not a bug ...
 //
 //	A Simple Hover-State plugin, managing the src of an Image for rollover 
 //
@@ -12,7 +12,7 @@
 		// |	cacheImage("images/bar.png");
 		
 		if(!p){
-			// if we don't have a cache, make it
+			// if we don't have a cache node, make it
 			p = d.byId("imageCache") || d.doc.createElement('div');
 			// then set it offscreen, in the dom, with an id
 			$(p)
@@ -24,11 +24,13 @@
 				.place("body")
 			;
 		}
+		
 		// now create the image, and set the src
 		var img = d.doc.createElement('img');
 		d.attr(img, "src", src);
 		// stash it in the hidden node so it loads
 		d.place(img, p);
+		
 	}
 
 	// make the "plugin":
@@ -58,7 +60,7 @@
 			//	With following markup:
 			// | <img src="foo.png" rel="foo_over.png" />
 			//
-			//	Specify a query, and call .rollOver
+			//	Specify a query, and call .rollOver()
 			// | dojo.query("img").rollOver();
 			
 			
@@ -80,13 +82,13 @@
 				// cache the new image in some node, so there is no flicker when they hover
 				cacheImage(hoverImg);
 				
-				// setup the functions to set the src="" attribute based on an event:
 				$(n)
-					.onmouseenter(function(){ attr(hoverImg); })
-					.onmouseleave(function(){ attr(oldImg); })
+					// setup the behavior to set the src="" attribute based on an event:
+					.onmouseenter(function(){ attr(hoverImg) })
+					.onmouseleave(function(){ attr(oldImg) })
 				;
 
-//	This is likely a faster way to do the above. No NodeList instantiation needed, etc, but more bytes:
+//	This is arguably a faster way to do the above. No NodeList instantiation needed, etc, but more bytes:
 //	
 //				d.connect(n, "onmouseenter", function(){
 //					// on enter, set the src to the rel image
