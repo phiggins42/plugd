@@ -4,32 +4,32 @@ dependencies = {
 	stripConsole: "normal",
 	
 	// this removes some silly options from base.js
-	silly:"off",
+	silly: "off",
 	
 	// this removes some redundant code from base.js
-	redundant:"off",
+	redundant: "off",
 
 	// this removes some aliases
-	compat:"off",
+	compat: "off",
 	
 	// disable dojo.conflict() usage (off disables)
-	conflict:"on",
+	conflict: "on",
 	
 	// set to "off" to disable dojo.query("<div><p></p></div>") capabilities
 	// (slight performance hit for having it "on")
-	magicQuery:"on",
+	magicQuery: "on",
 	
 	// create each of the plugins as a standalone js,
 	// this way, the build will provide compressed
 	// and uncompressed versions of each file for us:
 	layers:[
 		// uncomment if you want to roll a dojo.js with plugins included
-		//{
-		//	name:"dojo.js",
-		//	dependencies:[
-		//		"plugd.base"
-		//	]
-		//},
+		{
+			name:"dojo.js",
+			dependencies:[
+				"plugd.base"
+			]
+		},
 		{
 			// our base plugin file (in case we grow)
 			name:"../plugd/base.js",
