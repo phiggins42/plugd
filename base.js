@@ -178,7 +178,7 @@
 		return creationNode.removeChild(creationNode.firstChild); // DomNode
 	}
 	
-	d.create = function(/* String */nodeType, /* Object? */attrs){
+	d.create = function(/* String */nodeType, /* Object? */attrs, refNode, pos){
 		// summary: Creates an element, optionally setting any number
 		//		of attributes. Important to note, there is not cross-browser
 		//		sanity checking going on during the creation. This will
@@ -220,6 +220,7 @@
 		var n = nodeType.charAt(0) == "<" ? 
 			d._createFrom(nodeType) : d.doc.createElement(nodeType);
 		if(attrs){ d.attr(n, attrs); }
+		if(refNode){ d.place(n, refNode, pos); }
 		return n; // DomNode
 	}
 	
