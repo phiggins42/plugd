@@ -176,11 +176,18 @@
 	}
 	
 	d._createFrom = d._toDom || function(/* String */frag){
-		// summary: Creates an element from a String DOM Fragment with the
+		// summary: Creates an element from a String DOM Fragment.
+		//
+		// description: 
+		//		Creates an element from a String DOM Fragment with the
 		//		caveat you are only able to create one top-level item, 
 		//		which will be returned from this call. This is a private 
 		//		function, meant to assist `dojo.create`
 		//
+		//		In Dojo 1.3+, a native `dojo._toDom` method is detected 
+		//		and used. `dojo._toDom` is more advanced and and handles
+		//		complex markup fragments like "<td>hi</td>" safely.
+		//	
 		if(!creationNode){ creationNode = d.create('div') } 
 		creationNode.innerHTML = frag;
 		// removing leaves it in limbo. You are expected to place this somewhere
@@ -198,7 +205,9 @@
 		//
 		// nodeType: String
 		//		The type of node to create. Something like "div", "a", "ul",
-		//		or a valid DOM structure like: "<div class='bar'></div>" 
+		//		or a valid DOM structure like: "<div class='bar'></div>". 
+		//		With Dojo versions < 1.3, a simple markup creation process
+		//		is used. >= 1.3, `dojo._toDom` is substititued.  
 		//
 		// attrs: Object?
 		//		An object-hash (property bag) of attributes
@@ -410,7 +419,8 @@
 			// nodeType: String
 			//		An element to create. eg: "div", "li", "a", etc. 
 			//		No cross-browser magic going on in here, so be careful with
-			//		tables and related elements. 
+			//		tables and related elements in Dojo < 1.3. In 1.3+, `dojo._toDom`
+			//		is used for complex markup being wrapped.
 			//
 			// newList: Boolean?
 			//		If true, a new NodeList is returned from this call.
@@ -441,6 +451,8 @@
 			//		by a passed selector or node reference. Only the first result 
 			//		of the selector query will be used.
 			//
+			// example:
+			// |	dojo.query("li.clicked").appendTo("ul#someId");
 			
 			var aplace = d.query(selector);
 
@@ -544,6 +556,7 @@
 		//>>excludeEnd("compat");
 
 		// now I'm just making stuff up, this may or may not be the API:
+		// (it's not. jq .attr always returns a list iirc)
 		val: function(/* String? */value){
 			// summary: Get or set a list of values of this list.
 			//
