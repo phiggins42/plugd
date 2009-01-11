@@ -1,4 +1,4 @@
-//dojo.provide("plugd.base");
+// dojo.provide("plugd.base");
 ;(function(){
 		
 	// first, some simple aliases
@@ -123,14 +123,25 @@
 	}
 	
 	d.wrap = function(/* String|DomNode */n, /* String */nodeType){
-		// summary: Wrap a node in some other created node
+		// summary: Wrap a node in some other newly created node
 		//
+		// description:
+		//
+		//		Wrap some passed node in a nodeType (or semi-complex markup).
+		//		The node being wrapped must be in the DOM at the time of
+		//		wrapping in order to know where to position the new node
+		//		in the DOM. If you desire to 'wrap' a non detached from
+		//		the DOM, you must do it manually. 
+		//		
+		//		In the event of complex markup, wrap will place the passed
+		//		node as the .firstChild of the newly created node. 
+		//	
 		// n: String|DomNode
 		//		The node to wrap
 		//
 		// nodeType: String
 		//		The type of element to wrap the node in.
-		//		eg: "div", "a", "li"
+		//		eg: "div", "a", "li", "span", "<div class='thing'></div>"
 		// 
 		// example:
 		//		Wrap a div around a span with id="bar":
@@ -142,7 +153,7 @@
 		var element = d.create(nodeType);
 		place(element, n, "before");
 		place(n, element, "first");
-		return element;
+		return element; // DomNode
 	}
 	
 	d.toggle = function(/* String|DomNode */n, /* String? */speed){
@@ -155,16 +166,16 @@
 		//		One of "slow", "fast", or "mild"
 		//
 		// example:
-		// 	dojo.toggle("someId");
+		// |	dojo.toggle("someId");
 		//
 		// example:
-		// 	dojo.toggle("someId", "fast");
-		//alert("no n?");
+		// |	dojo.toggle("someId", "fast");
+
 		n = d.byId(n);
 		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](n, speed);
 	}
 	
-	d._createFrom = function(/* String */frag){
+	d._createFrom = d._toDom || function(/* String */frag){
 		// summary: Creates an element from a String DOM Fragment with the
 		//		caveat you are only able to create one top-level item, 
 		//		which will be returned from this call. This is a private 
