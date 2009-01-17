@@ -50,7 +50,10 @@
 		creationNode,
 		
 		// for dojo.generateId
-		globalId, id_count = 0, base = "djid_"
+		globalId, id_count = 0, base = "djid_",
+		
+		// because IE is insane:
+		_jankyEvent = "mouse" + (d.isIE ? "enter" : "over")
 	;
 	
 	// namespace-polluting functions:
@@ -617,7 +620,7 @@
 			//	|	dojo.query("#mylist li").hoverClass("over");
 			//
 			return this.hover(function(e){
-				d[(e.type == "mouseover" ? "addClass" : "removeClass")](e.target, className);
+				d[(e.type == _jankyEvent ? "addClass" : "removeClass")](e.target, className);
 			}); // dojo.NodeList
 		},
 		
