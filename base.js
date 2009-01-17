@@ -604,15 +604,21 @@
 			//	|			}
 			//	|		);
 			//
-			// example:
-			//	Same as before, but with one function:
-			//	|	dojo.query("#myList li")
-			//	|		.hover(function(e){ 
-			//	|			var over = (e.type == "mouseover");
-			//	|			dojo[(over ? "addClass" : "removeClass")](e.target, "over");
-			//	| 		});
-			//
 			return this.onmouseenter(over).onmouseleave(out || over) // dojo.NodeList
+		},
+		
+		hoverClass: function(/* String */className){
+			// summary: add or remove a passed class name to these nodes
+			//
+			// className: String
+			//		The class string to add or remove based on hover state.
+			//	
+			// example:
+			//	|	dojo.query("#mylist li").hoverClass("over");
+			//
+			return this.hover(function(e){
+				d[(e.type == "mouseover" ? "addClass" : "removeClass")](e.target, className);
+			}); // dojo.NodeList
 		},
 		
 		_stash: function(/* dojo.NodeList */nl){
