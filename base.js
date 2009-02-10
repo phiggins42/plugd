@@ -1,9 +1,8 @@
 // dojo.provide("plugd.base");
-;(function(){
+;(function(d){
 		
 	// first, some simple aliases
-	var d = dojo, 
-		place = d.place,
+	var place = d.place,
 		style = d.style,
 		
 		// shrinksafe loves this
@@ -710,4 +709,4 @@
 	if(d.config.conflict){ d.conflict(); }
 	//>>excludeEnd("noConflict");
 
-})();
+})(dojo);
