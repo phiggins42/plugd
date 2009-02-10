@@ -177,26 +177,7 @@
 		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](n, speed);
 	}
 	
-	d._createFrom = d._toDom || function(/* String */frag){
-		// summary: Creates an element from a String DOM Fragment.
-		//
-		// description: 
-		//		Creates an element from a String DOM Fragment with the
-		//		caveat you are only able to create one top-level item, 
-		//		which will be returned from this call. This is a private 
-		//		function, meant to assist `dojo.create`
-		//
-		//		In Dojo 1.3+, a native `dojo._toDom` method is detected 
-		//		and used. `dojo._toDom` is more advanced and and handles
-		//		complex markup fragments like "<td>hi</td>" safely.
-		//	
-		if(!creationNode){ creationNode = d.create('div') } 
-		creationNode.innerHTML = frag;
-		// removing leaves it in limbo. You are expected to place this somewhere
-		// ... doing this to prevent two sequential create() calls from destroying
-		// the generated DOM from the first.
-		return creationNode.removeChild(creationNode.firstChild); // DomNode
-	}
+	d._createFrom = d._toDom;
 	
 	d.create = function(/* String */nodeType, /* Object? */attrs, refNode, pos){
 		// summary: Creates an element, optionally setting any number
@@ -312,38 +293,38 @@
 		hide: NodeList._mapIn("hide", true),
 		toggle: NodeList._mapIn("toggle", true),
 		
-		create: function(/* String */tagName){
-			// summary: Create a new element for each of the nodes in this list
-			//		returning a new NodeList of the newly selected nodes.
-			//		The returned list is a stashed-NodeList, and will return 
-			//		from and .end() call back to the original NodeList.
-			//
-			//	tagName: String
-			//		A type of node to create. eg: "div", "a", "li"
-			//
-			//	TODO: implement attrs? why?
-			//
-			// example:
-			//	dojo.query("li.tooltip")
-			//		.create("div")
-			//			.appendTo("ul#bar")
-			//			.addClass("tooltip")
-			//		.end()
-			//		.removeClass("tooltip")
-			//		.onclick(function(e){
-			//			// handle click for the node
-			//		})
-			//		.hover(function(e){
-			//			// or just use .toggle(), hmmm.
-			//			var action = e.type == "mouseover" ? "show" : "hide";
-			//			dojo.query("div.tooltip", e.target)[action]();
-			//		})
-			//	;
-			return this._stash(this.map(function(){
-				return d.create(tagName);
-			})); // dojo.NodeList
-		},
-		
+//		create: function(/* String */tagName){
+//			// summary: Create a new element for each of the nodes in this list
+//			//		returning a new NodeList of the newly selected nodes.
+//			//		The returned list is a stashed-NodeList, and will return 
+//			//		from and .end() call back to the original NodeList.
+//			//
+//			//	tagName: String
+//			//		A type of node to create. eg: "div", "a", "li"
+//			//
+//			//	TODO: implement attrs? why?
+//			//
+//			// example:
+//			//	dojo.query("li.tooltip")
+//			//		.create("div")
+//			//			.appendTo("ul#bar")
+//			//			.addClass("tooltip")
+//			//		.end()
+//			//		.removeClass("tooltip")
+//			//		.onclick(function(e){
+//			//			// handle click for the node
+//			//		})
+//			//		.hover(function(e){
+//			//			// or just use .toggle(), hmmm.
+//			//			var action = e.type == "mouseover" ? "show" : "hide";
+//			//			dojo.query("div.tooltip", e.target)[action]();
+//			//		})
+//			//	;
+//			return this._stash(this.map(function(){
+//				return d.create(tagName);
+//			})); // dojo.NodeList
+//		},
+//		
 		clone: function(){
 			// summary: Clone the matched nodes, and return a stashed NodeList of the new nodes
 			return this._stash(this.map(function(n){
@@ -409,43 +390,43 @@
 			}); // dojo.NodeList
 		},
 		
-		// i've always liked $(...).wrap()
-		wrap: function(/* String */nodeType, /* newList? */newList){
-			// summary: Wrap a list of nodes in a nodeType, returning this NodeList, or
-			//		a new `dojo.NodeList` of the newly created elements by setting a parameter
-			//
-			// description:
-			//		So this makes the most sense in the single-node list, but applies
-			//		and works by creating an element for each node in the list, and 
-			//		wrapping it in the created node. 
-			//
-			// nodeType: String
-			//		An element to create. eg: "div", "li", "a", etc. 
-			//		No cross-browser magic going on in here, so be careful with
-			//		tables and related elements in Dojo < 1.3. In 1.3+, `dojo._toDom`
-			//		is used for complex markup being wrapped.
-			//
-			// newList: Boolean?
-			//		If true, a new NodeList is returned from this call.
-			//		If false, null, or omitted this NodeList is returned
-			//
-			// example:
-			//		Wrap an additional DIV element around all DIVs with class="foo",
-			//		and connect a function to the click event to the wrapper node:
-			//
-			//	|	dojo.query("div.foo").wrap("div").onclick(function(e){
-			//	|		console.log('clicked', e.target); 
-			//	|	});
-			//
-			//	returns: A NodeList of the wrapping elements or This same NodeList
-			//
-			var nl = new NodeList();
-			this.forEach(function(n){
-				nl.push(d.wrap(n, nodeType));
-			});
-			return !newList ? this : this._stash(nl); // dojo.NodeList
-		},
-		
+//		// i've always liked $(...).wrap()
+//		wrap: function(/* String */nodeType, /* newList? */newList){
+//			// summary: Wrap a list of nodes in a nodeType, returning this NodeList, or
+//			//		a new `dojo.NodeList` of the newly created elements by setting a parameter
+//			//
+//			// description:
+//			//		So this makes the most sense in the single-node list, but applies
+//			//		and works by creating an element for each node in the list, and 
+//			//		wrapping it in the created node. 
+//			//
+//			// nodeType: String
+//			//		An element to create. eg: "div", "li", "a", etc. 
+//			//		No cross-browser magic going on in here, so be careful with
+//			//		tables and related elements in Dojo < 1.3. In 1.3+, `dojo._toDom`
+//			//		is used for complex markup being wrapped.
+//			//
+//			// newList: Boolean?
+//			//		If true, a new NodeList is returned from this call.
+//			//		If false, null, or omitted this NodeList is returned
+//			//
+//			// example:
+//			//		Wrap an additional DIV element around all DIVs with class="foo",
+//			//		and connect a function to the click event to the wrapper node:
+//			//
+//			//	|	dojo.query("div.foo").wrap("div").onclick(function(e){
+//			//	|		console.log('clicked', e.target); 
+//			//	|	});
+//			//
+//			//	returns: A NodeList of the wrapping elements or This same NodeList
+//			//
+//			var nl = new NodeList();
+//			this.forEach(function(n){
+//				nl.push(d.wrap(n, nodeType));
+//			});
+//			return !newList ? this : this._stash(nl); // dojo.NodeList
+//		},
+//		
 		appendTo: function(/* String|DomNode */selector){
 			// summary: Append each of the nodes in this list to some other node.
 			// 
@@ -622,56 +603,7 @@
 			return this.hover(function(e){
 				d[(e.type == _jankyEvent ? "addClass" : "removeClass")](e.target, className);
 			}); // dojo.NodeList
-		},
-		
-		_stash: function(/* dojo.NodeList */nl){
-			// summary: Stash this NodeList on the next NodeList returned
-			//  	so .end() has somewhere to go.
-			//
-			// example:
-			//	A Partially redundant example. Make an "odd" method which returns a
-			//	stashed `dojo.NodeList`: 
-			//	|	dojo.extend(dojo.NodeList, {
-			//	|		odd: function(){
-			//	|			return this._stash(this.filter(function(n,i){ return i % 2 == 0 }));
-			//	|		}
-			//	|	});
-			//  |	// then see how _stash applies a sub-list, to be .end()'ed out of
-			//	|   dojo.query(".foo")
-			//	|		.odd()
-			//	|			.addClass("stripe")
-			//	|		.end()
-			//	|		// access to the orig .foo list
-			//	|		.removeClass("foo")
-			//  | 
-			//
-			nl.__last = this;
-			return nl; // dojo.NodeList
-		},
-		
-		end: function(){
-			// summary: Break out of this current depth of chaining, returning
-			//		to the last most sequential NodeList, or this.
-			//
-			// description:
-			//		Break out of this current depth of chaining, returning 
-			//		to the last most sequential NodeList (or this NodeList if no
-			//		previous NodeList was stashed). Works in conjunction with
-			//		`dojo.NodeList._stash` to control a NodeList in advanced ways.
-			//
-			// example:
-			//	|	dojo.query("a")
-			//	|		.wrap("div", true)
-			//	|			// connect click to the divs
-			//	|			.onclick(function(e){ .. }))
-			//	|			.addClass("onADiv")
-			//	|		.end()
-			//	|		// jump back to the list of anchors
-			//  |		.style(...)
-			//
-			return this.__last || this; // dojo.NodeList
-		}		
-		
+		}
 	});
 	
 	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
