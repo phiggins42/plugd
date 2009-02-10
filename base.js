@@ -249,8 +249,9 @@
 	
 	// wrap them into dojo.NodeList
 	d.extend(NodeList, {
-		
-		show: function(/* String? */speed){
+
+/*=====		
+		show: function(speed){
 			// summary: Makes this list of nodes visible.
 			// 
 			// description:
@@ -271,12 +272,10 @@
 			// 	Show all list-items in a list with id="foo" visible:
 			// | dojo.query("#foo li").show();
 			
-			return this.forEach(function(n){
-				d.show(n, speed);
-			}); // dojo.NodeList
+			return this; // dojo.NodeList
 		},
-		
-		hide: function(/* String? */speed){
+
+		hide: function(speed){
 			// summary: Makes this list of nodes invisible.
 			// 
 			// description:
@@ -299,18 +298,20 @@
 			// 	Hide all list-items in a list with id="foo" visible:
 			// | dojo.query("#foo li").hide();
 			
-			return this.forEach(function(n){
-				d.hide(n, speed); 
-			}); // dojo.NodeList
+			return this; // dojo.NodeList
 		},
 		
-		toggle: function(/* String? */speed){
+		toggle: function(speed){
 			// summary: Toggle this list of nodes by calling show() or hide() 
 			// 		to invert their state.
-			return this.forEach(function(n){
-				d.toggle(n, speed);
-			}); // dojo.NodeList
+			return this; // dojo.NodeList
 		},
+
+=====*/
+
+		show: NodeList._mapIn("show", true),
+		hide: NodeList._mapIn("hide", true),
+		toggle: NodeList._mapIn("toggle", true),
 		
 		create: function(/* String */tagName){
 			// summary: Create a new element for each of the nodes in this list
@@ -459,10 +460,10 @@
 			
 			var aplace = d.query(selector);
 
-			return aplace.length >= 0 ? 
+			return aplace.length ? // dojo.NodeList
 				this.forEach(function(n){
 					place(n, aplace[0]);
-				}) : this; // dojo.NodeList
+				}) : this; 
 				// Fails silently, too - hooray for convenience 
 		},
 		
