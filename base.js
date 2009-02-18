@@ -46,7 +46,6 @@
 		// these too are for ShrinkSafe's benefit. 
 		NodeList = d.NodeList,
 		mirror = NodeList.prototype,
-		creationNode,
 		
 		// for dojo.generateId
 		globalId, id_count = 0, base = "djid_",
@@ -286,12 +285,18 @@
 			// 		to invert their state.
 			return this; // dojo.NodeList
 		},
+		
+		destroy: function(){
+			// summary: Destroy all elements of this list. Differs from `dojo.NodeList.orhpan`
+			return this; // dojo.NodeList
+		},
 
 =====*/
 
 		show: NodeList._mapIn("show", true),
 		hide: NodeList._mapIn("hide", true),
 		toggle: NodeList._mapIn("toggle", true),
+		destroy: NodeList._mapIn("destroy", true),
 		
 		create: function(/* String */tagName){
 			// summary: Create a new element for each of the nodes in this list
@@ -366,7 +371,7 @@
 			// easing: Function?
 			// 		The easing function used to modify the Line
 			//
-			// onEnd: Function
+			// onEnd: Function?
 			//		A function to call when the animation sequence is complete.
 			//
 			// example:
@@ -479,17 +484,7 @@
 		//>>excludeStart("redundant", kwArgs.redundant == "off");
 		// PUT ALL REDUNDANT FUNCTIONS HERE, as we'll play with them in dev mode, and provide a way
 		// to leave them, but remove them in production intentionally. set redundant="on" in profile
-		
-		// there is an .ophan already, I only ever use this when I know what I meant.
-		destroy: function(){
-			// summary: Destroy all the elements in this list
-			this.forEach(d._destroyElement);
-			return true; // Boolean
-		},
 				
-		// END REDUNDANT REMOVAL, make sure there is one after this always we intend to keep
-		// as to not break with a stray comma after exlude block removal.
-		
 		first: function(callback, thisObj){
 			//	summary:
 			//		Call some function, but only on the first element in this NodeList,
@@ -497,7 +492,7 @@
 			//
 			// example:
 			// | dojo.query(".foo").first(function(n){ .. });
-			
+
 			// FIXME: should the args match "dojo.hitch" ? 
 			//		first(this, "foo") // this.foo() in scope of this
 			//		first(function(){}) // anon in global
@@ -520,6 +515,8 @@
 			return this; // dojo.NodeList 
 		},
 		
+		// END REDUNDANT REMOVAL, make sure there is one after this always we intend to keep
+		// as to not break with a stray comma after exlude block removal.		
 		//>>excludeEnd("redundant")
 				
 		//>>excludeStart("compat", kwArgs.compat == "off")
@@ -656,6 +653,7 @@
 	});
 	
 	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
+	
 	var oldQuery = d.query;
 	d.query = function(/* String|DomNode */query, /* String?|DomNode? */scope){
 		// summary: Overloads the normal dojo.query to include dom-creation 
@@ -676,9 +674,11 @@
 		var c = d.isString(query) && query.charAt(0) == "<";
 		return oldQuery(c ? d.create(query) : query, scope) // dojo.NodeList
 	}
+	
 	//>>excludeEnd("magicQuery");
 	
 	//>>excludeStart("noConflict", kwArgs.conflict == "off");
+	
 	d.conflict = function(){
 		// summary: Creates our global-bling: $
 		//
@@ -697,10 +697,9 @@
 		
 		$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
 		$.fn.ready = d.addOnLoad;
-		// FIXME: d.global[bling] would be cool. d.conflict("pete");
-		//	pete(".hasClass").wrap("span");
 	}
 	if(d.config.conflict){ d.conflict(); }
+	
 	//>>excludeEnd("noConflict");
 
 })(dojo);

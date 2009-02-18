@@ -17,11 +17,11 @@
 			if(callback){
 				dfd.addCallback(this, callback);
 			}
-			return this;
+			return this; // dojo.NodeList
 		},
 		
 		load: function(location, callback){
-			return this.xhr("GET", { 
+			return this.xhr("GET", { // dojo.Defered
 				url: location,
 				handleAs:"query-html", 
 				nodes: this
@@ -29,7 +29,7 @@
 		},
 		
 		post: function(location, callback){
-			return this.xhr("POST", { url:location }, callback);
+			return this.xhr("POST", { url:location }, callback); // dojo.NodeList
 		}
 		
 	});
