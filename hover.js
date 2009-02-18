@@ -13,7 +13,7 @@
 		
 		if(!p){
 			// if we don't have a cache node, make it
-			p = d.byId("imageCache") || d.doc.createElement('div');
+			p = d.byId("imageCache") || d.create('div');
 			// then set it offscreen, in the dom, with an id
 			$(p)
 				.attr("id", "imageCache")
@@ -36,7 +36,7 @@
 	// make the "plugin":
 	d.extend(d.NodeList, {
 		
-		rollOver: function(/* Object? args [reserved, unused] */){
+		rollOver: function(/* Object? */args){
 			// summary: Set up some simple hover behavior for an image
 			//
 			// description: 
@@ -58,10 +58,10 @@
 			//
 			// example:
 			//	With following markup:
-			// | <img src="foo.png" rel="foo_over.png" />
+			// |	<img src="foo.png" rel="foo_over.png" />
 			//
 			//	Specify a query, and call .rollOver()
-			// | dojo.query("img").rollOver();
+			// |	dojo.query("img").rollOver();
 			
 			
 			return this.forEach(function(n){
