@@ -455,7 +455,7 @@
 		append: function(/* String|DomNode */selector, /* Boolean? */clone){
 			// summary: Append some found node to this NodeList.
 			//
-			// descrtiption:
+			// description:
 			//		Append some found node to this NodeList, optionally
 			//		cloning the found node and appending to each of the nodes.
 			//		If not cloning, the found node will be added to the last
