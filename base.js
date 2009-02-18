@@ -208,7 +208,7 @@
 		//
 		// example:
 		//	Just create an anchor:
-		//	| var anchor = dojo.create("a");
+		//	|	var anchor = dojo.create("a");
 		//
 		// example:
 		//  Create an anchor with a title, href and onclick handler:
@@ -249,7 +249,7 @@
 			//		
 			// example:
 			// 	Show all list-items in a list with id="foo" visible:
-			// | dojo.query("#foo li").show();
+			// |	dojo.query("#foo li").show();
 			
 			return this; // dojo.NodeList
 		},
@@ -275,7 +275,7 @@
 			//
 			// example:
 			// 	Hide all list-items in a list with id="foo" visible:
-			// | dojo.query("#foo li").hide();
+			// |	dojo.query("#foo li").hide();
 			
 			return this; // dojo.NodeList
 		},
@@ -310,21 +310,21 @@
 			//	TODO: implement attrs? why?
 			//
 			// example:
-			//	dojo.query("li.tooltip")
-			//		.create("div")
-			//			.appendTo("ul#bar")
-			//			.addClass("tooltip")
-			//		.end()
-			//		.removeClass("tooltip")
-			//		.onclick(function(e){
-			//			// handle click for the node
-			//		})
-			//		.hover(function(e){
-			//			// or just use .toggle(), hmmm.
-			//			var action = e.type == "mouseover" ? "show" : "hide";
-			//			dojo.query("div.tooltip", e.target)[action]();
-			//		})
-			//	;
+			//	|	dojo.query("li.tooltip")
+			//	|		.create("div")
+			//	|			.appendTo("ul#bar")
+			//	|			.addClass("tooltip")
+			//	|		.end()
+			//	|		.removeClass("tooltip")
+			//	|		.onclick(function(e){
+			//	|			// handle click for the node
+			//	|		})
+			//	|		.hover(function(e){
+			//	|			// or just use .toggle(), hmmm.
+			//	|			var action = e.type == "mouseover" ? "show" : "hide";
+			//	|			dojo.query("div.tooltip", e.target)[action]();
+			//	|		})
+			//	|	;
 			return this._stash(this.map(function(){ // dojo.NodeList
 				return d.create(tagName);
 			})); 
