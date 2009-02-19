@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../PeriodicUpdater.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			dojo.addOnLoad(function(){
+				var one = null;
+				doh.register("t", 
+					[
+					
+						function show(t){
+						
+							one = new dojo.PeriodicUpdater({
+								url:"_snippet.html"
+							}, "target");
+							
+						},
+						
+						function stop(t){
+							one.stop();
+						},
+						
+						function preprocess(t){
+							
+							var x = 0;
+							var p = new dojo.PeriodicUpdater({
+								interval:1000,
+								url:"_snippet.html",
+								position:"first",
+								filterData:function(resp){
+									return "<li>#" + (x++) + resp + "</li>"
+								}
+							}, "alist");
+						}
+						
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+
+		<h1>dojo.PeriodicUpdater QuickTest</h1>
+
+		<div id="target"></div>
+		
+		<ul id="alist"></ul>
+		
+	</body>
+</html>
