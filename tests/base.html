@@ -257,6 +257,12 @@
 							
 						},
 						
+						function wq_nullstring(t){
+							var x = dojo.qw("");
+							t.is(0, x.length);
+							t.t(dojo.isArray(x));
+						},
+						
 						// globals are borked after this test:
 						function conflict(t){
 							dojo.conflict();
