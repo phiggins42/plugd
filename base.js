@@ -176,8 +176,26 @@
 		d[(n.style[styleProperty] == hideProperty ? "show" : "hide")](n, speed);
 	}
 	
-	d._createFrom = d._toDom;
+	d.qw = function(/* String? */str){
+		// summary: Convert a string into an array, treating any number of
+		//		spaces as the separator. 
+		//
+		// str: String?
+		//		The string to split. If null, false, or otherwise 
+		//		empty, an empty array is returned.
+		//
+		// example:
+		// |	var ar = dojo.qw("the quick brown fox");
+		// |	console.log(ar[0]); // "the"
+		//
+		// example:
+		//		Multiple Whitespace treated as one:
+		// |	dojo.qw("a  b  c    d").length; // 4
+		//
+		return str ? d.map(str.split(/\ +/), d.trim) : []; // Array
+	}
 	
+	d._createFrom = d._toDom;
 	d.create = function(/* String */nodeType, /* Object? */attrs, refNode, pos){
 		// summary: Creates an element, optionally setting any number
 		//		of attributes. Important to note, there is not cross-browser

@@ -220,6 +220,43 @@
 							t.is(dojo.query(".link").length, 1)
 						},
 						
+						function qw_basic(t){
+							t.is(3, dojo.qw("a b c").length);
+						},
+						
+						function qw_whitespace(t){
+							t.is(4, dojo.qw("a     b      c     d").length);
+						},
+						
+						function qw_mixed(t){
+							t.is(8, dojo.qw("this, is a + fun + test !!!").length);
+						},
+						
+						function wq_single(t){
+							var str = "asinglelinewithnowhitespace";
+							var a = dojo.qw(str);
+							t.is(1, a.length);
+							t.is(str, a[0]);
+						},
+						
+						function qw_null(t){
+							var n = dojo.qw();
+							t.is(0, n.length);
+							t.t(dojo.isArray(n));
+						},
+						
+						function wq_falsly(t){
+							
+							var n = dojo.qw(false);
+							t.is(0, n.length);
+							t.t(dojo.isArray(n));
+							
+							n = dojo.qw(undefined);
+							t.is(0, n.length);
+							t.t(dojo.isArray(n));
+							
+						},
+						
 						// globals are borked after this test:
 						function conflict(t){
 							dojo.conflict();
