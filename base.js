@@ -221,8 +221,8 @@
 		//
 		// example: 
 		//	Same as before, but with valid Dom:
-		// | 	var div = dojo.create("<div class='bar'></div>");
-		// | 	dojo.place(div, dojo.body());
+		//	|	var div = dojo.create("<div class='bar'></div>");
+		//	|	dojo.place(div, dojo.body());
 		//
 		// example:
 		//	Just create an anchor:
@@ -230,12 +230,12 @@
 		//
 		// example:
 		//  Create an anchor with a title, href and onclick handler:
-		// |	var anchor = dojo.create("a",{
-		// |		href:"foo.php", title:"A Link",
-		// |		onclick:function(e){
-		// |			// define click event
-		// |		}
-		// |	});
+		//	|	var anchor = dojo.create("a",{
+		//	|		href:"foo.php", title:"A Link",
+		//	|		onclick:function(e){
+		//	|			// define click event
+		//	|		}
+		//	|	});
 		//
 		var n = nodeType.charAt(0) == "<" ? 
 			d._createFrom(nodeType) : d.doc.createElement(nodeType);
@@ -267,7 +267,7 @@
 			//		
 			// example:
 			// 	Show all list-items in a list with id="foo" visible:
-			// |	dojo.query("#foo li").show();
+			//	|	dojo.query("#foo li").show();
 			
 			return this; // dojo.NodeList
 		},
@@ -292,8 +292,8 @@
 			//		hide() is called after the animation. 
 			//
 			// example:
-			// 	Hide all list-items in a list with id="foo" visible:
-			// |	dojo.query("#foo li").hide();
+			//	Hide all list-items in a list with id="foo" visible:
+			//	|	dojo.query("#foo li").hide();
 			
 			return this; // dojo.NodeList
 		},
@@ -361,7 +361,7 @@
 			//		the same API as `dojo.anim`, assuming this node as the target.
 			//
 			// description:
-			// 		Animate the CSS properties passed on all nodes in this list. 
+			//		Animate the CSS properties passed on all nodes in this list. 
 			//		This is lower-performing than the Animations provided by 
 			//		`dojo.NodeList-fx` as it doesn't do the work of creating a 
 			//		combined animation, but rather simply creates and plays 
@@ -387,7 +387,7 @@
 			//		Time in MS to run the Animation
 			//
 			// easing: Function?
-			// 		The easing function used to modify the Line
+			//		The easing function used to modify the Line
 			//
 			// onEnd: Function?
 			//		A function to call when the animation sequence is complete.
@@ -413,7 +413,6 @@
 			}); 
 		},
 		
-		// i've always liked $(...).wrap()
 		wrap: function(/* String */nodeType, /* newList? */newList){
 			// summary: Wrap a list of nodes in a nodeType, returning this NodeList, or
 			//		a new `dojo.NodeList` of the newly created elements by setting a parameter
@@ -566,8 +565,8 @@
 			//		If omitted, will return an Array of new values,
 			//		or in the case of a single-element list, will
 			//		just return the string value of the node.
-			//
-			//	see: `dojo.attr`
+			//|
+			//		see: `dojo.attr`
 			var v, a = "value";
 			if(value){
 				return this.attr(a, value) // dojo.NodeList
@@ -684,10 +683,10 @@
 		//		A DomNode, String CSS selector, or HTML markup to create
 		//
 		//	scope:
-		//		a node reference to start the query from.
+		//		an optional node reference to start the query from.
 		//
 		//	example:
-		//	| dojo.query("<div class='foo'>bar</div>").removeClass("foo").appendTo("#baz");
+		//	|	dojo.query("<div class='foo'>bar</div>").removeClass("foo").appendTo("#baz");
 		//
 		var c = d.isString(query) && query.charAt(0) == "<";
 		return oldQuery(c ? d.create(query) : query, scope) // dojo.NodeList
@@ -711,10 +710,11 @@
 		//
 		// example:
 		//	Setup conflict automatically on page load:
-		//	| var djConfig = { conflict:true };
+		//	|	var djConfig = { conflict:true };
 		
 		$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
 		$.fn.ready = d.addOnLoad;
+		d.config.conflict = true; // set to true so other things can know we're in conflict mode
 	}
 	if(d.config.conflict){ d.conflict(); }
 	
