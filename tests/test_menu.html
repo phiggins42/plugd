@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	
+	<title>Progressive / Unobtrusive Menu TestPage</title>
+
+	<!-- use to customize feel of menu -->
+	<link rel="stylesheet" href="../resources/menu.css">
+
+	<!-- load Dojo and the menu code: -->
+	<script src="../../dojo/dojo.js"></script>
+	<script src="../menu.js"></script>
+	
+	<script type='text/javascript'>
+		// make a simple click handler:
+		var foobar = function(){
+			console.log('clicked');
+		};
+
+		dojo.addOnLoad(function(){
+			// convert them into menus.
+			dojo.query(".dijitMenuBar").menu();
+		});		
+	</script>
+	
+</head>
+<body class='tundra'>
+	
+	<div style="width:400px;">
+		<h2>A Plain MenuBar</h2>
+		
+		<div class="dijitMenuBar">
+			<ul>
+				<li>
+					<a href="#file" accessKey="f">File</a>
+					<ul>
+						<li><a onclick="foobar()">Save</a></li>
+						<li><a accessKey="a">Save As</a></li>
+						<li><a onclick="foobar()" accessKey="c">Close</a></li>
+					</ul>
+				</li>
+				<li>
+					<a accessKey="e">Edit</a>
+					<ul>
+						<li><a>Save2</a>
+							<ul>
+								<li><a>sub 1</a>
+									<ul>
+										<li><a>sub 1 - subsub 1</a></li>
+										<li><a>sub 1 - subsub 1</a></li>
+										<li><a>sub 1 - subsub 1</a></li>
+									</ul>
+								</li>
+								<li><a>sub 2</a></li>
+							</ul>
+						</li>
+						<li><a>Save As2</a></li>
+						<li><a>Close2</a>
+							<ul>
+								<li><a>sub 1</a>
+									<ul>
+										<li><a>sub 1 - subsub 1</a></li>
+										<li><a>sub 1 - subsub 1</a></li>
+										<li><a>sub 1 - subsub 1</a></li>
+									</ul>
+								</li>
+								<li><a>sub 2</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li><a accessKey="h">Help</a></li>
+			</ul>
+		</div>
+	</div>
+	
+</body>
+</html>

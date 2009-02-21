@@ -8,7 +8,7 @@ dojo.provide("plugd.PeriodicUpdater");
 		//		A Class used to control the periodic updating of some node.
 		//
 		// example:
-		//	|	var it = new dojo.PeriodicUpdated({
+		//	|	var it = new dojo.PeriodicUpdater({
 		//	|		url:"/foo.php"
 		//	|	}, "someNodeId");
 
@@ -37,7 +37,7 @@ dojo.provide("plugd.PeriodicUpdater");
 		//		Time (in ms) to lapse before firing a new request.
 		interval:5000,
 
-		constructor:function(args, node){
+		constructor:function(/* Object */args, /* String|DomNode */node){
 			// mix defaults, start maybe:
 			d.mixin(this, args);
 			this.node = d.byId(node);

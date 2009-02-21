@@ -240,7 +240,7 @@
 		var n = nodeType.charAt(0) == "<" ? 
 			d._createFrom(nodeType) : d.doc.createElement(nodeType);
 		if(attrs){ d.attr(n, attrs); }
-		if(refNode){ d.place(n, refNode, pos); }
+		if(refNode){ place(n, refNode, pos); }
 		return n; // DomNode
 	}
 	
@@ -488,7 +488,7 @@
 			//
 			
 			var refNode = d.query(selector);
-			if(refNode.length >= 0){
+			if(refNode.length){
 				refNode = refNode[0];
 				// FIXME: do we want to optionally return a list of the appended clones?
 				this.forEach(function(n){
@@ -572,7 +572,7 @@
 				return this.attr(a, value) // dojo.NodeList
 			}else{
 				v = this.attr(a);
-				return (v.length == 1) ? v[0] : v; // dojo.NodeList|String
+				return v.length === 1 ? v[0] : v; // dojo.NodeList|String
 			}
 		},
 		
@@ -612,6 +612,7 @@
 			//		The class string to add or remove based on hover state.
 			//	
 			// example:
+			//	Add 
 			//	|	dojo.query("#mylist li").hoverClass("over");
 			//
 			return this.hover(function(e){
@@ -631,14 +632,14 @@
 			//	|			return this._stash(this.filter(function(n,i){ return i % 2 == 0 }));
 			//	|		}
 			//	|	});
-			//  |	// then see how _stash applies a sub-list, to be .end()'ed out of
-			//	|   dojo.query(".foo")
+			//	|	// then see how _stash applies a sub-list, to be .end()'ed out of
+			//	|	dojo.query(".foo")
 			//	|		.odd()
 			//	|			.addClass("stripe")
 			//	|		.end()
 			//	|		// access to the orig .foo list
 			//	|		.removeClass("foo")
-			//  | 
+			//	| 
 			//
 			nl.__last = this;
 			return nl; // dojo.NodeList
@@ -662,7 +663,7 @@
 			//	|			.addClass("onADiv")
 			//	|		.end()
 			//	|		// jump back to the list of anchors
-			//  |		.style(...)
+			//	|		.style(...)
 			//
 			return this.__last || this; // dojo.NodeList
 		}
@@ -705,13 +706,18 @@
 		//		parameter.
 		//
 		// example:
-		//	Setup conflict at any time during the page lifecycle:
+		//	Setup conflict at any time during the page lifecycle (after base.js included):
 		//	|	dojo.confict();
 		//
 		// example:
 		//	Setup conflict automatically on page load:
 		//	|	var djConfig = { conflict:true };
-		
+		//
+		// example:
+		//	Know if confict is enabled (it is either set by djConfig, and dojo is loaded
+		//	or someone has called dojo.conflict())
+		//	|	if(dojo.config.conflict){ /* $ is available */ }
+		//
 		$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
 		$.fn.ready = d.addOnLoad;
 		d.config.conflict = true; // set to true so other things can know we're in conflict mode

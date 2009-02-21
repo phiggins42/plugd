@@ -4,7 +4,7 @@ dojo.require("dijit.dijit");
 	var d = dojo, dij = dijit;
 	
 	d._nop = function(){
-		// summary: A global no-op function to reused in all no-op situations
+		// summary: A global null-op function to reused in all null operations situations requiring a function
 		//
 		// example:
 		// |	my.workAround = dojo.isIE ? function(){ /* janky */ } : dojo._nop;
@@ -12,8 +12,8 @@ dojo.require("dijit.dijit");
 	}
 	
 	d._nopReturn = function(){
-		// summary: A global no-op function, like `dojo.noop`, but for use 
-		//		in `dojo.NodeList` no-op situations where the NodeList needs
+		// summary: A global no-op function, like `dojo._nop`, but for use 
+		//		in `dojo.NodeList` no-op situations where the context needs
 		//		to be returned for forther chaining.
 		//
 		// example:

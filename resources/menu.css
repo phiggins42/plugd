@@ -1,0 +1,58 @@
+	@import "dojo/resources/dojo.css";
+
+	.dijitMenuBar {
+		background-color:#eee;
+		margin:1px 0 0;
+		cursor:pointer;
+		height:1.9em;
+	}
+
+	.dijitMenuBar ul {
+		list-style-image:none;
+		list-style-type:none;
+		list-style-position:outside;
+		margin:0; padding:0;
+	}
+
+	.dijitMenuBar ul li a {
+		color:#333;
+		padding:2px 11px 2px 9px;
+		z-index:48;
+	}
+	.dijitMenuBar ul li a:hover {
+		background-color:#dedede;
+		z-index:48;
+	}
+
+	.dijitMenuBar li {
+		float:left;
+	}
+
+	.dijitMenuBar li ul {
+		border:1px solid #dedede;
+		background-color:#eee;
+		padding:2px;
+		position:absolute;
+		width:158px;
+	}
+
+	.dijitMenuBar a { display:block; }
+	.dijitMenuBar li ul li a {
+		position:relative;
+		padding:1px 9px 1px 19px;
+		width:130px;
+	}
+
+	.dijitMenuBar li ul ul {
+		margin: -1.9em 0 0 158px;
+	}
+
+	.dijitMenuBar .dijitHotKey {
+		text-decoration:underline;
+	}
+
+	.tundra .dijitMenuBar .dijitMenuHasChildren {
+		background-image:url('../../dijit/themes/tundra/images/treeExpand_plus.gif');
+		background-repeat:no-repeat;
+		background-position: right center;
+	}
