@@ -2,8 +2,13 @@
 ;(function(d){
 
 	// one-time lookups / vars:
+
 	var h = dojo.doc.getElementsByTagName("head")[0], 
-		ev = d.isIE ? "onreadystatechange" : "onload"
+		// readystate notes:
+		// loaded is the non-cached version, complete indicates cached. readystate fires for both. 
+		// sane folks are just 'load'. go figure. 
+		ev = d.isIE ? "onreadystatechange" : "onload",
+		re = /complete|loaded/
 	;
 		
 	d.addScript = function(src, callback){
@@ -33,9 +38,7 @@
 		var s = d.create("script", { src: src }, h);
 		if(callback){
 			var c = d.connect(s, ev, function(e){
-				// loaded is the non-cached version, complete indicates cached. readystate fires for both. 
-				// sane folks are just 'load'. go figure. 
-				if( e.type == "load" || (d.isIE && s.readyState == "complete" || s.readyState == "loaded") ){
+				if( e.type == "load" || re.test(s.readyState) ){
 					d.disconnect(c);
 					callback.call(e);
 				}
