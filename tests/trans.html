@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../base.js"></script>
+		<script type="text/javascript" src="../trans.js"></script>
+		
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+					
+						function prepend(t){
+							
+							dojo.query("#pa").prepend("<span>before:</span>");
+							var s = dojo.query("#pa span");
+
+							t.is(1, s.length);
+							t.is("before:", s[0].innerHTML);
+							
+						},
+						
+						function prepend_td(t){
+							var tds = dojo.query("td"); 
+							var x = tds.prepend("<p>touched:</p>");
+							
+							t.is(tds.length, x.length);
+							
+							t.is(tds.length, dojo.query("td p").length)
+						},
+						
+						function content(t){
+							
+							var h = dojo.query(".first").content();
+							t.is(1, h.length);
+							t.is("first", h[0]);
+							
+						},
+						
+						function content_set(t){
+							var h = dojo.query(".first").content("reset");
+							
+							t.is(1, h.length);
+							t.is("reset", h[0].innerHTML);
+						},
+						
+						function before(t){
+							
+							
+						},
+						
+						function after(t){
+							
+						},
+						
+						function replace(t){
+							
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+		
+		<ul id="first">
+			<li class="first">first</li>
+		</ul>
+		
+		<table>
+			<tbody>
+				<tr>
+					<td>one</td><td>two></td><td class="last">last</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div id="around">
+			<p id="pa">lorem</p>
+		</div>
+		
+	</body>
+</html>

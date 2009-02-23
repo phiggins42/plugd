@@ -1,0 +1,41 @@
+<html>
+<head>
+
+	<!-- required CSS -->
+	<style type='text/css'>
+		body, html { padding:1em; }
+	</style>
+
+	<!-- required JS -->
+	<script djConfig="isDebug:true"  src="../../dojo/dojo.js"></script>
+	<script src="../script.js"></script>
+	
+	<script type="text/javascript">
+		dojo.addOnLoad(function(){
+			
+			// simple test of remote executed Dojo code
+			dojo.addScript("http://dante.dojotoolkit.org/static/api.js", function(e){
+				console.log("sample loaded, started");
+			});
+			
+			// add some corny to this page
+			dojo.addScript("http://www.cornify.com/js/cornify.js", function(e){
+				cornify_add(); cornify_add(); cornify_add();
+			});
+			
+			// inject jQuery into this page:
+			dojo.addScript("http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js", function(e){
+				$("<ul id='bar'></ul>").appendTo("body").append("<li>woot</li>");
+			});
+						
+		});
+	</script>
+	
+</head>
+<body>
+	
+	<h1>getScript test</h1>
+	
+	
+</body>
+</html>
