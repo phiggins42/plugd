@@ -11,7 +11,7 @@
 		re = /complete|loaded/
 	;
 		
-	d.addScript = function(src, callback){
+	d.addScript = function(src, callback, preserve){
 		// summary: A simplified version of `dojo.io.script.get`. Handle's cross-domain loading of
 		//		resources that may not otherwise be provided as JSONP and meant entirely to be 
 		//		consumed upon loading.
@@ -24,6 +24,10 @@
 		//		can be trapped. A timeout could easily be incorporated. The event which triggered
 		//		the success is passed to the callback. 
 		//
+		// preserve: Boolean?
+		//		If true, the newly created script tag will be left in the DOM after having completed.
+		//		If false (default) the script will be removed from the DOM.
+		//
 		// example:
 		//	|		dojo.addScript("http://example.com/js.js", function(e){ /* js.js is ready */ });
 		//
@@ -35,15 +39,15 @@
 		//	|			// only Dialog.js onload, not it's require() calls. use `dojo.require` + `dojo.addOnLoad`
 		//	|		});
 		//
-		var s = d.create("script", { src: src }, h);
-		if(callback){
-			var c = d.connect(s, ev, function(e){
+		var s = d.create("script", { src: src }, h).
+			c = d.connect(s, ev, function(e){
 				if( e.type == "load" || re.test(s.readyState) ){
 					d.disconnect(c);
-					callback.call(e);
+					callback && callback.call(e);
+					if(!preserve){ h.removeChild(s); }
 				}
-			});
-		}
+			})
+		;
 	}
 	
 })(dojo);
