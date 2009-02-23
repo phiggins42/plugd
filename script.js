@@ -25,14 +25,16 @@
 			src: src, type: "text/javascript"
 		}, h);
 		
-		var c = d.connect(s, ev, function(e){
-			// loaded is the non-cached version, complete indicates cached. readystate fires for both. 
-			// sane folks are just 'load'. go figure. 
-			if( e.type == "load" || (d.isIE && s.readyState == "complete" || s.readyState == "loaded") ){
-				d.disconnect(c);
-				callback && callback.call(e);
-			}
-		});
+		if(callback){
+			var c = d.connect(s, ev, function(e){
+				// loaded is the non-cached version, complete indicates cached. readystate fires for both. 
+				// sane folks are just 'load'. go figure. 
+				if( e.type == "load" || (d.isIE && s.readyState == "complete" || s.readyState == "loaded") ){
+					d.disconnect(c);
+					callback.call(e);
+				}
+			});
+		}
 	}
 	
 })(dojo);
