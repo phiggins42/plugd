@@ -30,7 +30,7 @@
 		//	|			// only Dialog.js onload, not it's require() calls. use `dojo.require` + `dojo.addOnLoad`
 		//	|		});
 		//
-		var s = d.create("script", { src: src, type: "text/javascript" }, h);
+		var s = d.create("script", { src: src }, h);
 		if(callback){
 			var c = d.connect(s, ev, function(e){
 				// loaded is the non-cached version, complete indicates cached. readystate fires for both. 
