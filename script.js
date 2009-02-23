@@ -39,7 +39,7 @@
 		//	|			// only Dialog.js onload, not it's require() calls. use `dojo.require` + `dojo.addOnLoad`
 		//	|		});
 		//
-		var s = d.create("script", { src: src }, h).
+		var s = d.create("script", { src: src }, h),
 			c = d.connect(s, ev, function(e){
 				if( e.type == "load" || re.test(s.readyState) ){
 					d.disconnect(c);
