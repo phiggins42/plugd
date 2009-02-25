@@ -244,6 +244,13 @@
 		return n; // DomNode
 	}
 	
+	// Legacy support for NodeList prior to Dojo revision 16796.
+	if(!NodeList._mapIn){
+		NodeList._mapIn = function(func, alwaysThis, s) {
+			return NodeList._adaptAsForEach(func, s||d);
+		};
+	}
+	
 	// wrap them into dojo.NodeList
 	d.extend(NodeList, {
 
