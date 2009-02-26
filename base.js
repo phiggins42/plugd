@@ -46,7 +46,7 @@
 		// these too are for ShrinkSafe's benefit. 
 		NodeList = d.NodeList,
 		mirror = NodeList.prototype,
-		_fit = NodeList._adaptAsForEach,
+		_each = NodeList._adaptAsForEach,
 		
 		// for dojo.generateId
 		globalId, id_count = 0, base = "djid_",
@@ -279,8 +279,8 @@
 	// Legacy support for NodeList prior to Dojo revision [16796]. FIXME: can we remove this when 1.3 is
 	// cut? or was this just a quick fix for [16796]? Have fixed internal references to _mapIn
 	if(!NodeList._mapIn){
-		NodeList._mapIn = function(func, alwaysThis, s) {
-			return _fit(func, s||d);
+		NodeList._mapIn = function(func, nyet, s) {
+			return _each(func, s||d);
 		};
 	}
 	
@@ -351,10 +351,10 @@
 
 =====*/
 
-		show: _fit(d.show),
-		hide: _fit(d.hide),
-		toggle: _fit(d.toggle),
-		destroy: _fit(d.destroy), 
+		show: _each(d.show),
+		hide: _each(d.hide),
+		toggle: _each(d.toggle),
+		destroy: _each(d.destroy), 
 		
 		create: function(/* String */tagName){
 			// summary: Create a new element for each of the nodes in this list
