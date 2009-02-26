@@ -263,6 +263,15 @@
 							t.t(dojo.isArray(x));
 						},
 						
+						function pubsub(t){
+							// test enhanced dojo.pub function
+							dojo.subscribe("foo", function(){
+								t.is(1, arguments.length);
+								t.is(1, arguments[0]);
+							});
+							dojo.pub("foo", 1);
+						},
+						
 						// globals are borked after this test:
 						function conflict(t){
 							dojo.conflict();

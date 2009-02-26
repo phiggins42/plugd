@@ -97,7 +97,8 @@
 		
 	});
 
-	// Generates a unique id for a node
+	// Generates a unique id for a node 
+	// FIXME: plugd base has dojo.generateId, but block has no other base deps than this:
 	var id_count = 0,
 		_uniqueId = function(){
 			var id_base = "dojo_blocked", id;
@@ -145,24 +146,11 @@
 		}
 		
 	});
-	
+
+	var _each = d.NodeList._adaptAsForEach;
 	d.extend(d.NodeList, {	
-		block: // d.NodeList._mapIn("block", true), // refs #7295
-			function(args){
-				// summary: Wraps dojo.block, calling it for each node in this NodeList
-				// 		See dojo._Blocker and dojo.block for full list of passable parameters.
-				return this.forEach(function(n){
-					d.block(n, args);
-				});
-			},
-		
-		unblock: // d.NodeList._mapIn("unblock", true) // refs #7295
-			function(args){
-				// summary: Wraps dojo.unblock, calling it for each node in this NodeList
-				return this.forEach(function(n){
-					d.unblock(n, args);
-				});
-			}
+		block: _each(d.block, true)
+		unblock: _each(d.unblock, true)
 	});
 	
 })(dojo);

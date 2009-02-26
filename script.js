@@ -41,7 +41,7 @@
 		//
 		var s = d.create("script", { src: src }, h),
 			c = d.connect(s, ev, function(e){
-				if( e.type == "load" || re.test(s.readyState) ){
+				if(e.type == "load" || re.test(s.readyState)){
 					d.disconnect(c);
 					callback && callback.call(e);
 					if(!preserve){ h.removeChild(s); }

@@ -46,6 +46,7 @@
 		// these too are for ShrinkSafe's benefit. 
 		NodeList = d.NodeList,
 		mirror = NodeList.prototype,
+		_fit = NodeList._adaptAsForEach,
 		
 		// for dojo.generateId
 		globalId, id_count = 0, base = "djid_",
@@ -244,10 +245,42 @@
 		return n; // DomNode
 	}
 	
-	// Legacy support for NodeList prior to Dojo revision 16796.
+	/*======
+		dojo.pub = function(topic){
+			// summary: Alias for `dojo.publish`, though instead of passing an array as
+			//		the second argument, all arguments following the [mandatory] topic
+			//		argument are passed to the subscribed function.
+			//
+			// topic: String
+			//		The channel to publish on. All following args are passed to subscribed functions
+			//		in order.
+			//
+			// example:
+			//	|	dojo.publish("foo", "bar!");
+			//
+			// example:
+			//	|	dojo.publish("foo", ["bar"]) 
+			//
+			// example: 
+			//	|	dojo.publish("foo", { bar:"bar" }, "baz", "bam");
+		}
+		dojo.sub = function(){
+			// summary: Convenience alias to `dojo.subscribe`, pairing with `dojo.pub`
+			//		(though `dojo.pub` is an enhanced alias providing additional functionality)
+		}
+	======*/
+	
+	d.sub = d.subscribe;
+	d.pub = function(){
+		var a = d._toArray(arguments);
+		d.publish(a.shift(), a);
+	}
+	
+	// Legacy support for NodeList prior to Dojo revision [16796]. FIXME: can we remove this when 1.3 is
+	// cut? or was this just a quick fix for [16796]? Have fixed internal references to _mapIn
 	if(!NodeList._mapIn){
 		NodeList._mapIn = function(func, alwaysThis, s) {
-			return NodeList._adaptAsForEach(func, s||d);
+			return _fit(func, s||d);
 		};
 	}
 	
@@ -318,10 +351,10 @@
 
 =====*/
 
-		show: NodeList._mapIn("show", true),
-		hide: NodeList._mapIn("hide", true),
-		toggle: NodeList._mapIn("toggle", true),
-		destroy: NodeList._mapIn("destroy", true),
+		show: _fit(d.show, true),
+		hide: _fit(d.hide, true),
+		toggle: _fit(d.toggle, true),
+		destroy: _fit(d.destroy), 
 		
 		create: function(/* String */tagName){
 			// summary: Create a new element for each of the nodes in this list
