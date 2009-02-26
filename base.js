@@ -351,9 +351,9 @@
 
 =====*/
 
-		show: _fit(d.show, true),
-		hide: _fit(d.hide, true),
-		toggle: _fit(d.toggle, true),
+		show: _fit(d.show),
+		hide: _fit(d.hide),
+		toggle: _fit(d.toggle),
 		destroy: _fit(d.destroy), 
 		
 		create: function(/* String */tagName){
