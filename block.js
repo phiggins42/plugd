@@ -149,7 +149,7 @@
 
 	var _each = d.NodeList._adaptAsForEach;
 	d.extend(d.NodeList, {	
-		block: _each(d.block)
+		block: _each(d.block),
 		unblock: _each(d.unblock)
 	});
 	
