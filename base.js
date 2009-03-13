@@ -51,13 +51,47 @@ dojo.provide("plugd.base");
 		// for dojo.generateId
 		globalId, 
 		id_count = 0, 
-		base = "djid_",
 		
 		// because IE is insane:
 		_jankyEvent = "mouse" + (d.isIE ? "enter" : "over")
 	;
-	
+
 	// namespace-polluting functions:
+	d.unique = function(/* Function */testFn, /* String? */b){
+		// summary: Return a unique string ID for something, based on a passed uniqueness test
+		//		function. Anything that returns a truthy value will suffice. 
+		//	
+		// testFn: Function
+		// 		A function which _must_ return a truthy value indicating the uniqueness
+		//		of some item. The intended string id is passed to this function continually
+		//		until a falsy value is returned. The first failed string is returned to the
+		//		original caller, and is unique to whichever scope the caller intended.
+		//
+		// b: String?
+		//		An optional base to use as the prefix of the ID. defaults to "djid_"
+		//
+		// example:
+		//	Find the next availble DOM id:
+		//	| var someId = dojo.unique(dojo.byId);
+		//
+		// example:
+		//	Find the next available DOM id, prefixed with "customID":
+		//	| var myId = dojo.unique(dojo.byId, "customID");
+		//
+		// example:
+		//	Find the next available unique member in the `my` namespace prefixed with __priv:
+		//	|	var key = d.unique(function(t){ return my[t] }, "__priv");
+		//
+		// example:
+		//	Ensure some Dijit's ID does not exist:
+		//	|	var newDijitId = d.unique(dijit.byId, "dijit_auto");
+		//	|	new dijit.Dialog({ id: newDijitId, title:"Random" });
+		//
+		do{ globalId = (b || "djid_") + (++id_count); }
+		while(testFn(globalId))
+		return globalId; // String
+	}
+
 	d.generateId = function(/* String? */b){
 		// summary: Generate an ID for a domNode, ensuring the id does not
 		//		exist previously in the DOM.
@@ -80,9 +114,7 @@ dojo.provide("plugd.base");
 		// example:
 		//	| dojo.create("div", { id: dojo.generateId() })
 		//
-		do{ globalId = (b || base) + (++id_count) }
-		while(d.byId(globalId))
-		return globalId; // String
+		return d.unique(d.byId, b); // String
 	}
 	
 	d.show = function(/* String|DomNode */n, /* String? */arg){

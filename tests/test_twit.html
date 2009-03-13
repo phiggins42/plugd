@@ -1,31 +1,52 @@
 <html>
 <head>
 
-	<!-- required CSS -->
-	<style type='text/css'>
-		.dojoFixed {
-			position:fixed;
-			#position:absolute;
-		}
-	</style>
-
 	<!-- required JS -->
 	<script src="../../dojo/dojo.js"></script>
-	<script src="../script.js"></script>
-	<script src="../twit.js"></script>
 	
 	<script type="text/javascript">
+		dojo.require("plugd.twit");
+
+		// only for the one dojoType test:
+		dojo.require("dojo.parser");
+		
 		dojo.addOnLoad(function(){
+			// defaults:
 			dojo.query("#tweet").twit();
 
+			// basic template, using ul as container:
 			dojo.query("ul.tweet").twit({
 				template:"<li>${text}</li>",
 				position:"first",
 				user:"dojotoolkit"
 			});
 			
+			// test replaceLinks:false
 			dojo.twit("bar", { user:"sitepen", replaceLinks:false });
 			
+			// single item test
+			dojo.twit("degrade", { 
+				user:"uxebu", 
+				
+				// only use "replace" with count:1, the node is replaced
+				// and doing it more than once is redundant.
+				count:1, position:"replace",
+				
+				template:"<p>Replaced with: ${text}</p>"
+			});
+			
+			// test converting the UL example into a roller
+			dojo.connect(dojo.byId("roller"), "onclick", function(e){
+				e.preventDefault();
+				// lazy load these resources
+				dojo.require("dojox.widget.Roller");
+				dojo.addOnLoad(function(){
+					// and create the roller
+					dojo.query(".tweet").instantiate(dojox.widget.Roller);
+				});
+			});
+			
+			dojo.parser.parse(); // one dojoType test
 		});
 	</script>
 	
@@ -34,10 +55,20 @@
 	
 	<h1>Twitter feeds:</h1>
 	
+	<h3>Example 'phiggins'</h3>
 	<div id="tweet"></div>
 
+	<h3>Example 'dojotoolkit'</h3>
 	<ul class="tweet"></ul>
-	
-	<div id="bar"></div>
+	<a href="#" id="roller">try roller</a>
 
+	<h3>Example 'sitepen'</h3>
+	<div id="bar"></div>
+	
+	<h3>Example 'uxebu'</h3>
+	<p id="degrade">Without JavaScript, I am plain p element</p>
+	
+	<h3>Example 'BryanForbes'</h3>
+	<div dojoType="dojo.Twitter" user="BryanForbes" count="2" replaceLinks="false"><p>${user.name} said "${text}"</p></div>
+	
 </body>
