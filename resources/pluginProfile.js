@@ -39,6 +39,13 @@ dependencies = {
 			dependencies:[
 				"plugd.base"
 			]
+		},
+		{
+			// make the twit plugin standalone (requires plugd.script)
+			name:"../plugd/twit.js",
+			dependencies:[
+				"plugd.twit"
+			]
 		}
 	],
 	
