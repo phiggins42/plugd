@@ -85,7 +85,7 @@ dojo.require("plugd.script");
 	d.NodeList.prototype.twit = d.NodeList._adaptAsForEach(d.twit);
 
 	// make dojo.parser recognize dojoType="dojo.Twitter" as a synonym for dojo.twit(node, { args })
-	d.Twitter = function(args,n){ 
+	d.Twitter = function(args, n){ 
 		// summary: A Class which allows a node to have a dojoType and custom attributes.
 		//		Works identically to dojo.twit(node, args), though the `template` member is
 		//		ignored. In the case of declaritive use, the innerHTML of the sourceNodeRef

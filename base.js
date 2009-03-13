@@ -88,7 +88,7 @@ dojo.provide("plugd.base");
 		//	|	new dijit.Dialog({ id: newDijitId, title:"Random" });
 		//
 		do{ globalId = (b || "djid_") + (++id_count); }
-		while(testFn(globalId))
+		while(testFn(globalId));
 		return globalId; // String
 	}
 
