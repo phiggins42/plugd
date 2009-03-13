@@ -1,13 +1,13 @@
-// dojo.provide("plugd.script");
+dojo.provide("plugd.script");
 ;(function(d){
 
 	// one-time lookups / vars:
 
-	var h = dojo.doc.getElementsByTagName("head")[0], 
+	var h = d.doc.getElementsByTagName("head")[0], 
 		// readystate notes:
 		// loaded is the non-cached version, complete indicates cached. readystate fires for both. 
 		// sane folks are just 'load'. go figure. 
-		ev = d.isIE ? "onreadystatechange" : "onload",
+		ev = d.isIE ? "onreadystatechange" : "load",
 		re = /complete|loaded/
 	;
 		
@@ -43,7 +43,7 @@
 			c = d.connect(s, ev, function(e){
 				if(e.type == "load" || re.test(s.readyState)){
 					d.disconnect(c);
-					callback && callback.call(e);
+					callback && callback.call(s, e);
 					if(!preserve){ h.removeChild(s); }
 				}
 			})

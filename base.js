@@ -1,4 +1,4 @@
-// dojo.provide("plugd.base");
+dojo.provide("plugd.base");
 ;(function(d){
 		
 	// first, some simple aliases
@@ -49,7 +49,9 @@
 		_each = NodeList._adaptAsForEach,
 		
 		// for dojo.generateId
-		globalId, id_count = 0, base = "djid_",
+		globalId, 
+		id_count = 0, 
+		base = "djid_",
 		
 		// because IE is insane:
 		_jankyEvent = "mouse" + (d.isIE ? "enter" : "over")

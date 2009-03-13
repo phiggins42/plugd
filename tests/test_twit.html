@@ -1,0 +1,43 @@
+<html>
+<head>
+
+	<!-- required CSS -->
+	<style type='text/css'>
+		.dojoFixed {
+			position:fixed;
+			#position:absolute;
+		}
+	</style>
+
+	<!-- required JS -->
+	<script src="../../dojo/dojo.js"></script>
+	<script src="../script.js"></script>
+	<script src="../twit.js"></script>
+	
+	<script type="text/javascript">
+		dojo.addOnLoad(function(){
+			dojo.query("#tweet").twit();
+
+			dojo.query("ul.tweet").twit({
+				template:"<li>${text}</li>",
+				position:"first",
+				user:"dojotoolkit"
+			});
+			
+			dojo.twit("bar", { user:"sitepen", replaceLinks:false });
+			
+		});
+	</script>
+	
+</head>
+<body>
+	
+	<h1>Twitter feeds:</h1>
+	
+	<div id="tweet"></div>
+
+	<ul class="tweet"></ul>
+	
+	<div id="bar"></div>
+
+</body>

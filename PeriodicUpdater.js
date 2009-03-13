@@ -12,6 +12,10 @@ dojo.provide("plugd.PeriodicUpdater");
 		//	|		url:"/foo.php"
 		//	|	}, "someNodeId");
 
+		// url: String
+		//		The url to fetch
+		url:"",
+
 		// method: String
 		//		A HTTP verb to use for this transfer. One of "get", "post", etc. see: `dojo.xhr`
 		method:"get",
@@ -22,6 +26,7 @@ dojo.provide("plugd.PeriodicUpdater");
 		//		capable of being overridden, but any other standard `dojo.xhr` argument is.
 		xhrArgs:null,
 =====*/
+
 		// autoStart: Boolean
 		//		Does this updater start upon instantiation? True/False
 		autoStart:true,
@@ -52,7 +57,7 @@ dojo.provide("plugd.PeriodicUpdater");
 			//	|	var p = new dojo.PeriodicUpdater({ autoStart:false }).start();
 
 			if(this.timer){ return; }
-			this.timer = setInterval(d.hitch(this, "_sendxhr"), this.interval);
+			this.timer = setTimeout(d.hitch(this, "_sendxhr"), this.interval);
 		},
 
 		stop: function(){
@@ -62,8 +67,9 @@ dojo.provide("plugd.PeriodicUpdater");
 			//	Stop updates after 400 seconds
 			// 	| 	var p = new dojo.PeriodicUpdater({...});
 			//	|	setTimeout(dojo.hitch(p, "stop"), 400 * 1000);
-			clearInterval(this.timer);
+			clearTimeout(this.timer);
 			delete this.timer;
+			return this;
 		},
 
 		_sendxhr: function(){
@@ -83,6 +89,8 @@ dojo.provide("plugd.PeriodicUpdater");
 				nd = d.place(fd, this.node, this.position);
 				
 			this.processNode(nd);
+			this.stop().start();
+			
 		},
 		
 		processNode: function(/* DomNode */node){
