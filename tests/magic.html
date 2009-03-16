@@ -41,15 +41,8 @@
 							dojo.load("dojo.behavior", function(){
 								t.t(dojo.isFunction(dojo.behavior.add));
 							});
-						},
-						
-						function dfdBasic(t){
-							var d = dojo.dfdImport("dojox.fx");
-							d.addCallback(function(){
-								t.t(dojo.isFunction(dojox.fx.slideBy));
-							});
 						}
-
+						
 					]
 				);
 				doh.run();

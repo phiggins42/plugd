@@ -27,24 +27,6 @@ dojo.require("plugd.base");
 		f && d.addOnLoad(f);
 	}
 
-	d.dfdLoad = function(/* String|Array */modules){
-		// summary: An enhanced verison of `dojo.import`
-		//		which returns and `dojo.Deferred` (for those familar with it).
-		//
-		// tags: IO Packages
-		//
-		// modules: String|Array
-		//		A module or list of modules to load, just as `dojo.import` would expect.
-		//
-		// example:
-		//	|	dojo.dfdImport("dojo.behavior").addCallback(function(){
-		//	|		dojo.behavior.add({ /* stuff */ })
-		//	|	});
-		var dfd = new d.Deferred();
-		d.load(modules, d.hitch(dfd, "callback"));
-		return dfd; // dojo.Deferred
-	}
-
 	//>>excludeStart("superMagic", kwArgs.superMagic == "on")
 	d._addMagic = function(){ return;
 		// summary: Mix every public function in the `dojo` namespace into the
