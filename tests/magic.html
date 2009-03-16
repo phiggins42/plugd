@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing plugd.magic</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>
+
+		<script type="text/javascript" src="../base.js"></script>
+		<script src="../magic.js"></script>
+		
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+					
+						function basic(t){
+							dojo.import("dojo.NodeList-fx");
+						},
+						
+						function basicMultiple(t){
+							dojo.import(["dojo.dnd.Mover", "dojo.data.ItemFileReadStore"]);
+						},
+						
+						function basicConflict(t){
+							dojo._addMagic();
+							if(dojo.config.conflict){
+								$.import("dojo.NodeList-fx");
+							}
+						},
+						
+						function bacicOnLoad(t){
+							dojo.import("dojo.behavior", function(){
+								t.is(dojo.isFunction(dojo.behavior.add), true);
+							});
+						},
+						
+						function dfdBasic(t){
+							var d = dojo.dfdImport("dojox.fx");
+							d.addCallback(function(){
+								console.warn('I ran');
+								t.t(dojo.isFunction(dojox.fx.slideBy));
+							});
+						}
+
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+		
+	</body>
+</html>
