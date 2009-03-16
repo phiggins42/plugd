@@ -5,7 +5,7 @@ try{
 	dojo.require("plugd.tests.trans");
 	dojo.require("plugd.tests.block");
 	dojo.require("plugd.tests.escape");
-		dojo.require("plugd.tests.magic");
+	dojo.require("plugd.tests.magic");
 }catch(e){
 	doh.debug(e);
 }

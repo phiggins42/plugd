@@ -3,43 +3,49 @@
 <html>
 	<head>
 		<title>Testing plugd.magic</title>
-		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
 
 		<script type="text/javascript" src="../base.js"></script>
-		<script src="../magic.js"></script>
+		<script type="text/javascript" src="../magic.js"></script>
 		
 		<script type="text/javascript">
+			
 			dojo.require("doh.runner");
 			
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
 					
-						function basic(t){
-							dojo.import("dojo.NodeList-fx");
+						function abasic(t){
+							dojo.load("dojo.NodeList-fx");
 						},
 						
 						function basicMultiple(t){
-							dojo.import(["dojo.dnd.Mover", "dojo.data.ItemFileReadStore"]);
+							dojo.load("dojo.dnd.Source", "dojo.data.ItemFileReadStore");
+						},
+						
+						function multipleOnLoad(t){
+							dojo.load("dojo.string", "dojo.date", function(){
+								t.t(dojo.isFunction(dojo.string.substitute));
+							});
 						},
 						
 						function basicConflict(t){
 							dojo._addMagic();
 							if(dojo.config.conflict){
-								$.import("dojo.NodeList-fx");
+								$.load("dojo.NodeList-fx");
 							}
 						},
 						
 						function bacicOnLoad(t){
-							dojo.import("dojo.behavior", function(){
-								t.is(dojo.isFunction(dojo.behavior.add), true);
+							dojo.load("dojo.behavior", function(){
+								t.t(dojo.isFunction(dojo.behavior.add));
 							});
 						},
 						
 						function dfdBasic(t){
 							var d = dojo.dfdImport("dojox.fx");
 							d.addCallback(function(){
-								console.warn('I ran');
 								t.t(dojo.isFunction(dojox.fx.slideBy));
 							});
 						}
