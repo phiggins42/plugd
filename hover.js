@@ -64,7 +64,7 @@
 			// |	dojo.query("img").rollOver();
 			
 			
-			return this.forEach(function(n){
+			return this.forEach(function(n){ // dojo.NodeList
 				
 					// grab the new url via the rel="" attribute
 				var hoverImg = d.attr(n, "rel"),
@@ -100,7 +100,7 @@
 //					attr(oldImg)
 //				});	
 				
-			}); // dojo.NodeList
+			}); 
 		}
 		
 	});

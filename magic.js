@@ -26,8 +26,31 @@ dojo.require("plugd.base");
 		d.forEach(a, d.require, d);
 		f && d.addOnLoad(f);
 	}
+	
+	d.dfdLoad = function(){
+		// summary: A version of `dojo.load` that returns a `dojo.Deferred` for those familar
+		// 		with that syntax. It is important to OMIT the callback function in the parameters
+		//
+		//	example:
+		//	|	var req = dojo.dfdLoad("dijit.Dialog", "dijit.form.Button");
+		//	|	req.addCallback(function(){ ... })
+		//
+		//	example:
+		//	Allows .addErrBack() too
+		//	|	dojo.dfdLoad("dijit.NotThere").addErrBack(function(){ ... })
+		//
 
-	//>>excludeStart("superMagic", kwArgs.superMagic == "on")
+		var dfd = new d.Deferred(), a = d._toArray(arguments);
+		a.push(dfd.callback);
+		try{
+			d.load.apply(d, a);
+		}catch(e){
+			dfd.errback(e);
+		}
+		return dfd;
+	}
+
+	//>>excludeStart("superMagic", kwArgs.superMagic == "off")
 	d._addMagic = function(){ return;
 		// summary: Mix every public function in the `dojo` namespace into the
 		//		global $ variable either a) when djConfig.conflict is true or

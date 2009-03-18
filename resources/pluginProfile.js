@@ -16,6 +16,11 @@ dependencies = {
 	// (slight performance hit for having it "on")
 	magicQuery: "on",
 	
+	// set to "off" to disable populating the $ with every public dojo function.
+	// if "on", and the magic.js module is included, functions like $.xhr(), $.byId(),
+	// $.hitch() and all other base Dojo API's are available. (requires conflict:true)
+	superMagic: "on",
+	
 	// standard build options:
 	version:"1.3.0-p",
 	layerOptimize:"shrinksafe.keepLines",
@@ -41,7 +46,7 @@ dependencies = {
 			]
 		},
 		{
-			// make the twit plugin standalone (requires plugd.script)
+			// make the twit plugin standalone (requires plugd.script and dojo.string)
 			name:"../plugd/twit.js",
 			dependencies:[
 				"plugd.twit"

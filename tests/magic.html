@@ -41,6 +41,26 @@
 							dojo.load("dojo.behavior", function(){
 								t.t(dojo.isFunction(dojo.behavior.add));
 							});
+						},
+						
+						function dfdLoad(t){
+							dojo.dfdLoad("dojo.fx").addCallback(function(){
+								t.t(dojo.isFunction(dojo.fx.chain));
+							});
+						},
+						
+						function dfdLoadMultiple(t){
+							dojo.dfdLoad("dojo.fx.easing", "dijit.Dialog").addCallback(function(){
+								t.t(dojo.isFunction(dijit.Dialog));
+							});
+						},
+						
+						function dfdError(t){
+							dojo.dfdLoad("something.broken").addErrback(function(){
+								t.t(true);
+							}).addCallback(function(){
+								t.t(false);
+							});
 						}
 						
 					]
