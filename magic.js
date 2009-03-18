@@ -45,6 +45,6 @@ dojo.require("plugd.base");
 		}
 	}
 	d.config.conflict && d._addMagic(); 
-	//>>excludeStop("superMagic");
+	//>>excludeEnd("superMagic");
 	
 })(dojo);
