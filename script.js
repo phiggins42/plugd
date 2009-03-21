@@ -49,5 +49,5 @@ dojo.provide("plugd.script");
 			})
 		;
 	}
-	
+		
 })(dojo);

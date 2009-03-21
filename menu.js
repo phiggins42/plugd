@@ -1,3 +1,4 @@
+// experimental, not for real use yet.
 (function(d){
 	
 	d.extend(d.NodeList, {

@@ -139,8 +139,8 @@ dojo.provide("plugd.base");
 		//	|		dojo.query(".hidden").fadeIn().play();
 		//	|	});
 
-		var a = d._toArray(arguments), 
-			f = a.length && !d.isString(a[a.length-1]) ? a.pop() : null;
+		var a = d._toArray(arguments), l = a.length,
+			f = l && !d.isString(a[l - 1]) ? a.pop() : null;
 
 		d.forEach(a, d.require, d);
 		f && d.addOnLoad(f);
