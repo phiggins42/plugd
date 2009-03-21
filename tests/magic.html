@@ -15,32 +15,12 @@
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
-					
-						function abasic(t){
-							dojo.load("dojo.NodeList-fx");
-						},
-						
-						function basicMultiple(t){
-							dojo.load("dojo.dnd.Source", "dojo.data.ItemFileReadStore");
-						},
-						
-						function multipleOnLoad(t){
-							dojo.load("dojo.string", "dojo.date", function(){
-								t.t(dojo.isFunction(dojo.string.substitute));
-							});
-						},
-						
+											
 						function basicConflict(t){
 							dojo._addMagic();
 							if(dojo.config.conflict){
 								$.load("dojo.NodeList-fx");
 							}
-						},
-						
-						function bacicOnLoad(t){
-							dojo.load("dojo.behavior", function(){
-								t.t(dojo.isFunction(dojo.behavior.add));
-							});
 						},
 						
 						function dfdLoad(t){

@@ -1,32 +1,7 @@
 dojo.provide("plugd.magic");
 dojo.require("plugd.base");
 (function(d){
-	
-	d.load = function(){
-		// summary: require a module, or modules, and register an addOnload
-		//		function when they become ready.
-		//
-		// example:
-		//	As a synonym for `dojo.require`:
-		//	|	dojo.load("dojo.dnd.Mover");
-		//
-		// example:
-		//	As an enhanced dojo.require:
-		//	|	dojo.load("dojo.dnd.Mover", "dijit.Dialog");
-		//
-		// example:
-		//	Load a module, and register a `dojo.addOnLoad` function
-		//	|	dojo.load("dojo.NodeList-fx", function(){
-		//	|		dojo.query(".hidden").fadeIn().play();
-		//	|	});
-
-		var a = d._toArray(arguments), 
-			f = a.length && !d.isString(a[a.length-1]) ? a.pop() : null;
-
-		d.forEach(a, d.require, d);
-		f && d.addOnLoad(f);
-	}
-	
+		
 	d.dfdLoad = function(){
 		// summary: A version of `dojo.load` that returns a `dojo.Deferred` for those familar
 		// 		with that syntax. It is important to OMIT the callback function in the parameters

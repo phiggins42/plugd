@@ -6,6 +6,7 @@ dojo.require("plugd.script");
 	var callcount = 0, // jsonp callback counter
 
 		// quick function to try to match url's in text and replace with anchors
+		// FIXME: in this context, we should be linking @username to twitter.com/username too maybe
 		urlRe = new RegExp("([A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+)","g"),
 		replaceLinks = function(str){
 			return str.replace(urlRe, function(m){

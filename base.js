@@ -117,6 +117,35 @@ dojo.provide("plugd.base");
 		return d.unique(d.byId, b); // String
 	}
 	
+	d.load = function(){
+		// summary: require a module, or modules, and register an addOnload
+		//		function when they become ready.
+		//
+		// example:
+		//	As a synonym for `dojo.require`:
+		//	|	dojo.load("dojo.dnd.Mover");
+		//
+		// example:
+		// 	As a synonym for `dojo.addOnLoad`
+		//	|	dojo.load(function(){ /* document ready */ });
+		//
+		// example:
+		//	As an enhanced `dojo.require`:
+		//	|	dojo.load("dojo.dnd.Mover", "dijit.Dialog");
+		//
+		// example:
+		//	Load a module, and register a `dojo.addOnLoad` function
+		//	|	dojo.load("dojo.NodeList-fx", function(){
+		//	|		dojo.query(".hidden").fadeIn().play();
+		//	|	});
+
+		var a = d._toArray(arguments), 
+			f = a.length && !d.isString(a[a.length-1]) ? a.pop() : null;
+
+		d.forEach(a, d.require, d);
+		f && d.addOnLoad(f);
+	}
+	
 	d.show = function(/* String|DomNode */n, /* String? */arg){
 		// summary: Put some node in a visible state
 		//
@@ -230,8 +259,7 @@ dojo.provide("plugd.base");
 		return str ? d.map(str.split(/\ +/), d.trim) : []; // Array
 	}
 	
-	d._createFrom = d._toDom;
-	d.create = function(/* String */nodeType, /* Object? */attrs, refNode, pos){
+	d.create = function(nodeType, attrs, refNode, pos){
 		// summary: Creates an element, optionally setting any number
 		//		of attributes. Important to note, there is not cross-browser
 		//		sanity checking going on during the creation. This will
@@ -273,7 +301,7 @@ dojo.provide("plugd.base");
 		//	|	});
 		//
 		var n = nodeType.charAt(0) == "<" ? 
-			d._createFrom(nodeType) : d.doc.createElement(nodeType);
+			d._toDom(nodeType) : d.doc.createElement(nodeType);
 		if(attrs){ d.attr(n, attrs); }
 		if(refNode){ place(n, refNode, pos); }
 		return n; // DomNode
@@ -309,15 +337,7 @@ dojo.provide("plugd.base");
 		var a = d._toArray(arguments);
 		d.publish(a.shift(), a);
 	}
-	
-	// Legacy support for NodeList prior to Dojo revision [16796]. FIXME: can we remove this when 1.3 is
-	// cut? or was this just a quick fix for [16796]? Have fixed internal references to _mapIn
-	if(!NodeList._mapIn){
-		NodeList._mapIn = function(func, nyet, s) {
-			return _each(func, s||d);
-		};
-	}
-	
+		
 	// wrap them into dojo.NodeList
 	d.extend(NodeList, {
 
