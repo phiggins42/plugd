@@ -26,7 +26,7 @@ dependencies = {
 	layerOptimize:"shrinksafe.keepLines",
 	optimize:"shrinksafe",
 	stripConsole:"normal",
-	action:"clean,release"
+	action:"clean,release",
 	
 	// create each of the plugins as a standalone js,
 	// this way, the build will provide compressed
