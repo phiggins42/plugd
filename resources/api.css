@@ -1,0 +1,77 @@
+body {
+	font-size:11pt;
+}
+
+#nav { margin:0; padding:0; }
+#nav li { float:left; margin-right:10px; }
+
+#nav li,
+#container li {
+	list-style-type:none;
+}
+
+#Key-Constants li {
+	float:left;
+	text-align:center;
+	font-size:8pt;
+	width:105px;
+} 
+#container #nodelist li,
+#container #function li {
+	margin:0; padding:0;
+	padding-right:10px;
+	float:left;
+} 
+
+fieldset legend {
+	padding-left:4px; 
+	padding-right:7px;
+}
+#container fieldset {
+	margin-top:15px;
+	margin-right:8px;
+	width:220px; 
+	border:0;
+	border-top:1px dotted #a7a7a7;
+	border-bottom:1px dotted #a7a7a7;
+}
+#container ul {
+	margin:0; padding:0;
+}
+.f { float:right; 
+	margin-top:8px; 
+	margin-right:27px; 
+}
+
+#top { border-left:0; border-right:0; } 
+#top legend {
+	color:#666;
+	
+	font-size:27pt;
+	font-weight:bold;
+}
+
+li {
+	padding:3px 0;
+	font-size:9pt;
+	color:#333;
+}
+.sig { margin-left:1px; color:#999; /* visibility:hidden; */}
+.showApi .sig { color:#333; }
+
+.dijitInline {
+	/*  To inline block elements.
+		Similar to InlineBox below, but this has fewer side-effects in Moz.
+		Also, apparently works on a DIV as well as a FIELDSET.
+	*/
+	display:-moz-inline-box;		/* FF2 */
+	display:inline-block;			/* webkit and FF3 */
+	#zoom: 1; /* set hasLayout:true to mimic inline-block */
+	#display:inline; /* don't use .dj_ie since that increases the priority */
+	border:0;
+	padding:0;
+	vertical-align:top;
+	#vertical-align: auto;	/* makes TextBox,Button line up w/native counterparts on IE6 */
+}
+
+.note { color:#a7a7a7; text-align:center; font-size:9pt; }

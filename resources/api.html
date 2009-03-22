@@ -1,277 +1,93 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
-<html>
-	<head>
-		<title>Dojo Toolkit Base API Overview</title>
-
-		<style type="text/css">
-			#nav { margin:0; padding:0; }
-			#nav li { float:left; margin-right:10px; }
+		"http://www.w3.org/TR/html4/strict.dtd">
+	<html>
+		<head>
+			<title>Dojo Toolkit Base API Overview</title>
 		
-			#nav li,
-			#container li {
-				list-style-type:none;
-			}
-			
-			#Key-Constants li {
-				float:left;
-				text-align:center;
-				width:142px;
-			} 
-			#container #nodelist li,
-			#container #function li {
-				margin:0; padding:0;
-				padding-right:10px;
-				float:left;
-			} 
-			
-			fieldset legend {
-				padding-left:4px; 
-				padding-right:7px;
-			}
-			#container fieldset {
-				margin-top:15px;
-				margin-right:8px;
-				width:300px; 
-				border:0;
-				border-top:1px dotted #a7a7a7;
-				border-bottom:1px dotted #a7a7a7;
-			}
-			#container ul {
-				width:300px;
-				margin:0; padding:0;
-			}
-			.f { float:right; 
-				margin-top:8px; 
-				margin-right:27px; 
-			}
-			
-			#top legend {
-				font-size:27pt;
-				font-weight:bold;
-			}
-			
-			li {
-				padding:3px 0;
-				font-size:11pt;
-				color:#333;
-			}
-			.sig { margin-left:1px; color:#999; /* visibility:hidden; */}
-			.showApi .sig { color:#333; }
-			
-			.dijitInline {
-				/*  To inline block elements.
-					Similar to InlineBox below, but this has fewer side-effects in Moz.
-					Also, apparently works on a DIV as well as a FIELDSET.
-				*/
-				display:-moz-inline-box;		/* FF2 */
-				display:inline-block;			/* webkit and FF3 */
-				#zoom: 1; /* set hasLayout:true to mimic inline-block */
-				#display:inline; /* don't use .dj_ie since that increases the priority */
-				border:0;
-				padding:0;
-				vertical-align:top;
-				#vertical-align: auto;	/* makes TextBox,Button line up w/native counterparts on IE6 */
-			}
-			
-		</style>
+		<style type='text/css'>body {
+	font-size:11pt;
+}
 
-		<script type="text/javascript" src="../../dojo/dojo.js"></script>
-		<script src="../base.js"></script>
+#nav { margin:0; padding:0; }
+#nav li { float:left; margin-right:10px; }
 
-		<script type="text/javascript">
-			dojo.conflict();
-			dojo.load("dojo.fx",function(){
-				
- 				// a list of things to ignore in the dojo namespace (either useless, or handled specially)
-				var ignore = ["global", "doc", "keys", "NodeList", "fx", "fx.easing", "prototype"];
+#nav li,
+#container li {
+	list-style-type:none;
+}
 
-				// a hash map of methods -> category
-				var tags = {
-					"Effects" : [
-						"anim", "animateProperty", "fadeIn", "fadeOut", "animate", "fx.chain", "fx.combine"
-					],
-					
-					"Ajax" : [
-						"xhr", "xhrGet", "xhrPost", "xhrPut", "xhrDelete", "rawXhrPut", "rawXhrPost"
-					],
-					
-					"Lang-Helpers" : [
-						"isArray", "isFunction", "isString", "isObject", "isArrayLike", "unique", "eval", "isAlien", "trim", "Deferred"
-					],
-					
-					"Arrays" : [
-						"forEach", "indexOf", "map", "concat", "some", "every", "lastIndexOf", "qw", "filter", "splice", "slice"
-					],
-					
-					"Event-System" : [
-						"connect", "publish", "subscribe", "pub", "sub", "unsubscribe", "disconnect", 
-						"fixEvent", "stopEvent", "connectPublisher",
-					],
-					
-					"NodeList-Events" : [
-						"onmousedown", "onmouseenter", "onmouseleave", "onmousemove", "onmouseover", "onmouseout", "onblur", 
-						"onfocus", "onclick", "onchange", "onload", "onmousedown", "onmouseup", "onsubmit", "onerror", "onkeydown",
-						"onkeypress", "onkeyup", "hover"
-					],
-					
-					"NodeList-Misc" : [
-						"at", "first", "last", "end", "_stash"
-					],
-					
-					"Objects-OO" : [
-						"mixin", "declare", "extend", "delegate", "hitch", "partial", "setObject", "getObject", "exists", "instantiate"
-					],
-					
-					"Package-System" : [
-						"require", "provide", "load", "requireLocalization", "requireIf", "dfdLoad",
-						"moduleUrl", "requireAfterIf", "registerModulePath", "platformRequire",
-						"addOnLoad", "loaded", "unloaded", "loadInit", "addOnUnload", "addOnWindowUnload", "windowUnloaded",
-					],
-					
-					"DOM-Manipulation" : [
-						"create", "wrap", "place", "byId", "query", "empty", "destroy", "generateId", "clone",
-						"body", "append", "appendTo", "addContent", "adopt", "orphan"
-					],
-										
-					"DOM-Attributes" : [
-						"hasAttr", "removeAttr",
-						"setSelectable", "isDescendant", "val", "attr", "coords", "marginBox", "contentBox"
-					],
-					
-					"Colors" : [
-						"Color", "colorFromArray", "colorFromString", "blendColors", "colorFromRgb", "colorFromHex"
-					],
-					
-					"Styles-CSS" : [
-						"style", "addClass", "removeClass", "toggleClass", "hasClass", "getComputedStyle", "boxModel", "show", "hide", "toggle",
-						"hoverClass"
-					],
-					
-					"JSON" : [
-						"fromJson", "toJson", "toJsonIndentStr", "formToObject", "queryToObject", "formToQuery", "formToJson", "objectToQuery"
-					],
-					
-					"Miscellaneous" : [
-						"experimental", "deprecated", "config", "version", "locale", "baseUrl"
-					],
-					
-					"Advanced-Scope" : [
-						"conflict", "withDoc", "withGlobal", "setContext"
-					], 
-					
-					"Sniffing" : [
-						"isBrowser", "isFF", "isKhtml", "isMoz", "isMozilla", "isIE", "isOpera", "isBrowser", "isQuirks",
-						"isWebKit", "isChrome"
-					]
-				}
+#Key-Constants li {
+	float:left;
+	text-align:center;
+	font-size:8pt;
+	width:105px;
+} 
+#container #nodelist li,
+#container #function li {
+	margin:0; padding:0;
+	padding-right:10px;
+	float:left;
+} 
 
-				var getSig = function(fn){
-					// makup up a function signature for this object
-					if(!dojo.isFunction(fn)){ return "<span class='sig'>" + (typeof fn).toLowerCase() + "</span>"; }
-					return "<span class='sig'>" + fn.toString().replace(/function\s+/, "").split(")")[0] + ")" + "</span>";
+fieldset legend {
+	padding-left:4px; 
+	padding-right:7px;
+}
+#container fieldset {
+	margin-top:15px;
+	margin-right:8px;
+	width:220px; 
+	border:0;
+	border-top:1px dotted #a7a7a7;
+	border-bottom:1px dotted #a7a7a7;
+}
+#container ul {
+	margin:0; padding:0;
+}
+.f { float:right; 
+	margin-top:8px; 
+	margin-right:27px; 
+}
 
-				}
-				
-				var deslash = function(str){
-					return str.replace(/-/g, " ");
-				}
-								
-				var getTag = function(key){
-					// find the first matching function name in the tagMap
-					for(var i in tags){
-						if(dojo.indexOf(tags[i], key) >= 0){
-							return i;
-						}
-					}
-					return "Unknown-Tag";
-				}
-				
-				var getUl = function(tag){
-					// find the UL within a <div> with this tag's id, or make it. 
-					// return the UL node
-					return $("#" + tag + " ul")[0] || $("<fieldset id='" +tag+ "'><div class='box'><legend>" + deslash(tag) + "</legend><ul></ul></div></fieldset>")
-						.appendTo("#container").query("ul")[0];
-				}
-				
-				for(var i in dojo){
-					// scan the public dojo API, skipping stuff in the ignore list
-					if(!i.match(/^_/) && dojo.indexOf(ignore, i) == -1){
-						var ul = getUl(getTag(i));
-						$("<li>d."+ i + getSig(dojo[i]) + "</li>").appendTo(ul)//.hoverClass("showApi");
-					}
-				}
-				
-				for(var i in dojo.NodeList.prototype){
-					// setup dojo.query API's
-					if(!i.match(/^_/)){
-						var ul = getUl(getTag(i));
-						$("<li>$('.nodes')." + i + getSig(dojo.NodeList.prototype[i]) + "</li>").appendTo(ul)//.hoverClass("showApi");
-					}
-				}
-				
-				var tul = getUl("Effects");
-				for(var i in dojo.fx){
-					$("<li>d.fx." + i + getSig(dojo.fx[i]) + "</li>").appendTo(tul)//.hoverClass("showApi");
-				}
-
-
-				if(dojo.exists("dojo.fx.easing")){
-					tul = getUl("FX-Easing");
-					for(var i in dojo.fx.easing){
-						$("<li>d.fx.easing." + i + "</li>").appendTo(tul)//.hoverClass("showApi");
-					}
-				}
-				
-				tul = getUl("Key-Constants");
-				for(var i in dojo.keys){
-					$("<li>" + i + "</li>").appendTo(tul);
-				}
-				
-				$("#container > fieldset").forEach(function(n){
-
-					var id = n.id;
-					var mySize = dojo.query(n).query("li").length;
-					
-					$("<li><a href='#" + id + "'>" + deslash(id) + "</a> (" + mySize + ")</li>").appendTo("#nav");
-
-					console.log(mySize, n.id || n);
-					
-				}).wrap("div", true).addClass("dijitInline"); // .style("float","left");
-				
-				dojo.query("fieldset").forEach(function(n){
-					var open = true, t = dojo.query("ul", n)[0];
-					dojo.query("legend", n).onclick(function(e){
-						dojo.fx[(open ? "wipeOut" : "wipeIn")]({
-							node: t
-						}).play();
-						open = !open;
-					})
-				})
-				
-				
-			});
-		</script>
+#top { border-left:0; border-right:0; } 
+#top legend {
+	color:#666;
 	
-	<body>
+	font-size:27pt;
+	font-weight:bold;
+}
+
+li {
+	padding:3px 0;
+	font-size:9pt;
+	color:#333;
+}
+.sig { margin-left:1px; color:#999; /* visibility:hidden; */}
+.showApi .sig { color:#333; }
+
+.dijitInline {
+	/*  To inline block elements.
+		Similar to InlineBox below, but this has fewer side-effects in Moz.
+		Also, apparently works on a DIV as well as a FIELDSET.
+	*/
+	display:-moz-inline-box;		/* FF2 */
+	display:inline-block;			/* webkit and FF3 */
+	#zoom: 1; /* set hasLayout:true to mimic inline-block */
+	#display:inline; /* don't use .dj_ie since that increases the priority */
+	border:0;
+	padding:0;
+	vertical-align:top;
+	#vertical-align: auto;	/* makes TextBox,Button line up w/native counterparts on IE6 */
+}
+
+.note { color:#a7a7a7; text-align:center; font-size:9pt; }</style></head><body>
 		<fieldset id="top"><div>
-			<legend>Dojo API CheatSheet</legend>
+			</div><legend>Dojo API CheatSheet</legend>
 				<ul id="nav">
 					<li><a href="#top">Top</a></li>
-				</ul>
-			</div>
+				<li><a href="#NodeList-Misc">NodeList Misc</a> (4)</li><li><a href="#Advanced-Scope">Advanced Scope</a> (6)</li><li><a href="#Miscellaneous">Miscellaneous</a> (6)</li><li><a href="#Colors">Colors</a> (6)</li><li><a href="#Ajax">Ajax</a> (7)</li><li><a href="#Sniffing">Sniffing</a> (8)</li><li><a href="#JSON">JSON</a> (8)</li><li><a href="#Objects-OO">Objects OO</a> (10)</li><li><a href="#Language-Helpers">Language Helpers</a> (11)</li><li><a href="#Event-System">Event System</a> (11)</li><li><a href="#DOM-Attributes">DOM Attributes</a> (11)</li><li><a href="#Effects">Effects</a> (13)</li><li><a href="#Package-System">Package System</a> (16)</li><li><a href="#Arrays">Arrays</a> (18)</li><li><a href="#Styles-CSS">Styles CSS</a> (18)</li><li><a href="#NodeList-Events">NodeList Events</a> (18)</li><li><a href="#DOM-Manipulation">DOM Manipulation</a> (22)</li><li><a href="#Key-Constants">Key Constants</a> (58)</li></ul>
+			
 		</fieldset>
 		
-		<div id="container"></div>
-		
-		<fieldset><div>
-			<legend>notes:</legend>
-			<ul>
-				<li>var d = dojo</li>
-				<li>var $ = dojo.query</li>
-				<li>var dk = dojo.keys;</li>
-			</ul>
-		</div></fieldset>
-	</body>
-
-</html>
+		<div id="container"><div class="dijitInline"><fieldset id="NodeList-Misc"><div class="box"></div><legend>NodeList Misc</legend><ul><li>$('.nodes').at<span class="sig">()</span></li><li>$('.nodes').first<span class="sig">(callback, thisObj)</span></li><li>$('.nodes').last<span class="sig">(callback, thisObj)</span></li><li>$('.nodes').end<span class="sig">()</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Advanced-Scope"><div class="box"></div><legend>Advanced Scope</legend><ul><li>d.global<span class="sig">object</span></li><li>d.doc<span class="sig">object</span></li><li>d.setContext<span class="sig">(globalObject, globalDocument)</span></li><li>d.withGlobal<span class="sig">(globalObject, callback, thisObject, cbArguments)</span></li><li>d.withDoc<span class="sig">(documentObject, callback, thisObject, cbArguments)</span></li><li>d.conflict<span class="sig">()</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Miscellaneous"><div class="box"></div><legend>Miscellaneous</legend><ul><li>d.config<span class="sig">object</span></li><li>d.locale<span class="sig">string</span></li><li>d.version<span class="sig">object</span></li><li>d.experimental<span class="sig">()</span></li><li>d.deprecated<span class="sig">()</span></li><li>d.baseUrl<span class="sig">string</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Colors"><div class="box"></div><legend>Colors</legend><ul><li>d.Color<span class="sig">(color)</span></li><li>d.blendColors<span class="sig">(start, end, weight, obj)</span></li><li>d.colorFromRgb<span class="sig">(color, obj)</span></li><li>d.colorFromHex<span class="sig">(color, obj)</span></li><li>d.colorFromArray<span class="sig">(a, obj)</span></li><li>d.colorFromString<span class="sig">(str, obj)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Ajax"><div class="box"></div><legend>Ajax</legend><ul><li>d.xhr<span class="sig">(method, args, hasBody)</span></li><li>d.xhrGet<span class="sig">(args)</span></li><li>d.xhrPost<span class="sig">(args)</span></li><li>d.rawXhrPost<span class="sig">(args)</span></li><li>d.xhrPut<span class="sig">(args)</span></li><li>d.rawXhrPut<span class="sig">(args)</span></li><li>d.xhrDelete<span class="sig">(args)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Sniffing"><div class="box"></div><legend>Sniffing</legend><ul><li>d.isBrowser<span class="sig">boolean</span></li><li>d.isKhtml<span class="sig">number</span></li><li>d.isWebKit<span class="sig">undefined</span></li><li>d.isChrome<span class="sig">undefined</span></li><li>d.isMoz<span class="sig">number</span></li><li>d.isMozilla<span class="sig">number</span></li><li>d.isFF<span class="sig">number</span></li><li>d.isQuirks<span class="sig">boolean</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="JSON"><div class="box"></div><legend>JSON</legend><ul><li>d.fromJson<span class="sig">(json)</span></li><li>d.toJsonIndentStr<span class="sig">string</span></li><li>d.toJson<span class="sig">(it, prettyPrint, _indentStr)</span></li><li>d.formToObject<span class="sig">(formNode)</span></li><li>d.objectToQuery<span class="sig">(map)</span></li><li>d.formToQuery<span class="sig">(formNode)</span></li><li>d.formToJson<span class="sig">(formNode, prettyPrint)</span></li><li>d.queryToObject<span class="sig">(str)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Objects-OO"><div class="box"></div><legend>Objects OO</legend><ul><li>d.mixin<span class="sig">(obj, props)</span></li><li>d.setObject<span class="sig">(name, value, context)</span></li><li>d.getObject<span class="sig">(name, create, context)</span></li><li>d.exists<span class="sig">(name, obj)</span></li><li>d.extend<span class="sig">(constructor, props)</span></li><li>d.hitch<span class="sig">(scope, method)</span></li><li>d.delegate<span class="sig">(obj, props)</span></li><li>d.partial<span class="sig">(method)</span></li><li>d.declare<span class="sig">(className, superclass, props)</span></li><li>$('.nodes').instantiate<span class="sig">(declaredClass, properties)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Language-Helpers"><div class="box"></div><legend>Language Helpers</legend><ul><li>d.eval<span class="sig">(scriptFragment)</span></li><li>d.isString<span class="sig">(it)</span></li><li>d.isArray<span class="sig">(it)</span></li><li>d.isFunction<span class="sig">(it)</span></li><li>d.isObject<span class="sig">(it)</span></li><li>d.isArrayLike<span class="sig">(it)</span></li><li>d.isAlien<span class="sig">(it)</span></li><li>d._toArray<span class="sig">(obj, offset, startWith)</span></li><li>d.trim<span class="sig">(str)</span></li><li>d.Deferred<span class="sig">(canceller)</span></li><li>d.unique<span class="sig">(testFn, b)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Event-System"><div class="box"></div><legend>Event System</legend><ul><li>d.connect<span class="sig">(obj, event, context, method, dontFix)</span></li><li>d.disconnect<span class="sig">(handle)</span></li><li>d.subscribe<span class="sig">(topic, context, method)</span></li><li>d.unsubscribe<span class="sig">(handle)</span></li><li>d.publish<span class="sig">(topic, args)</span></li><li>d.connectPublisher<span class="sig">(topic, obj, event)</span></li><li>d.fixEvent<span class="sig">(evt, sender)</span></li><li>d.stopEvent<span class="sig">(evt)</span></li><li>d.sub<span class="sig">(topic, context, method)</span></li><li>d.pub<span class="sig">()</span></li><li>$('.nodes').connect<span class="sig">()</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="DOM-Attributes"><div class="box"></div><legend>DOM Attributes</legend><ul><li>d.isDescendant<span class="sig">(node, ancestor)</span></li><li>d.setSelectable<span class="sig">(node, selectable)</span></li><li>d.marginBox<span class="sig">(node, box)</span></li><li>d.contentBox<span class="sig">(node, box)</span></li><li>d.coords<span class="sig">(node, includeScroll)</span></li><li>d.hasAttr<span class="sig">(node, name)</span></li><li>d.attr<span class="sig">(node, name, value)</span></li><li>d.removeAttr<span class="sig">(node, name)</span></li><li>$('.nodes').attr<span class="sig">()</span></li><li>$('.nodes').coords<span class="sig">()</span></li><li>$('.nodes').val<span class="sig">(value)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Effects"><div class="box"></div><legend>Effects</legend><ul><li>d._Line<span class="sig">(start, end)</span></li><li>d._Animation<span class="sig">()</span></li><li>d.fadeIn<span class="sig">(args)</span></li><li>d.fadeOut<span class="sig">(args)</span></li><li>d.animateProperty<span class="sig">(args)</span></li><li>d.anim<span class="sig">(node, properties, duration, easing, onEnd, delay)</span></li><li>$('.nodes').animate<span class="sig">(props, duration, easing, onEnd)</span></li><li>d.fx.Toggler<span class="sig">()</span></li><li>d.fx.chain<span class="sig">(animations)</span></li><li>d.fx.combine<span class="sig">(animations)</span></li><li>d.fx.wipeIn<span class="sig">(args)</span></li><li>d.fx.wipeOut<span class="sig">(args)</span></li><li>d.fx.slideTo<span class="sig">(args)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Package-System"><div class="box"></div><legend>Package System</legend><ul><li>d.loaded<span class="sig">()</span></li><li>d.unloaded<span class="sig">()</span></li><li>d.addOnLoad<span class="sig">(obj, functionName)</span></li><li>d.loadInit<span class="sig">(init)</span></li><li>d.require<span class="sig">(moduleName, omitModuleCheck)</span></li><li>d.provide<span class="sig">(resourceName)</span></li><li>d.platformRequire<span class="sig">(modMap)</span></li><li>d.requireIf<span class="sig">(condition, resourceName)</span></li><li>d.requireAfterIf<span class="sig">(condition, resourceName)</span></li><li>d.registerModulePath<span class="sig">(module, prefix)</span></li><li>d.requireLocalization<span class="sig">(moduleName, bundleName, locale, availableFlatLocales)</span></li><li>d.moduleUrl<span class="sig">(module, url)</span></li><li>d.windowUnloaded<span class="sig">()</span></li><li>d.addOnWindowUnload<span class="sig">(obj, functionName)</span></li><li>d.addOnUnload<span class="sig">(obj, functionName)</span></li><li>d.load<span class="sig">()</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Arrays"><div class="box"></div><legend>Arrays</legend><ul><li>d.indexOf<span class="sig">(array, value, fromIndex, findLast)</span></li><li>d.lastIndexOf<span class="sig">(array, value, fromIndex)</span></li><li>d.forEach<span class="sig">(arr, callback, thisObject)</span></li><li>d.every<span class="sig">(arr, callback, thisObject)</span></li><li>d.some<span class="sig">(arr, callback, thisObject)</span></li><li>d.map<span class="sig">(arr, callback, thisObject)</span></li><li>d.filter<span class="sig">(arr, callback, thisObject)</span></li><li>d.qw<span class="sig">(str)</span></li><li>$('.nodes').slice<span class="sig">()</span></li><li>$('.nodes').splice<span class="sig">()</span></li><li>$('.nodes').indexOf<span class="sig">()</span></li><li>$('.nodes').lastIndexOf<span class="sig">()</span></li><li>$('.nodes').every<span class="sig">()</span></li><li>$('.nodes').some<span class="sig">()</span></li><li>$('.nodes').concat<span class="sig">(item)</span></li><li>$('.nodes').map<span class="sig">(func, obj)</span></li><li>$('.nodes').forEach<span class="sig">(callback, thisObj)</span></li><li>$('.nodes').filter<span class="sig">(simpleFilter)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Styles-CSS"><div class="box"></div><legend>Styles CSS</legend><ul><li>d.boxModel<span class="sig">string</span></li><li>d.getComputedStyle<span class="sig">(node)</span></li><li>d.style<span class="sig">(node, style, value)</span></li><li>d.hasClass<span class="sig">(node, classStr)</span></li><li>d.addClass<span class="sig">(node, classStr)</span></li><li>d.removeClass<span class="sig">(node, classStr)</span></li><li>d.toggleClass<span class="sig">(node, classStr, condition)</span></li><li>d.show<span class="sig">(n, arg)</span></li><li>d.hide<span class="sig">(n, arg)</span></li><li>d.toggle<span class="sig">(n, speed)</span></li><li>$('.nodes').style<span class="sig">()</span></li><li>$('.nodes').addClass<span class="sig">()</span></li><li>$('.nodes').removeClass<span class="sig">()</span></li><li>$('.nodes').toggleClass<span class="sig">()</span></li><li>$('.nodes').show<span class="sig">()</span></li><li>$('.nodes').hide<span class="sig">()</span></li><li>$('.nodes').toggle<span class="sig">()</span></li><li>$('.nodes').hoverClass<span class="sig">(className)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="NodeList-Events"><div class="box"></div><legend>NodeList Events</legend><ul><li>$('.nodes').onblur<span class="sig">(a, b)</span></li><li>$('.nodes').onfocus<span class="sig">(a, b)</span></li><li>$('.nodes').onchange<span class="sig">(a, b)</span></li><li>$('.nodes').onclick<span class="sig">(a, b)</span></li><li>$('.nodes').onerror<span class="sig">(a, b)</span></li><li>$('.nodes').onkeydown<span class="sig">(a, b)</span></li><li>$('.nodes').onkeypress<span class="sig">(a, b)</span></li><li>$('.nodes').onkeyup<span class="sig">(a, b)</span></li><li>$('.nodes').onload<span class="sig">(a, b)</span></li><li>$('.nodes').onmousedown<span class="sig">(a, b)</span></li><li>$('.nodes').onmouseenter<span class="sig">(a, b)</span></li><li>$('.nodes').onmouseleave<span class="sig">(a, b)</span></li><li>$('.nodes').onmousemove<span class="sig">(a, b)</span></li><li>$('.nodes').onmouseout<span class="sig">(a, b)</span></li><li>$('.nodes').onmouseover<span class="sig">(a, b)</span></li><li>$('.nodes').onmouseup<span class="sig">(a, b)</span></li><li>$('.nodes').onsubmit<span class="sig">(a, b)</span></li><li>$('.nodes').hover<span class="sig">(over, out)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="DOM-Manipulation"><div class="box"></div><legend>DOM Manipulation</legend><ul><li>d.clone<span class="sig">(o)</span></li><li>d.body<span class="sig">()</span></li><li>d.byId<span class="sig">(id, doc)</span></li><li>d.destroy<span class="sig">(node)</span></li><li>d.place<span class="sig">(node, refNode, position)</span></li><li>d.create<span class="sig">(nodeType, attrs, refNode, pos)</span></li><li>d.empty<span class="sig">(node)</span></li><li>d.query<span class="sig">(query, scope)</span></li><li>d.generateId<span class="sig">(b)</span></li><li>d.wrap<span class="sig">(n, nodeType)</span></li><li>$('.nodes').empty<span class="sig">()</span></li><li>$('.nodes').place<span class="sig">(queryOrNode, position)</span></li><li>$('.nodes').orphan<span class="sig">(simpleFilter)</span></li><li>$('.nodes').adopt<span class="sig">(queryOrListOrNode, position)</span></li><li>$('.nodes').query<span class="sig">(queryStr)</span></li><li>$('.nodes').addContent<span class="sig">(content, position)</span></li><li>$('.nodes').destroy<span class="sig">()</span></li><li>$('.nodes').create<span class="sig">(tagName)</span></li><li>$('.nodes').clone<span class="sig">()</span></li><li>$('.nodes').wrap<span class="sig">(nodeType, newList)</span></li><li>$('.nodes').appendTo<span class="sig">(selector)</span></li><li>$('.nodes').append<span class="sig">(selector, clone)</span></li></ul></fieldset></div><div class="dijitInline"><fieldset id="Key-Constants"><div class="box"></div><legend>Key Constants</legend><ul><li>BACKSPACE</li><li>TAB</li><li>CLEAR</li><li>ENTER</li><li>SHIFT</li><li>CTRL</li><li>ALT</li><li>PAUSE</li><li>CAPS_LOCK</li><li>ESCAPE</li><li>SPACE</li><li>PAGE_UP</li><li>PAGE_DOWN</li><li>END</li><li>HOME</li><li>LEFT_ARROW</li><li>UP_ARROW</li><li>RIGHT_ARROW</li><li>DOWN_ARROW</li><li>INSERT</li><li>DELETE</li><li>HELP</li><li>LEFT_WINDOW</li><li>RIGHT_WINDOW</li><li>SELECT</li><li>NUMPAD_0</li><li>NUMPAD_1</li><li>NUMPAD_2</li><li>NUMPAD_3</li><li>NUMPAD_4</li><li>NUMPAD_5</li><li>NUMPAD_6</li><li>NUMPAD_7</li><li>NUMPAD_8</li><li>NUMPAD_9</li><li>NUMPAD_MULTIPLY</li><li>NUMPAD_PLUS</li><li>NUMPAD_ENTER</li><li>NUMPAD_MINUS</li><li>NUMPAD_PERIOD</li><li>NUMPAD_DIVIDE</li><li>F1</li><li>F2</li><li>F3</li><li>F4</li><li>F5</li><li>F6</li><li>F7</li><li>F8</li><li>F9</li><li>F10</li><li>F11</li><li>F12</li><li>F13</li><li>F14</li><li>F15</li><li>NUM_LOCK</li><li>SCROLL_LOCK</li></ul></fieldset></div></div>
+	<div class='note'><p>Dojo 1.3.0dev (16807) Docs generated 2009-03-22</p></div></body></html>
