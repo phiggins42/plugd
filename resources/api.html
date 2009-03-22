@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx</title>
+
+		<style type="text/css">
+			@import "../../dijit/themes/dijit.css";
+			#nav { margin:0; padding:0; }
+			#nav li { float:left; margin-right:10px; }
+		
+			#nav li,
+			#container li {
+				list-style-type:none;
+			}
+			
+			#container #nodelist li,
+			#container #function li {
+				margin:0; padding:0;
+				padding-right:10px;
+				float:left;
+			} 
+			
+			#container fieldset {
+				margin-top:15px;
+				margin-right:8px;
+				width:300px; 
+			}
+			#container ul {
+				width:300px;
+				margin:0; padding:0;
+			}
+			.f { float:right; 
+				margin-top:8px; 
+				margin-right:27px; 
+			}
+			
+			li {
+				padding:3px 0;
+				font-size:11pt;
+				color:#333;
+			}
+			.sig { margin-left:1px; color:#999; /* visibility:hidden; */}
+			.showApi .sig { color:#333; }
+		</style>
+
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>
+		<script type="text/javascript" src="../base.js"></script>
+
+		<script type="text/javascript">
+			dojo.load("dojo.fx", function(){
+				
+ 				// a list of things to ignore in the dojo namespace (either useless, or handled specially)
+				var ignore = ["global", "doc", "keys", "NodeList", "fx", "fx.easing", "prototype"];
+
+				// a hash map of methods -> category
+				var tags = {
+					"Effects" : [
+						"anim", "animateProperty", "fadeIn", "fadeOut", "animate", "fx.chain", "fx.combine"
+					],
+					
+					"Ajax" : [
+						"xhr", "xhrGet", "xhrPost", "xhrPut", "xhrDelete", "rawXhrPut", "rawXhrPost"
+					],
+					
+					"Lang-Helpers" : [
+						"isArray", "isFunction", "isString", "isObject", "isArrayLike", "unique", "eval", "isAlien", "trim", "Deferred"
+					],
+					
+					"Arrays" : [
+						"forEach", "indexOf", "map", "concat", "some", "every", "lastIndexOf", "qw", "filter", "splice", "slice"
+					],
+					
+					"Event-System" : [
+						"connect", "publish", "subscribe", "pub", "sub", "unsubscribe", "disconnect", 
+						"fixEvent", "stopEvent", "connectPublisher",
+					],
+					
+					"NodeList-Events" : [
+						"onmousedown", "onmouseenter", "onmouseleave", "onmousemove", "onmouseover", "onmouseout", "onblur", 
+						"onfocus", "onclick", "onchange", "onload", "onmousedown", "onmouseup", "onsubmit", "onerror", "onkeydown",
+						"onkeypress", "onkeyup", "hover"
+					],
+					
+					"NodeList-Misc" : [
+						"at", "first", "last", "end", "_stash"
+					],
+					
+					"Objects-OO" : [
+						"mixin", "declare", "extend", "delegate", "hitch", "partial", "setObject", "getObject", "exists", "instantiate"
+					],
+					
+					"Package-System" : [
+						"require", "provide", "load", "requireLocalization", "requireIf", "dfdLoad",
+						"moduleUrl", "requireAfterIf", "registerModulePath", "platformRequire",
+						"addOnLoad", "loaded", "unloaded", "loadInit", "addOnUnload", "addOnWindowUnload", "windowUnloaded",
+					],
+					
+					"DOM-Manipulation" : [
+						"create", "wrap", "place", "byId", "query", "empty", "destroy", "generateId", "clone",
+						"body", "append", "appendTo", "addContent", "adopt", "orphan"
+					],
+										
+					"DOM-Attributes" : [
+						"hasAttr", "removeAttr",
+						"setSelectable", "isDescendant", "val", "attr", "coords", "marginBox", "contentBox"
+					],
+					
+					"Colors" : [
+						"Color", "colorFromArray", "colorFromString", "blendColors", "colorFromRgb", "colorFromHex"
+					],
+					
+					"Styles-CSS" : [
+						"style", "addClass", "removeClass", "toggleClass", "hasClass", "getComputedStyle", "boxModel", "show", "hide", "toggle",
+						"hoverClass"
+					],
+					
+					"JSON" : [
+						"fromJson", "toJson", "toJsonIndentStr", "formToObject", "queryToObject", "formToQuery", "formToJson", "objectToQuery"
+					],
+					
+					"Miscellaneous" : [
+						"experimental", "deprecated", "config", "version", "locale", "baseUrl"
+					],
+					
+					"Advanced-Scope" : [
+						"conflict", "withDoc", "withGlobal", "setContext"
+					], 
+					
+					"Sniffing" : [
+						"isBrowser", "isFF", "isKhtml", "isMoz", "isMozilla", "isIE", "isOpera", "isBrowser", "isQuirks",
+						"isWebKit", "isChrome"
+					]
+				}
+
+				var getSig = function(fn){
+					// makup up a function signature for this object
+					if(!dojo.isFunction(fn)){ return "<span class='sig'>" + (typeof fn).toLowerCase() + "</span>"; }
+					return "<span class='sig'>" + fn.toString().replace(/function\s+/, "").split(")")[0] + ")" + "</span>";
+
+				}
+				
+				var deslash = function(str){
+					return str.replace(/-/g, " ");
+				}
+								
+				var getTag = function(key){
+					// find the first matching function name in the tagMap
+					for(var i in tags){
+						if(dojo.indexOf(tags[i], key) >= 0){
+							return i;
+						}
+					}
+					return "Unknown-Tag";
+				}
+				
+				var getUl = function(tag){
+					// find the UL within a <div> with this tag's id, or make it. 
+					// return the UL node
+					return $("#" + tag + " ul")[0] || $("<fieldset id='" +tag+ "'><div class='box'><legend>" + deslash(tag) + "</legend><ul></ul></div></fieldset>")
+						.appendTo("#container").query("ul")[0];
+				}
+				
+				for(var i in dojo){
+					// scan the public dojo API, skipping stuff in the ignore list
+					if(!i.match(/^_/) && dojo.indexOf(ignore, i) == -1){
+						var ul = getUl(getTag(i));
+						$("<li>d."+ i + getSig(dojo[i]) + "</li>").appendTo(ul)//.hoverClass("showApi");
+					}
+				}
+				
+				for(var i in dojo.NodeList.prototype){
+					// setup dojo.query API's
+					if(!i.match(/^_/)){
+						var ul = getUl(getTag(i));
+						$("<li>$('.nodes')." + i + getSig(dojo.NodeList.prototype[i]) + "</li>").appendTo(ul)//.hoverClass("showApi");
+					}
+				}
+				
+				var tul = getUl("Effects");
+				for(var i in dojo.fx){
+					$("<li>d.fx." + i + getSig(dojo.fx[i]) + "</li>").appendTo(tul)//.hoverClass("showApi");
+				}
+
+
+				if(dojo.exists("dojo.fx.easing")){
+					tul = getUl("FX-Easing");
+					for(var i in dojo.fx.easing){
+						$("<li>d.fx.easing." + i + "</li>").appendTo(tul)//.hoverClass("showApi");
+					}
+				}
+				
+				tul = getUl("Key-Constants");
+				for(var i in dojo.keys){
+					$("<li>dk." + i + "</li>").appendTo(tul);
+				}
+				
+				$("#container > fieldset").forEach(function(n){
+
+					var id = n.id;
+					var mySize = dojo.query(n).query("li").length;
+					
+					$("<li><a href='#" + id + "'>" + deslash(id) + "</a> (" + mySize + ")</li>").appendTo("#nav");
+
+					console.log(mySize, n.id || n);
+					
+				}).wrap("div", true).addClass("dijitInline"); // .style("float","left");
+				
+				dojo.query("fieldset").forEach(function(n){
+					var open = true, t = dojo.query("> ul", n)[0];
+					dojo.query("legend", n).onclick(function(e){
+						dojo.fx[(open ? "wipeOut" : "wipeIn")]({
+							node: t
+						}).play();
+						open = !open;
+					})
+				})
+				
+				
+			});
+		</script>
+	
+	<body>
+		<div id="top"></div>
+		<h2>Dojo API CheatSheet</h2>
+		<div>
+			<ul id="nav">
+				<li><a href="#top">Top</a></li>
+			</ul>
+		</div>
+		<br style="clear:both">
+		<div id="container">
+		</div>
+		<br style="clear:both">
+		<div>
+			<h5>notes:</h5>
+			<ul>
+				<li>var d = dojo</li>
+				<li>var $ = dojo.query</li>
+				<li>var dk = dojo.keys;</li>
+			</ul>
+		</div>
+	</body>
+
+</html>
