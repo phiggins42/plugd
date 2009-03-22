@@ -38,8 +38,12 @@
 			dojo.load(/* "dojo.fx", */function(){
 				
  				// a list of things to ignore in the dojo namespace (either useless, or handled specially)
-				var ignore = ["keys", "NodeList", "fx", "fx.easing", "prototype"],
+				var ignore = [
+						"keys", "NodeList", "fx", "fx.easing", "prototype", 
+						"loaded", "unloaded", "loadInit", "windowUnloaded"
+					],
 					useful_privates = ["_toArray", "_Animation", "_Line"]
+				;
 				
 				if(window.location.href.indexOf("ignorePlugd") >= 0){
 					ignore.push(
@@ -85,14 +89,21 @@
 					],
 					
 					"Objects-OO" : [
-						"mixin", "declare", "extend", "delegate", "hitch", "partial", "setObject", "getObject", "exists", "instantiate"
+						"mixin", "declare", "extend", "delegate", "hitch", "partial", "setObject",
+						"getObject", "exists", "instantiate"
 					],
 					
 					"Package-System" : [
 						"require", "provide", "load", "requireLocalization", "requireIf", "dfdLoad",
 						"moduleUrl", "requireAfterIf", "registerModulePath", "platformRequire",
-						"addOnLoad", "loaded", "unloaded", "loadInit", "addOnUnload", "addOnWindowUnload", "windowUnloaded",
+
 					],
+					
+					"Document-Lifecycle" : [
+						"addOnLoad", "addOnUnload", "addOnWindowUnload","loaded", 
+						"unloaded", "loadInit",  "windowUnloaded",
+					],
+					
 					
 					"DOM-Manipulation" : [
 						"create", "wrap", "place", "byId", "query", "empty", "destroy", "generateId", "clone",
