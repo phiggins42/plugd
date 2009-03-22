@@ -2,7 +2,7 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>Testing dojo.fx</title>
+		<title>Dojo Toolkit Base API Overview</title>
 
 		<style type="text/css">
 			#nav { margin:0; padding:0; }
@@ -240,7 +240,7 @@
 				}).wrap("div", true).addClass("dijitInline"); // .style("float","left");
 				
 				dojo.query("fieldset").forEach(function(n){
-					var open = true, t = dojo.query("> ul", n)[0];
+					var open = true, t = dojo.query("ul", n)[0];
 					dojo.query("legend", n).onclick(function(e){
 						dojo.fx[(open ? "wipeOut" : "wipeIn")]({
 							node: t
