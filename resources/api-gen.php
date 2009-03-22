@@ -35,12 +35,20 @@
 
 		<script type="text/javascript">
 			dojo.conflict();
-			dojo.load("dojo.fx",function(){
+			dojo.load(/* "dojo.fx", */function(){
 				
  				// a list of things to ignore in the dojo namespace (either useless, or handled specially)
 				var ignore = ["keys", "NodeList", "fx", "fx.easing", "prototype"],
 					useful_privates = ["_toArray", "_Animation", "_Line"]
 				
+				if(window.location.href.indexOf("ignorePlugd") >= 0){
+					ignore.push(
+						// skip plugd api's for Dojo Base
+						"pub", "sub", "unique", "first", "last", "end", "show", "hide", "toggle", 
+						"conflict", "animate", "wrap", "appendTo", "append", "hoverClass", "hover",
+						"qw","load", "generateId"
+					);
+				}
 
 				// a hash map of methods -> category
 				var tags = {
@@ -58,7 +66,7 @@
 					],
 					
 					"Arrays" : [
-						"forEach", "indexOf", "map", "concat", "some", "every", "lastIndexOf", "qw", "filter", "splice", "slice"
+						"at", "forEach", "indexOf", "map", "concat", "some", "every", "lastIndexOf", "qw", "filter", "splice", "slice"
 					],
 					
 					"Event-System" : [
@@ -73,7 +81,7 @@
 					],
 					
 					"NodeList-Misc" : [
-						"at", "first", "last", "end", "_stash"
+						"first", "last", "end", "_stash"
 					],
 					
 					"Objects-OO" : [
@@ -165,7 +173,7 @@
 				
 				for(var i in dojo.NodeList.prototype){
 					// setup dojo.query API's
-					if(!i.match(/^_/)){
+					if(!i.match(/^_/) && dojo.indexOf(ignore, i) == -1){
 						var ul = getUl(getTag(i));
 						$("<li>$('.nodes')." + i + getSig(dojo.NodeList.prototype[i]) + "</li>").appendTo(ul)//.hoverClass("showApi");
 					}

@@ -1,3 +1,28 @@
+@media print {
+	body,html {
+		margin:0; padding:0;
+		font-size:8pt;
+	}
+	#nav { display:none; }
+	#top { border:none; font-size:12pt; margin:0; padding:0; }
+	#container fieldset {
+		width:175px !important;
+		font-size:5pt !important;
+	}
+	#container legend {
+		font-weight:bold;
+		font-size:6pt !important;
+	}
+	#container span {
+		font-size:6pt !important;
+	}
+	#Key-Constants li {
+		font-size:5pt !important;
+		float:left !important;
+		width:65px !important;
+	}
+}
+
 body {
 	font-size:11pt;
 }
