@@ -6,7 +6,7 @@ dependencies = {
 	// this removes some redundant code from base.js
 	redundant: "off",
 	
-	// this removes some aliases
+	// this removes some aliases, mostly deemed usedless.
 	compat: "off",
 	
 	// disable dojo.conflict() usage (off disables)
@@ -25,19 +25,22 @@ dependencies = {
 	version:"1.3.0-p",
 	layerOptimize:"shrinksafe.keepLines",
 	optimize:"shrinksafe",
-	stripConsole: "normal",
+	stripConsole:"normal",
+	action:"clean,release"
 	
 	// create each of the plugins as a standalone js,
 	// this way, the build will provide compressed
 	// and uncompressed versions of each file for us:
 	layers:[
-		// uncomment if you want to roll a dojo.js with plugins included
-//		{
-//			name:"dojo.js",
-//			dependencies:[
-//				"plugd.base"
-//			]
-//		},
+		// WARNING: dojo.js produced from this build will include plugd
+		//		base functionality (as per this profile). Comment
+		//		this layer out to disable.
+		{
+			name:"dojo.js",
+			dependencies:[
+				"plugd.base"
+			]
+		},
 		{
 			// our base plugin file (in case we grow)
 			name:"../plugd/base.js",
@@ -57,6 +60,9 @@ dependencies = {
 	// define the prefix for this namespace (which is only
 	// used by provide()/require() as we only use Base Dojo)
 	prefixes: [
+		// uncomment if you need these namespaces. add your own as needed
+		// [ "dijit", "../dijit" ],
+		// [ "dojox", "../dojox" ],
 		[ "plugd", "../plugd" ]
 	]
 }
