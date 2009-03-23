@@ -4,7 +4,7 @@
 		font-size:8pt;
 	}
 	#nav { display:none; }
-	#top { border:none; font-size:12pt; margin:0; padding:0; }
+	#top { display:none; border:none; font-size:12pt; margin:0; padding:0; }
 	#container fieldset {
 		width:175px !important;
 		font-size:5pt !important;
@@ -21,6 +21,9 @@
 		float:left !important;
 		width:65px !important;
 	}
+	#Key-Constants li.dblspan {
+		width:150px !important;
+	}
 }
 
 body {
@@ -29,7 +32,9 @@ body {
 
 #nav { margin:0; padding:0; }
 #nav li { float:left; margin-right:10px; }
-
+#container {
+	margin:0 auto;
+}
 #nav li,
 #container li {
 	list-style-type:none;
@@ -41,6 +46,10 @@ body {
 	font-size:8pt;
 	width:105px;
 } 
+#Key-Constants li.dblspan {
+	width:210px;
+	margin-top:-4px;
+}
 #container #nodelist li,
 #container #function li {
 	margin:0; padding:0;
@@ -49,16 +58,24 @@ body {
 } 
 
 fieldset legend {
-	padding-left:4px; 
+/*	margin-left:14px; */
+	padding-left:7px; 
 	padding-right:7px;
 }
 #container fieldset {
 	margin-top:15px;
 	margin-right:8px;
+	margin-bottom:-0.5em;
+	padding-top:0.25em;
 	width:220px; 
 	border:0;
 	border-top:1px dotted #a7a7a7;
-	border-bottom:1px dotted #a7a7a7;
+}
+#container fieldset legend {
+	margin:0 auto;
+	text-align:center;
+	font-weight:bold;
+	color:#444;
 }
 #container ul {
 	margin:0; padding:0;
@@ -68,13 +85,17 @@ fieldset legend {
 	margin-right:27px; 
 }
 
-#top { border-left:0; border-right:0; } 
+#top { 
+	border:0; 
+	border-top:1px dotted #666; 
+	margin-bottom:-0.3em;
+} 
 #top legend {
 	color:#666;
-	
 	font-size:27pt;
 	font-weight:bold;
 }
+#key { display:none; }
 
 li {
 	padding:3px 0;
