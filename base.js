@@ -630,23 +630,6 @@ dojo.provide("plugd.base");
 		// as to not break with a stray comma after exlude block removal.		
 		//>>excludeEnd("redundant")
 				
-		//>>excludeStart("compat", kwArgs.compat == "off")
-		
-		// a way to mark we've included the compat code for unit tests
-		__compatMode: true,
-		// these api's are identical i think
-		each: mirror.forEach, // no. each sets the context to the node. not 1:1
-		css: mirror.style, // yes. 
-		bind: mirror.connect, // no .unbind(), can't disconnect() from NodeList
-		// this seems silly, NodeList is just and Array ...
-		get: function(/* Integer */index){
-			// summary: Return an actual DomNode (rather than a list) at some 
-			//		index in this selector
-			if(index == undefined){ index = 0 }
-			return this[index]; // DomNode
-		}, // use .at()
-		//>>excludeEnd("compat");
-
 		// now I'm just making stuff up, this may or may not be the API:
 		// (it's not. jq .attr always returns a list iirc)
 		val: function(/* String? */value){
@@ -816,7 +799,14 @@ dojo.provide("plugd.base");
 		$.fn.ready = d.addOnLoad;
 		d.config.conflict = true; // set to true so other things can know we're in conflict mode
 	}
-	if(d.config.conflict){ d.conflict(); }
+
+	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on");
+	if(d.config.conflict){ 
+	//>>excludeEnd("autoConflict");	
+		d.conflict(); 
+	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on");	
+	}
+	//>>excludeEnd("autoConflict");	
 	
 	//>>excludeEnd("noConflict");
 

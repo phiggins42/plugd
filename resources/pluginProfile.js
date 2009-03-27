@@ -12,6 +12,9 @@ dependencies = {
 	// disable dojo.conflict() usage (off disables)
 	conflict: "on",
 	
+	// set to "on" to make djConfig.conflict moot, and always call dojo.conflict() once
+	autoConflict: "off", 
+	
 	// set to "off" to disable dojo.query("<div><p></p></div>") capabilities
 	// (slight performance hit for having it "on")
 	magicQuery: "on",
