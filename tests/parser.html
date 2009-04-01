@@ -1,0 +1,28 @@
+<html>
+<head>
+	
+	<script src="../../dojo/dojo.js"></script>
+	<script src="../parser.js"></script>	
+	<script>
+		dojo.require("dijit.Dialog");
+		dojo.require("dijit.form.Button");
+		dojo.addOnLoad(function(){
+			dojo.parser.parse();
+			var id = dijit.byId, 
+				b = id("theButton"),
+				d = id("theDialog")
+			;
+			dojo.connect(b, "onClick", d, "show");
+		});
+	</script>
+</head>
+<body class="tundra">
+	
+	<div id="theDialog" data-dojoType="dijit.Dialog" title="HTML5 Dialog">
+		<p>Hi, Thanks for joining</p>
+	</div>
+	
+	<button id="theButton" data-dojoType="dijit.form.Button">Show It</button>
+	
+</body>
+</html>
