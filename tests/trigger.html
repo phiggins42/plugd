@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../trigger.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						function simple(t){
+							
+							var d = new dojo.Deferred();
+							var clicks = 0;
+							
+							var p = dojo.byId("showMe");
+							dojo.connect(p, "onclick", function(e){
+								t.is("click", e.type);
+								clicks++;
+								if(clicks == 2){
+									d.callback(e);
+								}
+							});
+							
+							dojo.trigger("showMe", "onclick");
+							dojo.trigger("showMe", "click");
+							
+							return d;
+						},
+						
+						function simplequery(t){
+							
+							var d = new dojo.Deferred();
+							dojo.query("#foo").onclick(function(e){
+								t.is("click", e.type);
+								d.callback(true);
+							}).trigger("onclick");
+							return d;
+						}
+					
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+
+		<h1>Base Plugins QuickTest</h1>
+
+		<ul id="foo"><li class="bar">one</li></ul>
+		<ul id="bar"><li class="inbar">one</li></ul>
+
+		<div id="cloneTest">
+			<div class="needsData"></div>
+			<div class="needsData"></div>
+			<div class="needsData"></div>
+			<p class="cloneMe">sample</p>
+		</div>
+
+		<div id="appendTest"></div> <div id="appendMe">now</div>
+
+		<p id="showMe" style="display:none">I'm hidden</p>
+		
+		<input id="withval" value="baz" type="text"> 
+		<input id="nullval" value="" type="text">
+		<input id="newval" value="baz" type="text">
+		
+		<ul>
+			<li id="my_1">1</li><li id="my_2">2</li><li id="my_3">3</li>
+		</ul>
+		
+	</body>
+</html>
