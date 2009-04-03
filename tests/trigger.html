@@ -20,7 +20,8 @@
 							}, 1000);
 							
 							var p = dojo.byId("showMe");
-							dojo.connect(p, "onclick", function(e){
+							dojo.connect(p, "onclick", function(e, a){
+								t.is(a, undefined); // fake node events don't get curried args
 								t.is("click", e.type);
 								clicks++;
 								if(clicks == 3){
@@ -30,7 +31,7 @@
 							});
 							
 							// two variations, testing /on/
-							dojo.trigger("showMe", "onclick");
+							dojo.trigger("showMe", "onclick", 1);
 							dojo.trigger("showMe", "click");
 							
 							// passing a node directly (please use strings in real life, or refs)
@@ -61,7 +62,7 @@
 							var d = new dojo.Deferred();
 							var obj = {
 								method: function(){
-									console.log('fired', this);
+									// console.log('fired', this);
 								}
 							};
 							
@@ -86,14 +87,17 @@
 							
 							return d;
 						},
-						
-						function directFunction(t){
+												
+						function triggerArgs(t){
 							var d = new dojo.Deferred();
-							dojo.trigger(function(){
-								console.log('bummer');
+							dojo.trigger(null, function(a,b,c){
+								t.is(1, a);
+								t.is(2, b);
+								t.is(3, c);
 								d.callback(true);
-							});
+							}, 1, 2, 3);
 							return d;
+							
 						}
 					
 					]

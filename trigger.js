@@ -17,9 +17,9 @@ dojo.provide("plugd.trigger");
 			}
 		},
 	
-		triggerObject = function(obj, event){
+		triggerObject = function(){
 			// summary: Helper for `dojo.trigger`, which handles the Object cases.
-			return d.hitch.apply(this, arguments)();
+			return d.hitch.apply(d, arguments)();
 		}
 	;
 	
@@ -51,9 +51,7 @@ dojo.provide("plugd.trigger");
 		//
 
 		return (isfn(obj) || isfn(event) || isfn(obj[event])) ? 
-			triggerObject(obj, event) :
-			triggerEvent(obj, event)
-		;
+			triggerObject.apply(d, arguments) : triggerEvent(obj, event);
 	};
 	
 	d.NodeList.prototype.trigger = d.NodeList._adaptAsForEach(triggerEvent);

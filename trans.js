@@ -1,5 +1,5 @@
-// dojo.provide("plugd.trans"); (make me work with a build layer)
-;(function(){
+dojo.provide("plugd.trans"); (make me work with a build layer)
+(function(){
 	
 	// common in plugd base.js
 	var d = dojo, place = d.place;
