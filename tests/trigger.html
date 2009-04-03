@@ -15,18 +15,26 @@
 							
 							var d = new dojo.Deferred();
 							var clicks = 0;
+							var timer = setTimeout(function(){
+								d.errback();
+							}, 1000);
 							
 							var p = dojo.byId("showMe");
 							dojo.connect(p, "onclick", function(e){
 								t.is("click", e.type);
 								clicks++;
-								if(clicks == 2){
+								if(clicks == 3){
 									d.callback(e);
+									clearTimeout(timer);
 								}
 							});
 							
+							// two variations, testing /on/
 							dojo.trigger("showMe", "onclick");
 							dojo.trigger("showMe", "click");
+							
+							// passing a node directly (please use strings in real life, or refs)
+							dojo.trigger(dojo.byId("showMe"), "click");
 							
 							return d;
 						},
@@ -38,6 +46,53 @@
 								t.is("click", e.type);
 								d.callback(true);
 							}).trigger("onclick");
+							return d;
+						},
+						
+						// syntaxes:
+						// dojo.trigger(obj, "method"); // fire obj.method() in scope: obj
+						// dojo.trigger(node, "event"); // fire "onevent" for node
+						// dojo.trigger(obj.method); // seems silly?
+						// dojo.trigger(obj, function(){ }); // hitch(obj, fn())() really?
+												
+						function simpleFunc(t){
+
+							var fires = 0;
+							var d = new dojo.Deferred();
+							var obj = {
+								method: function(){
+									console.log('fired', this);
+								}
+							};
+							
+							var foo = setTimeout(function(){
+								d.errback("fail.");
+							}, 1000);
+							
+							dojo.connect(obj, "method", function(){
+								fires++;
+								if(fires == 3){
+									d.callback(true);
+									clearTimeout(foo);
+								}
+							});
+							
+							dojo.trigger(obj, "method");
+							dojo.trigger(obj.method);
+							
+							dojo.trigger(obj, function(){
+								this.method();
+							});
+							
+							return d;
+						},
+						
+						function directFunction(t){
+							var d = new dojo.Deferred();
+							dojo.trigger(function(){
+								console.log('bummer');
+								d.callback(true);
+							});
 							return d;
 						}
 					
