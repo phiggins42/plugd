@@ -337,7 +337,41 @@ dojo.provide("plugd.base");
 		var a = d._toArray(arguments);
 		d.publish(a.shift(), a);
 	}
-		
+	
+	d.forIn = function(obj, callback, scope){
+		// summary:
+		//		Iterates over Objects calling a callback function in some scope
+		//
+		// description:
+		//		Iterates over Objects calling a callback function in some scope
+		//		The standard for(in) pattern, in a syntax matching `dojo.forEach`
+		//
+		//		This is a simplifed version of `dojox.lang.functional.forIn`, which 
+		//		supports lamda callbacks and whatnot.
+		//	
+		// obj: Object
+		//		An Object to iterate over
+		//
+		// callback: Function
+		//		Called for each item in the Object. Passed the item in the 
+		//		object, the index of the object (the key), and the dictionary.
+		//
+		// scope: Object?
+		//		An optional scope in which to exectue the callback. Defaults to
+		//		`null`, aka: `dojo.global` (window)
+		//
+		// example:
+		//		As an object iterator
+		//	|	dojo.forIn({ a:"b", c:"d" }, function(item, key){
+		//	|		console.log("value is:", item); // b, d
+		//	|		console.log("key is", key); // a, c
+		//	|	}))
+		//
+		for(var key in obj){
+			callback.call(scope || d.global, obj[key], key, obj);
+		}
+	}
+	
 	// wrap them into dojo.NodeList
 	d.extend(NodeList, {
 

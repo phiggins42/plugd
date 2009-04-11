@@ -1,4 +1,4 @@
-dojo.provide("plugd.trans"); (make me work with a build layer)
+dojo.provide("plugd.trans");
 (function(){
 	
 	// common in plugd base.js
@@ -96,5 +96,6 @@ dojo.provide("plugd.trans"); (make me work with a build layer)
 		}
 		
 	});
-		
+
+	
 })();

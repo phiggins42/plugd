@@ -301,6 +301,47 @@
 							dojo.pub("foo", 1);
 						},
 						
+						function each(t){
+						
+							var ob = {
+								a:"b", c:"d", "1":"d", e:function(arg){}
+							};
+							
+							var x = 0;
+							dojo.forIn(ob, function(value, key){
+								x++;
+							});
+							
+							t.is(4, x);
+							
+							dojo.forIn(ob, function(_, __, dict){
+								t.is(ob, dict);
+							});
+							
+							dojo.forIn(ob, function(val, key){
+								t.is(this, ob);
+								t.is(ob[key], this[key]);
+								t.is(this[key], val);
+							}, ob);
+						
+						},
+												
+						function eachWithScope(t){
+							
+							var obj = {
+								a:"b"
+							};
+							
+							dojo.forIn(obj, function(item, key){
+								t.is(obj, this);
+								t.is("b", item);
+								t.is(obj.a, item);
+								t.is(this.a, item);
+								t.is("a", key);
+							}, obj);
+							
+						},
+						
 						// globals are borked after this test:
 						function conflict(t){
 							dojo.conflict();
