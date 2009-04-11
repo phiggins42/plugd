@@ -46,6 +46,12 @@
 				});
 			});
 			
+			dojo.twit("phublic", {
+				timeline:"public_timeline",
+				template:"<p>${user.name} says '${text}'</p>",
+				count:20
+			});
+			
 			dojo.parser.parse(); // one dojoType test
 		});
 	</script>
@@ -70,5 +76,8 @@
 	
 	<h3>Example 'BryanForbes'</h3>
 	<div dojoType="dojo.Twitter" user="BryanForbes" count="2" replaceLinks="false"><p>${user.name} said "${text}"</p></div>
+	
+	<h3>Public</h3>
+	<div id="phublic"></div>
 	
 </body>
