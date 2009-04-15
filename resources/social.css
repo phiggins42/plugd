@@ -1,0 +1,147 @@
+/* support/base css for social.js */
+
+.social ul li {
+	float:left;
+	margin-left:2px;
+	margin-top:0;
+	cursor:pointer;
+	z-index:5;
+	position:relative;
+}
+
+.social a {
+	position:relative;
+	display:block;
+}
+
+.social ul {
+	overflow:visible;
+	list-style:none;
+	margin:0; 
+	padding:0;
+	z-index:1;
+}
+
+.social {
+	position:relative;
+}
+
+.social .mask {
+	z-index:6;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	#width:100%;
+	#margin:0 auto;
+}
+
+.mask p {
+	height:1.1em;
+	line-height:0.9em;
+	font-size:75%;
+	margin:2px 6px;
+}
+
+.size32 .mask p {
+	font-size:55%;
+}
+
+/* base sizes */
+div.size24 { height:24px; }
+div.size32 { height:32px; }
+div.size48 { height:48px; }
+div.size64 { height:64px; }
+
+.size24 a { width:24px; height:24px; }
+.size32 a { width:32px; height:32px; }
+.size48 a { width:48px; height:48px; }
+.size64 a { width:64px; height:64px; }
+
+/* the diffent icon sets */
+.social ul li {
+	background:url('social/social.png') no-repeat top left;
+	#background-image:url('social/social.gif');
+}
+
+.size24 .mask {
+	display:none;
+}
+/* the sprites */
+
+.size64 .blogger { background-position: 0 -30px; } 
+.size64 .delicious { background-position: 0 -122px; } 
+.size64 .digg { background-position: 0 -214px; } 
+.size64 .facebook { background-position: 0 -306px; } 
+.size64 .feedburner { background-position: 0 -398px; } 
+.size64 .flickr { background-position: 0 -490px; } 
+.size64 .furl { background-position: 0 -582px; } 
+.size64 .google { background-position: 0 -674px; } 
+.size64 .lastfm { background-position: 0 -766px; } 
+.size64 .linkedin { background-position: 0 -858px; } 
+.size64 .netvibes { background-position: 0 -950px; } 
+.size64 .newsvine { background-position: 0 -1042px; } 
+.size64 .rss { background-position: 0 -1134px; } 
+.size64 .stumbleupon { background-position: 0 -1226px; } 
+.size64 .technorati { background-position: 0 -1318px; } 
+.size64 .twitter { background-position: 0 -1410px; } 
+.size64 .wordpress { background-position: 0 -1502px; } 
+.size64 .yahoo { background-position: 0 -1594px; } 
+
+.size48 .blogger { background-position: -69px -30px; } 
+.size48 .delicious { background-position: -69px -108px; } 
+.size48 .digg { background-position: -69px -186px; } 
+.size48 .facebook { background-position: -69px -264px; } 
+.size48 .feedburner { background-position: -69px -342px; } 
+.size48 .flickr { background-position: -69px -420px; } 
+.size48 .furl { background-position: -69px -498px; } 
+.size48 .google { background-position: -69px -576px; } 
+.size48 .lastfm { background-position: -69px -654px; } 
+.size48 .linkedin { background-position: -69px -732px; } 
+.size48 .netvibes { background-position: -69px -810px; } 
+.size48 .newsvine { background-position: -69px -888px; } 
+.size48 .rss { background-position: -69px -966px; } 
+.size48 .stumbleupon { background-position: -69px -1044px; } 
+.size48 .technorati { background-position: -69px -1122px; } 
+.size48 .twitter { background-position: -69px -1200px; } 
+.size48 .wordpress { background-position: -69px -1278px; } 
+.size48 .yahoo { background-position: -69px -1356px; } 
+
+.size32 .blogger { background-position: -130px -30px; } 
+.size32 .delicious { background-position: -130px -92px; } 
+.size32 .digg { background-position: -130px -154px; } 
+.size32 .facebook { background-position: -130px -216px; } 
+.size32 .feedburner { background-position: -130px -278px; } 
+.size32 .flickr { background-position: -130px -340px; } 
+.size32 .furl { background-position: -130px -402px; } 
+.size32 .google { background-position: -130px -464px; } 
+.size32 .lastfm { background-position: -130px -526px; } 
+.size32 .linkedin { background-position: -130px -588px; } 
+.size32 .netvibes { background-position: -130px -650px; } 
+.size32 .newsvine { background-position: -130px -712px; } 
+.size32 .rss { background-position: -130px -774px; } 
+.size32 .stumbleupon { background-position: -130px -836px; } 
+.size32 .technorati { background-position: -130px -898px; } 
+.size32 .twitter { background-position: -130px -960px; } 
+.size32 .wordpress { background-position: -130px -1022px; } 
+.size32 .yahoo { background-position: -130px -1084px; } 
+
+.size24 .blogger { background-position: -176px -30px; } 
+.size24 .delicious { background-position: -176px -84px; } 
+.size24 .digg { background-position: -176px -138px; } 
+.size24 .facebook { background-position: -176px -192px; } 
+.size24 .feedburner { background-position: -176px -246px; } 
+.size24 .flickr { background-position: -176px -300px; } 
+.size24 .furl { background-position: -176px -354px; } 
+.size24 .google { background-position: -176px -408px; } 
+.size24 .lastfm { background-position: -176px -462px; } 
+.size24 .linkedin { background-position: -176px -516px; } 
+.size24 .netvibes { background-position: -176px -570px; } 
+.size24 .newsvine { background-position: -176px -624px; } 
+.size24 .rss { background-position: -176px -678px; } 
+.size24 .stumbleupon { background-position: -176px -732px; } 
+.size24 .technorati { background-position: -176px -786px; } 
+.size24 .twitter { background-position: -176px -840px; } 
+.size24 .wordpress { background-position: -176px -894px; } 
+.size24 .yahoo { background-position: -176px -948px; } 
+
