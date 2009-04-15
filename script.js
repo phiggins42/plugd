@@ -1,4 +1,5 @@
 dojo.provide("plugd.script");
+dojo.require("plugd.base");
 ;(function(d){
 
 	// one-time lookups / vars:
@@ -40,13 +41,13 @@ dojo.provide("plugd.script");
 		//	|		});
 		//
 		var s = d.create("script", { src: src }, h),
-			c = d.connect(s, ev, function(e){
+			c = callback ? d.connect(s, ev, function(e){
 				if(e.type == "load" || re.test(s.readyState)){
 					d.disconnect(c);
-					callback && callback.call(s, e);
+					callback.call(s, e);
 					if(!preserve){ h.removeChild(s); }
 				}
-			})
+			}) : null
 		;
 	}
 		
