@@ -1,8 +1,11 @@
 dojo.provide("plugd.base");
-;(function(d){
-		
+//>> dojo.js start
+;(function(){		
 	// first, some simple aliases
-	var place = d.place,
+	var d = dojo,
+//>> dojo.js
+
+		place = d.place,
 		style = d.style,
 		
 		// shrinksafe loves this
@@ -53,7 +56,7 @@ dojo.provide("plugd.base");
 		id_count = 0, 
 		
 		// because IE is insane:
-		_jankyEvent = "mouse" + (d.isIE ? "enter" : "over")
+		_jankyEvent = /enter|over/
 	;
 
 	// namespace-polluting functions:
@@ -726,9 +729,10 @@ dojo.provide("plugd.base");
 			//	Add 
 			//	|	dojo.query("#mylist li").hoverClass("over");
 			//
-			return this.hover(function(e){
-				d[(e.type == _jankyEvent ? "addClass" : "removeClass")](e.target, className);
-			}); // dojo.NodeList
+
+			return this.hover(function(e){ // dojo.NodeList
+				d[(_jankyEvent.test(e.type) ? "add" : "remove") + "Class"](this, className);
+			});
 		},
 		
 		_stash: function(/* dojo.NodeList */nl){
@@ -844,4 +848,6 @@ dojo.provide("plugd.base");
 	
 	//>>excludeEnd("noConflict");
 
-})(dojo);
+//>> dojo.js
+})();
+//>> dojo.js

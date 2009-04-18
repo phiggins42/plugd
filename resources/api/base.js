@@ -34,21 +34,19 @@ dojo.provide("plugd.resources.api.base");
 			"dijit", "form", "layout", "lang", "dir", "class",
 			"declaredClass", "wai", "typematic", "popup",
 
-			// redundant plugd
-			"last", "first", "css","bind","each",
 			// dojo.Color
 			"r","g","b","a"
 		],
 
 		useful_privates:[
-			"_Animation", "_Widget", "_Templated", "_toArray"
+			"_Widget", "_Templated", "_toArray"
 		],
 
 		tags: {
 			dojo:{
 				"Effects":[
 					"anim", "animateProperty", "fadeIn", "fadeOut", "animate", "fx.chain", "fx.combine", 
-					"_Animation", "_Line"
+					"_Animation", "_Line", "Animation" /* _Animation deprecated in 1.4 */
 				],
 
 				"Ajax":[
@@ -196,8 +194,13 @@ dojo.provide("plugd.resources.api.base");
 		getUl: function(tag){
 			// find the UL within a <div> with this tag's id, or make it. 
 			// return the UL node
-			return $("#" + tag + " ul")[0] || $("<fieldset id='" +tag+ "'><div class='box'><legend align='center'>" + api._deslash(tag) + "</legend><ul></ul></div></fieldset>")
-				.appendTo("#container").query("ul")[0];
+			var n = dojo.byId(tag);
+			if(!n){
+				var x = dojo.place("<fieldset id='" +tag+ "'><div class='box'><legend align='center'>" + api._deslash(tag) + "</legend><ul></ul></div></fieldset>", "container");
+				n = dojo.query("ul", x)[0];
+			}
+			return n;
+
 		},
 
 		getSig: function(key, member, fn){
@@ -247,12 +250,12 @@ dojo.provide("plugd.resources.api.base");
 
 		buildNav: function(){
 
-			$("#container > fieldset").forEach(function(n){
+			dojo.query("#container > fieldset").forEach(function(n){
 
 				var id = n.id;
 				var mySize = dojo.query(n).query("li").length;
 
-				$("<li><a href='#" + id + "'>" + api._deslash(id) + "</a> (" + mySize + ")</li>").appendTo("#nav");
+				dojo.place("<li><a href='#" + id + "'>" + api._deslash(id) + "</a> (" + mySize + ")</li>", "nav");
 
 			//	console.log(mySize, n.id || n);
 
@@ -274,7 +277,7 @@ dojo.provide("plugd.resources.api.base");
 			for(var i in something){
 				if( (!i.match(/^_/) || dojo.indexOf(api.useful_privates, i) >= 0) && dojo.indexOf(api.ignore, i) == -1 ){
 					var ul = fs || api.getUl(api.getTag(i, base));
-					$("<li>" + api.getSig(k, i, something[i]) + "</li>").appendTo(ul);
+					dojo.place("<li>" + api.getSig(k, i, something[i]) + "</li>", ul);
 				}
 			
 			}

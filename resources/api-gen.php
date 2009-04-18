@@ -31,11 +31,10 @@
 		<link rel="stylesheet" href="api.css">
 
 		<script type="text/javascript" src="../../dojo/dojo.js"></script>
-		<script src="../base.js"></script>
 
 		<script type="text/javascript">		
-			dojo.conflict();
-			dojo.load("plugd.resources.api.base", function(){
+			dojo.require("plugd.resources.api.base");
+			dojo.addOnLoad(function(){
 				
  				// a list of things to ignore in the dojo namespace (either useless, or handled specially)
 				var ap = plugd.resources.api;

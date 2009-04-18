@@ -2,7 +2,7 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>Testing dojo.fx</title>
+		<title>Testing plugd.trans</title>
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript" src="../base.js"></script>
 		<script type="text/javascript" src="../trans.js"></script>
@@ -18,7 +18,6 @@
 							
 							dojo.query("#pa").prepend("<span>before:</span>");
 							var s = dojo.query("#pa span");
-
 							t.is(1, s.length);
 							t.is("before:", s[0].innerHTML);
 							
@@ -42,24 +41,60 @@
 						},
 						
 						function content_set(t){
-							var h = dojo.query(".first").content("reset");
+							var h = dojo.query(".first").content("<p>reset</p>");
 							
 							t.is(1, h.length);
-							t.is("reset", h[0].innerHTML);
+							t.is("<p>reset</p>", dojo.trim(h[0].innerHTML.toLowerCase()));
 						},
 						
 						function before(t){
 							
+							var n = dojo.query("#pa").before("<div id='pa2'>pa</div>");
+							var x = dojo.query("#pa2 + #pa").length;
+							t.is(1, x);
 							
 						},
 						
 						function after(t){
 							
+							dojo.query("#pa").after("<div id='pa3'>pa</div>");
+							var x = dojo.query("#pa + #pa3").length;
+							t.is(1, x);
+							
 						},
 						
 						function replace(t){
+							dojo.query("#foobarbaz").replace("<div id='replacedfoo'>replaced.</div>");
+							t.is(0, dojo.query("#foobarbaz").length);
+							t.is(1, dojo.query("#replacedfoo").length);
+						},
+						
+						// TODO: write unit tests and code for:
+						
+						function parent(){
+							
+						},
+						
+						function parents(){
+							
+						},
+						
+						function children(){
+							
+						},
+						
+						function next(){
+							
+						},
+						
+						function prev(){
+							
+						},
+						
+						function closest(t){
 							
 						}
+						
 					]
 				);
 				doh.run();
@@ -74,7 +109,7 @@
 		<table>
 			<tbody>
 				<tr>
-					<td>one</td><td>two></td><td class="last">last</td>
+					<td>one</td><td>two</td><td class="last">last</td>
 				</tr>
 			</tbody>
 		</table>
@@ -82,6 +117,8 @@
 		<div id="around">
 			<p id="pa">lorem</p>
 		</div>
+		
+		<div id="foobarbaz">replace me</div>
 		
 	</body>
 </html>

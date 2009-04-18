@@ -164,6 +164,13 @@
 							// if no errors thrown ...
 						},
 						
+						function hoverClass(t){
+							
+							dojo.query("#foo > li").hoverClass("over");
+							// no errors thrown. need UI testing.
+							
+						},
+						
 						function val_get(t){
 							var v = dojo.query("#withval").val();
 							t.is(v, "baz");

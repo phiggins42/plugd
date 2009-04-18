@@ -1,8 +1,11 @@
 dojo.provide("plugd.trans");
+dojo.require("plugd.base");
+//>> add build exclude for dojo.js
 (function(){
-	
 	// common in plugd base.js
-	var d = dojo, place = d.place;
+	var d = dojo, 
+//>>	
+		place = d.place;
 	
 	d.extend(d.NodeList, {
 	
@@ -14,7 +17,7 @@ dojo.provide("plugd.trans");
 			//
 			return this.forEach(function(n){ // dojo.NodeList
 				place(tag, n, "first");
-			})
+			});
 		},
 	
 		content: function(content){
@@ -36,7 +39,7 @@ dojo.provide("plugd.trans");
 			return content ? // dojo.NodeList
 				// either set this content so each of the matched nodes
 				this.forEach(function(n){
-					n.innerHTML = content;
+					place(content, n, "only")
 				}) 
 				// or return a new array of the contents
 				: this._stash(this.map(function(n){
@@ -88,14 +91,45 @@ dojo.provide("plugd.trans");
 			//		to place around the matched nodes.
 			//
 			// example:
-			//	|	dojo.query("#bar").replace("<div")
+			//	|	dojo.query("#bar").replace("<div>gone</div>")
 			//
 			return this.map(function(n){ // dojo.NodeList
 				return place(content, n, "replace")
 			});
+		},
+		
+		parent: function(){
+			return this._stash(this.map(function(n){
+				return n.parentNode;
+			}));
+		},
+		
+		parents: function(sel){
+			
+		},
+		
+		children: function(sel){
+			return this._stash(this.query(sel || "> *"));
+		},
+		
+		prev: function(sel){
+			// find the previous sibling, or if passed a selector, the previous sibling matching.
+		},
+		
+		next: function(sel){
+			// 
+		},
+		
+		_has: function(sel){
+			
+		},
+		
+		closest: function(sel){
+			
 		}
 		
 	});
 
-	
+//>> dojo.js build exclude	
 })();
+//>>

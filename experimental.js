@@ -40,4 +40,28 @@ dojo.require("dijit.dijit");
 		}
 	});
 	
+	d.plugin = function(pluginNamespace, fn, way){
+		// example:
+		//		var defaults = { option1: "default" };
+		//		dojo.plugin("something", function(node, args){
+		//			node = dojo.byId(node);
+		//			var options = dojo.mixin({}, defaults, args);
+		//			// do something to node	
+		//		});
+		//
+		//		dojo.social("id", {});
+		//		// or
+		//		dojo.query(".nodes").social({});
+
+		if(d[pluginNamespace]){
+			console.warn("cowardly won't clobber", pluginNamespace);
+			return;
+		}
+		
+		var f = d[pluginNamespace] = fn;
+		d.NodeList.prototype[pluginNamespace] = d.NodeList[way || "_adaptAsForEach"](f);
+		
+		return f;
+	}
+	
 })();
