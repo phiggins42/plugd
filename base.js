@@ -1,11 +1,8 @@
 dojo.provide("plugd.base");
-//>> dojo.js start
-;(function(){		
-	// first, some simple aliases
-	var d = dojo,
-//>> dojo.js
+;(function(d){
 
-		place = d.place,
+	// first, some simple aliases
+	var	place = d.place,
 		style = d.style,
 		
 		// shrinksafe loves this
@@ -848,6 +845,4 @@ dojo.provide("plugd.base");
 	
 	//>>excludeEnd("noConflict");
 
-//>> dojo.js
-})();
-//>> dojo.js
+})(dojo);
