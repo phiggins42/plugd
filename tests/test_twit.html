@@ -16,7 +16,7 @@
 
 			// basic template, using ul as container:
 			dojo.query("ul.tweet").twit({
-				template:"<li>${text}</li>",
+				template:"<li><p>${text}</p></li>",
 				position:"first",
 				user:"dojotoolkit"
 			});
@@ -48,7 +48,7 @@
 			
 			dojo.twit("phublic", {
 				timeline:"public_timeline",
-				template:"<p>${user.name} says '${text}'</p>",
+				template:"<p><img src='${user.profile_image_url}' style='width:50px; height:50px'> ${user.name} says '${text}'</p>",
 				count:20
 			});
 			

@@ -53,6 +53,8 @@ dojo.require("plugd.script");
 		//			Typical data includes the following variables:
 		//			|	* text - the value of the tweet
 		//			|	* user - an object passed about the user. Eg: ${user.name} 
+		//			|		+ name
+		//			|		+ profile_image_url	
 		//			|	* created_at - time the tweet was tweeted
 		//			|	* source - how the tweet was made. eg: "From web"
 		//
@@ -94,7 +96,8 @@ dojo.require("plugd.script");
 		d.twit[callback] = function(data){
 			d.forEach(data, function(item){
 				// process the items in the response:
-				d.place(fix(d.string.substitute(opts.template, item)), n, opts.position);
+				item.text = fix(item.text);
+				d.place(d.string.substitute(opts.template, item), n, opts.position);
 			});
 		}
 		
