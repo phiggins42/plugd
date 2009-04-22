@@ -16,7 +16,7 @@ dojo.require("plugd.base");
 		//
 
 		var dfd = new d.Deferred(), a = d._toArray(arguments);
-		a.push(dfd.callback);
+		a.push(dojo.hitch(dfd, 'callback'));
 		try{
 			d.load.apply(d, a);
 		}catch(e){
