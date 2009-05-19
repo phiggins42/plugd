@@ -25,18 +25,17 @@ dojo.require("dijit.dijit");
 	}
 	
 	d.extend(d.NodeList, {
-		widget: {
-			
-			dom: function(){
-				// get a list of widget's from the nodes
-				//	
-				// ex: dojo.query("[dojoType]").widget.dom().forEach(..).end();
-				var nl = new d.NodeList();
-				this.forEach(function(n){
-					nl.push(dij.getEnclosingWidget(n));
-				});
-				return nl;
-			}
+		widget: function(){
+			// summary: Get a list of widget's from the nodes, retuning a new 
+			//		NodeList of the widget's .domNode property.
+			//	
+			// example:
+			//	|	dojo.query("[dojoType]").widget().forEach(..).end();
+			var nl = new d.NodeList();
+			this.forEach(function(n){
+				nl.push(dij.getEnclosingWidget(n).domNode);
+			});
+			return nl;
 		}
 	});
 	
