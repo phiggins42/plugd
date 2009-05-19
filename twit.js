@@ -14,7 +14,7 @@ dojo.require("plugd.script");
 					return "<a href='" + m + "' target='_blank'>" + m + "</a>";
 				})
 				// and replace the @replies and references with links
-				.replace(/@([\w]+)/, function(a,m){
+				.replace(/@([\w]+)/g, function(a,m){
 					return "<a href='http://twitter.com/" + m + "'>@" + m + "</a>";
 				});
 		},
