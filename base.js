@@ -58,7 +58,8 @@ dojo.provide("plugd.base");
 
 	// namespace-polluting functions:
 	d.unique = function(/* Function */testFn, /* String? */b){
-		// summary: Return a unique string ID for something, based on a passed uniqueness test
+		// summary: 
+		//		Return a unique string ID for something, based on a passed uniqueness test
 		//		function. Anything that returns a truthy value will suffice. 
 		//	
 		// testFn: Function
@@ -118,23 +119,24 @@ dojo.provide("plugd.base");
 	}
 	
 	d.load = function(){
-		// summary: require a module, or modules, and register an addOnload
+		// summary:
+		//		Require a module, or modules, and register an addOnload
 		//		function when they become ready.
 		//
 		// example:
-		//	As a synonym for `dojo.require`:
+		//		As a synonym for `dojo.require`:
 		//	|	dojo.load("dojo.dnd.Mover");
 		//
 		// example:
-		// 	As a synonym for `dojo.addOnLoad`
+		// 		As a synonym for `dojo.addOnLoad`
 		//	|	dojo.load(function(){ /* document ready */ });
 		//
 		// example:
-		//	As an enhanced `dojo.require`:
+		//		As an enhanced `dojo.require`:
 		//	|	dojo.load("dojo.dnd.Mover", "dijit.Dialog");
 		//
 		// example:
-		//	Load a module, and register a `dojo.addOnLoad` function
+		//		Load a module, and register a `dojo.addOnLoad` function
 		//	|	dojo.load("dojo.NodeList-fx", function(){
 		//	|		dojo.query(".hidden").fadeIn().play();
 		//	|	});
@@ -626,10 +628,85 @@ dojo.provide("plugd.base");
 			return this; // dojo.NodeList
 		},
 		
+		size: function(boxType){
+			// summary: 
+			//		Obtain the sizing information for these node(s)
+			// 
+			// description:
+			//		Obtain the sizing information for these node(s) by returning 
+			//		the calculated styles. The default returned values are supplied
+			//		by `dojo.marginBox`, though can be overridden by the optional `boxType`
+			//		parameter. Other box-calculation functions available in Dojo
+			//		are `contentBox` and `coords`.
+			//
+			// boxType: String?
+			//		The dojo.* function to use to calculate the size. Defaults to "marginBox",
+			//		which calls dojo.marginBox() for this node. 
+			//
+			// returns: Mixed
+			//		Returns either an array of object 
+			//
+			// example:
+			//		Get the size of a single node byId.
+			//	|	dojo.query("#onenode").size().w // get just the width member
+			//
+			// example:
+			//		Get an array of objects representing the sizes of each of these nodes:
+			//	|	var sizes = dojo.query(".manynodes").size(); 
+			//	
+			// example:
+			//		Determine the contentBox (as opposed to the default "maginBox");
+			//	|	dojo.query("#something").size("contentBox").w;
+
+			var s = this.map(function(n){ 
+				return d[boxType || "marginBox"](n);
+			});
+			return s.length == 1 ? s[0] : s; // Array|Object
+		},
+		
 		//>>excludeStart("redundant", kwArgs.redundant == "off");
 		// PUT ALL REDUNDANT FUNCTIONS HERE, as we'll play with them in dev mode, and provide a way
 		// to leave them, but remove them in production intentionally. set redundant="on" in profile
-				
+
+	/*	FIXME: clarify this. size() returns mixed array or object. 	
+		width: function(boxType){
+			// summary: 
+			//		Get the width of this node. If the matched selectors are multiple nodes,
+			//		this function only returns the first match. Use `dojo.NodeList.size` for a more
+			//		direct/flexible size calculator.
+			//
+			// boxType: String?
+			//		Optional box calulcation name. See `dojo.NodeList.size`
+			//	
+			// example:
+			//	|	var w = dojo.query(".foo").width();
+			//
+			// example: 
+			//		Like `dojo.NodeList.size`, allows passing an alternate calculation function
+			//	|	var w = dojo.query("#foo").width("contentBox");
+			
+			return this.size(boxType)[0].w; // Number
+		},
+		
+		height: function(boxType){
+			// summary: 
+			//		Get the width of this node. If the matched selectors are multiple nodes,
+			//		this function only returns the first match. Use `dojo.NodeList.size` for a more
+			//		direct/flexible size calculator.
+			//
+			// boxType: String?
+			//		Optional box calulcation name. See `dojo.NodeList.size`
+			//	
+			// example:
+			//	|	var w = dojo.query(".foo").height();
+			//
+			// example: 
+			//		Like `dojo.NodeList.size`, allows passing an alternate calculation function
+			//	|	var w = dojo.query("#foo").height("contentBox");
+			
+			return this.size(boxType)[0].h; // Number
+		},
+	*/
 		first: function(callback, thisObj){
 			//	summary:
 			//		Call some function, but only on the first element in this NodeList,

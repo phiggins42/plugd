@@ -3,6 +3,20 @@
 <html>
 	<head>
 		<title>Testing dojo.fx</title>
+		
+		<style type="text/css">
+			.thing {
+				margin:0; padding:0;
+				width:200px;
+				height:200px;
+			}
+			.cb {
+				height:100px;
+				width:400px;
+				padding:20px;
+			}
+		</style>
+		
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript" src="../base.js"></script>
 		<script type="text/javascript">
@@ -349,6 +363,36 @@
 							
 						},
 						
+						function size_basic(t){
+							var s = dojo.query("#sizeTest").size();
+							t.is(200, s.w);
+							t.is(200, s.h);
+						},
+						
+						function size_multi(t){
+							
+							var s = dojo.query(".thing").size();
+							dojo.forEach(s, function(size){
+								t.is(200, size.w);
+								t.is(200, size.h);
+							});
+							
+						},
+						
+						function size_contentBox(t){
+						
+							var s = dojo.query(".cb").size("contentBox");
+							t.is(400, s.w);
+							t.is(100, s.h);
+							
+						},
+						
+						function size_coords(t){
+							var s = dojo.query(".cb").size("coords");
+							t.is(440, s.w);
+							t.is(140, s.h);
+						},
+						
 						// globals are borked after this test:
 						function conflict(t){
 							dojo.conflict();
@@ -388,6 +432,11 @@
 		<ul>
 			<li id="my_1">1</li><li id="my_2">2</li><li id="my_3">3</li>
 		</ul>
+		
+		<div class="thing" id="sizeTest"><p>Foo!</p></div>
+		<p class="thing">Foo!</p>
+		
+		<div class="cb"><p>Yo!</p></div>
 		
 	</body>
 </html>

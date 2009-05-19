@@ -19,6 +19,8 @@
 						function autoConflict(t){
 								
 							t.t(dojo.isFunction($));
+							t.is(1, $("#bar").length);
+							t.t(dojo.isFunction($.fn.ready));
 							
 						}
 					]
@@ -26,6 +28,6 @@
 				doh.run();
 			});
 		</script>
-	<body>
+	<body><p id="bar">baz</p>
 	</body>
 </html>
