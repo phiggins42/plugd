@@ -2,7 +2,7 @@ dojo.provide("plugd.exportNS");
 // this is used to make MooJo
 (function(d){
 	
-	d.exportNS = function(origin, target){
+	d.exportNS = function(origin, target, prefix){
 		// summary: Export all the public members of one namespace safely into 
 		//		some other object.
 		//
@@ -12,15 +12,23 @@ dojo.provide("plugd.exportNS");
 		// target: Object
 		//		The object to extend with our new members.
 		//	
+		// prefix: String?
+		//		A string to prefix to the global name 
+		//
 		// example:
 		//	|	dojo.exportNS(dojo, dojo.global);
 		//	|	query("> li").addClass("bar");
 		//
+		// example:
+		//	|	dojo.exportNS(dojo, window, "$");
+		//	|	$query("> li").addClass("bar");
+		//
 
+		prefix = prefix || "";
 		for(var i in origin){
 			// should we check hasOwnProperty?
-			if(!target[i] && /^_/.test(i) && !(origin[i] === target)){
-				target[i] = origin[i];
+			if(!target[(prefix + i)] && /^_/.test(i) && !(origin[i] === target)){
+				target[(prefix + i)] = origin[i];
 			}
 		}
 	};
