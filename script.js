@@ -4,12 +4,10 @@ dojo.require("plugd.base");
 
 	// one-time lookups / vars:
 
-	var h = d.doc.getElementsByTagName("head")[0], 
-		// readystate notes:
-		// loaded is the non-cached version, complete indicates cached. readystate fires for both. 
-		// sane folks are just 'load'. go figure. 
-		ev = d.isIE ? "onreadystatechange" : "load",
-		re = /complete|loaded/
+	var h = d.doc.getElementsByTagName("head")[0],
+		re = /complete|loaded/,
+		cbtest = /(\w+)=\?/,
+		count = 0
 	;
 		
 	d.addScript = function(src, callback, preserve){
@@ -40,15 +38,49 @@ dojo.require("plugd.base");
 		//	|			// only Dialog.js onload, not it's require() calls. use `dojo.require` + `dojo.addOnLoad`
 		//	|		});
 		//
-		var s = d.create("script", { src: src }, h),
-			c = callback ? d.connect(s, ev, function(e){
-				if(e.type == "load" || re.test(s.readyState)){
-					d.disconnect(c);
-					callback.call(s, e);
-					if(!preserve){ h.removeChild(s); }
-				}
-			}) : null
-		;
+
+		if(cbtest.test(src)){
+			// our script was passed some form of callback lamda. fix it. 
+			d._getJsonp.apply(this, arguments);
+		}else{
+			// actual handling of the script addition and onload
+			var s = d.create("script", { src: src }, h),
+				c = d.connect(s, s.readyState ? "onreadystatechange" : "load", function(e){
+					if(e.type == "load" || re.test(s.readyState)){
+						d.disconnect(c);
+						callback && callback.call(s, e);
+						if(!preserve){ h.removeChild(s); }
+					}
+				})
+			;
+		}
 	}
+	
+	d._getJsonp = function(src, callback, preserve){
+		// summary: 
+		//		Small branch of `dojo.addScript` for the x-domain JSONP case. If the url passed to
+		//		`dojo.addScript` contains a literal "something=?", the ? is replaced
+		//		with a generated callback function, passed as `callback`, and triggered.
+		//
+		// example:
+		//	|	dojo._getJsonp("http://example.com/url.json?callback=?", function(data){
+		//	|		// data is whatever the response data was. this is async.
+		//	|	});
+
+		// setup the callback information:
+		var id = "cb" + (++count);
+		d.addScript[id] = callback;
 		
+		// adjust the src to contain a valid callback param
+		src = src.replace(cbtest, function(_, b){ 
+			return b + "=" + d._scopeName + ".addScript." + id; 
+		});
+		
+		// add the script, and delete the callback function onload
+		d.addScript(src, function(){
+			delete d.addScript[id];
+		}, preserve);
+		
+	}
+	
 })(dojo);

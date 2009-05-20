@@ -27,7 +27,18 @@
 			dojo.addScript("http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js", function(e){
 				$("<ul id='bar'></ul>").appendTo("body").append("<li>woot</li>");
 			});
-						
+			
+			dojo.addScript("http://search.twitter.com/trends/current.json?callback=?", 
+				function(data){ 
+					var he = dojo.place("<h2>Twitter trends</h2>", dojo.body());
+					var n = dojo.create('ul', {}, dojo.body());
+					for(var i in data.trends){
+						dojo.forEach(data.trends[i], function(trend){
+							dojo.place("<li>" + trend.query + "</li>", n);
+						})
+					}
+				}
+			);
 		});
 	</script>
 	
