@@ -3,10 +3,8 @@ dojo.require("dojo.string");
 dojo.require("plugd.script");
 (function(d, nl){
 	
-	var callcount = 0, // jsonp callback counter
-
+	var urlRe = new RegExp("([A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+)","g"),
 		// quick function to try to match url's in text and replace with anchors
-		urlRe = new RegExp("([A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+)","g"),
 		replaceLinks = function(str){
 			return str
 				// replace direct url's in the tweet
@@ -16,7 +14,12 @@ dojo.require("plugd.script");
 				// and replace the @replies and references with links
 				.replace(/@([\w]+)/g, function(a,m){
 					return "<a href='http://twitter.com/" + m + "'>@" + m + "</a>";
-				});
+				})
+				// and hash tags? where does the link point to get this?
+			//	.replace(/#(\w+)/g, function(a, m){
+			//		return "<a href='http://search.twitter.com/?q=" + m + "'>#" + m + "</a>";
+			//	})
+			;
 		},
 		nop = function(t){ return t; },
 		
@@ -83,26 +86,22 @@ dojo.require("plugd.script");
 		
 		var opts = d.mixin({}, defaults, args), // mix the defaults in here
 
-			// build up the callback/url string:
-			callback = "__twit" + (callcount++),
+			// build up the url string:
 			url = "http://twitter.com/status/" + opts.timeline + "/" + opts.user + ".json" +
-				"?count=" + opts.count  + "&callback=" + d._scopeName + ".twit." + callback,
+				"?count=" + opts.count  + "&callback=?",
 			
 			// handle the replacelinks option
 			fix = opts.replaceLinks ? replaceLinks : nop
 		;
-		
-		// stub the callback function onto the twit function:
-		d.twit[callback] = function(data){
+				
+		// fire!
+		d.addScript(url, function(data){
 			d.forEach(data, function(item){
 				// process the items in the response:
 				item.text = fix(item.text);
 				d.place(d.string.substitute(opts.template, item), n, opts.position);
 			});
-		}
-		
-		// fire!
-		d.addScript(url); 
+		}); 
 
 	}
 	
