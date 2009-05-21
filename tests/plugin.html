@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing plugd.plugin</title>
+		<script type="text/javascript">
+			// test ensures djConfig.conflict works
+			var djConfig = { conflict: true };
+		</script>
+		<script type="text/javascript" src="../../dojo/dojo.js"></script>
+		<script type="text/javascript" src="../plugin.js"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			dojo.plugin("makeRed", function(n){
+				// do something to this node:
+				dojo.style(n, "color", "red");
+			});
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+					
+						function exists(t){
+							
+							t.t(dojo.isFunction(dojo.makeRed));
+							t.t(dojo.isFunction(dojo.NodeList.prototype.makeRed));
+							
+							dojo.query("p").makeRed();
+							
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body><p id="bar">baz</p>
+	</body>
+</html>
