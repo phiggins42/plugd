@@ -1,6 +1,9 @@
 dojo.provide("plugd.plugin");
 (function(d){
 	
+	// setup the alias:
+	d.fn = d.NodeList.prototype;
+	
 	d.plugin = function(pluginNamespace, fn, way){
 		// summary: 
 		//		Define a function to exist on both the `dojo` namespace
@@ -43,7 +46,7 @@ dojo.provide("plugd.plugin");
 		//>>excludeEnd("safetyFirst");
 	
 		var f = d[pluginNamespace] = fn;
-		d.NodeList.prototype[pluginNamespace] = d.NodeList[way || "_adaptAsForEach"](f);
+		d.fn[pluginNamespace] = d.NodeList[way || "_adaptAsForEach"](f);
 	
 		return f; // Function
 	}

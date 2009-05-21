@@ -28,6 +28,12 @@
 							
 							dojo.query("p").makeRed();
 							
+						},
+						
+						function fn(t){
+							t.t(dojo.fn);
+							t.is(dojo.fn, dojo.NodeList.prototype);
+							t.t(dojo.isFunction(dojo.fn.makeRed));
 						}
 					]
 				);
