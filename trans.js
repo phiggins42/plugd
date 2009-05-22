@@ -42,9 +42,9 @@ dojo.require("plugd.base");
 					place(content, n, "only")
 				}) 
 				// or return a new array of the contents
-				: this._stash(this.map(function(n){
+				: this.map(function(n){
 					return n.innerHTML;
-				}))
+				})._stash(this)
 		},
 		
 		before: function(content){
@@ -96,38 +96,9 @@ dojo.require("plugd.base");
 			return this.map(function(n){ // dojo.NodeList
 				return place(content, n, "replace")
 			});
-		},
-		
-		parent: function(){
-			return this._stash(this.map(function(n){
-				return n.parentNode;
-			}));
-		},
-		
-		parents: function(sel){
-			
-		},
-		
-		children: function(sel){
-			return this._stash(this.query(sel || "> *"));
-		},
-		
-		prev: function(sel){
-			// find the previous sibling, or if passed a selector, the previous sibling matching.
-		},
-		
-		next: function(sel){
-			// 
-		},
-		
-		_has: function(sel){
-			
-		},
-		
-		closest: function(sel){
-			
 		}
 		
+		// functions have moved to dojo.NodeList-trans		
 	});
 
 //>> dojo.js build exclude	

@@ -473,16 +473,16 @@ dojo.provide("plugd.base");
 			//	|			dojo.query("div.tooltip", e.target)[action]();
 			//	|		})
 			//	|	;
-			return this._stash(this.map(function(){ // dojo.NodeList
+			return this.map(function(){ // dojo.NodeList
 				return d.create(tagName);
-			})); 
+			})._stash(this); 
 		},
 		
 		clone: function(){
 			// summary: Clone the matched nodes, and return a stashed NodeList of the new nodes
-			return this._stash(this.map(function(n){ // dojo.NodeList
+			return this.map(function(n){ // dojo.NodeList
 				return d.clone(n);
-			})); 
+			})._stash(this); 
 		},
 		
 		// no need for combine or chain, we'll let you make choppy animations, too:
@@ -576,7 +576,7 @@ dojo.provide("plugd.base");
 			this.forEach(function(n){
 				nl.push(d.wrap(n, nodeType));
 			});
-			return !newList ? this : this._stash(nl); // dojo.NodeList
+			return !newList ? this : nl._stash(this); // dojo.NodeList
 		},
 		
 		appendTo: function(/* String|DomNode */selector){
@@ -807,56 +807,7 @@ dojo.provide("plugd.base");
 			return this.hover(function(e){ // dojo.NodeList
 				d[(_jankyEvent.test(e.type) ? "add" : "remove") + "Class"](this, className);
 			});
-		},
-		
-		_stash: function(/* dojo.NodeList */nl){
-			// summary: Stash this NodeList on the next NodeList returned
-			//  	so .end() has somewhere to go.
-			//
-			// example:
-			//	A Partially redundant example. Make an "odd" method which returns a
-			//	stashed `dojo.NodeList`: 
-			//	|	dojo.extend(dojo.NodeList, {
-			//	|		odd: function(){
-			//	|			return this._stash(this.filter(function(n,i){ return i % 2 == 0 }));
-			//	|		}
-			//	|	});
-			//	|	// then see how _stash applies a sub-list, to be .end()'ed out of
-			//	|	dojo.query(".foo")
-			//	|		.odd()
-			//	|			.addClass("stripe")
-			//	|		.end()
-			//	|		// access to the orig .foo list
-			//	|		.removeClass("foo")
-			//	| 
-			//
-			nl.__last = this;
-			return nl; // dojo.NodeList
-		},
-		
-		end: function(){
-			// summary: Break out of this current depth of chaining, returning
-			//		to the last most sequential NodeList, or this.
-			//
-			// description:
-			//		Break out of this current depth of chaining, returning 
-			//		to the last most sequential NodeList (or this NodeList if no
-			//		previous NodeList was stashed). Works in conjunction with
-			//		`dojo.NodeList._stash` to control a NodeList in advanced ways.
-			//
-			// example:
-			//	|	dojo.query("a")
-			//	|		.wrap("div", true)
-			//	|			// connect click to the divs
-			//	|			.onclick(function(e){ .. }))
-			//	|			.addClass("onADiv")
-			//	|		.end()
-			//	|		// jump back to the list of anchors
-			//	|		.style(...)
-			//
-			return this.__last || this; // dojo.NodeList
 		}
-		
 	});
 	
 	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
