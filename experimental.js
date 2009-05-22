@@ -26,19 +26,6 @@ dojo.require("dijit.dijit");
 	
 	d.extend(d.NodeList, {
 		
-		selectable: function(/* Boolean */selectable){
-			// summary: 
-			//		Sets these nodes' selectable state based on a passed boolean param.
-			//		see `dojo.setSelectable`
-			//
-			// selectable: Boolean
-			//		Pass true to allow the nodes to be selectable. False to prevent.
-			
-			return this.forEach(function(n){
-				d.setSelectable(n, selectable);
-			});
-		},
-		
 		widget: function(){
 			// summary: Get a list of widget's from the nodes, retuning a new 
 			//		NodeList of the widget's .domNode property.

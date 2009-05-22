@@ -1,7 +1,6 @@
 // experimental: don't use yet
 dojo.provide("plugd.social");
 dojo.require("dojo.fx.easing");
-
 (function(d){
 
 	var defaults = {

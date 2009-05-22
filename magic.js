@@ -33,7 +33,7 @@ dojo.require("plugd.base");
 		//		the `dojo` namespace.
 		//	
 		// example:
-		//	|	dojo.import("some.module", dojo._addMagic); // which adds dojo.fakeFunction
+		//	|	dojo.load("some.module", dojo._addMagic); // which adds dojo.fakeFunction
 		//
 		for(var i in d){
 			// if a) it isn't there, 2) isn't private, and c) is a function:

@@ -439,12 +439,24 @@ dojo.provide("plugd.base");
 			return this; // dojo.NodeList
 		},
 
+		selectable: function(selectable){
+			// summary: 
+			//		Sets these nodes' selectable state based on a passed boolean param.
+			//		see: `dojo.setSelectable`
+			//
+			// selectable: Boolean?
+			//		Pass true to allow the nodes to be selectable. False/null to prevent.
+
+			return this; // dojo.NodeList
+		},
+
 =====*/
 
 		show: _each(d.show),
 		hide: _each(d.hide),
 		toggle: _each(d.toggle),
 		destroy: _each(d.destroy), 
+		selectable: _each(d.setSelectable),
 		
 		create: function(/* String */tagName){
 			// summary: Create a new element for each of the nodes in this list
@@ -706,37 +718,7 @@ dojo.provide("plugd.base");
 			
 			return this.size(boxType)[0].h; // Number
 		},
-	*/
-		first: function(callback, thisObj){
-			//	summary:
-			//		Call some function, but only on the first element in this NodeList,
-			//		and without raising an exception if the NodeList is empty.
-			//
-			// example:
-			// | dojo.query(".foo").first(function(n){ .. });
-
-			// FIXME: should the args match "dojo.hitch" ? 
-			//		first(this, "foo") // this.foo() in scope of this
-			//		first(function(){}) // anon in global
-			//		first(this, this.foo) // this.foo() in scope of this
-			//		first(foo, this.foos) // this.foos() in scope of foo
-			
-			if(this.length) {
-				callback.call(thisObj || d.global, this[0]);
-			}
-			return this; // dojo.NodeList 
-		},
-		
-		last: function(callback, thisObj){
-			//	summary:
-			//		Call some function, but only on the last element in the NodeList,
-			//		and without raising an exception if the NodeList is empty
-			if(this.length) {
-				callback.call(thisObj || d.global, this[this.length - 1]);
-			}
-			return this; // dojo.NodeList 
-		},
-		
+	*/		
 		// END REDUNDANT REMOVAL, make sure there is one after this always we intend to keep
 		// as to not break with a stray comma after exlude block removal.		
 		//>>excludeEnd("redundant")
@@ -808,6 +790,7 @@ dojo.provide("plugd.base");
 				d[(_jankyEvent.test(e.type) ? "add" : "remove") + "Class"](this, className);
 			});
 		}
+		
 	});
 	
 	//>>excludeStart("magicQuery", kwArgs.magicQuery == "off");
