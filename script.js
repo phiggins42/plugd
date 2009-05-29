@@ -1,5 +1,4 @@
 dojo.provide("plugd.script");
-dojo.require("plugd.base");
 ;(function(d){
 
 	// one-time lookups / vars:
