@@ -1,5 +1,7 @@
 dojo.provide("plugd.trans");
 dojo.require("plugd.base");
+dojo.require("dojo.NodeList-traverse");
+
 //>> add build exclude for dojo.js
 (function(){
 	// common in plugd base.js
@@ -8,18 +10,7 @@ dojo.require("plugd.base");
 		place = d.place;
 	
 	d.extend(d.NodeList, {
-	
-		prepend: function(/* String */tag){
-			// summary: Prepend some markup to each of the matched Nodes
-			//
-			// example:
-			//	dojo.query("a.link").prepend("<img src='foo.png'>");
-			//
-			return this.forEach(function(n){ // dojo.NodeList
-				place(tag, n, "first");
-			});
-		},
-	
+		
 		content: function(content){
 			// summary: set or get the content of the matched Nodes. 
 			//
