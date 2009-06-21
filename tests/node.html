@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.node</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>
+		<!--script type="text/javascript" src="../base.js"></script-->
+		<script type="text/javascript" src="../node.js"></script>
+
+		<!-- testing click/connect stuff -->
+		<script type="text/javascript" src="../trigger.js"></script>
+		
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						
+						function basic(t){
+							var n = $$("bar");
+							n.innerHTML = "<p>hi!</p>";
+							n.attr("id", "foo");
+							t.is(dojo.query("#foo p").length, 1);
+						},
+						
+						function basic2(t){
+							$$(dojo.create("div")).place(dojo.body()).attr("id", "newId");
+							t.is(1, dojo.query("#newId").length);
+						},
+						
+						function anim(t){
+							$$(dojo.place("<p>yo!</p>", dojo.body()))
+								.css({ opacity:0 })
+								.animate({
+									properties:{
+										padding:30
+									}
+								})
+							;
+						},
+						
+						function find(t){
+							var n = $$("list");
+							t.is("list", n.id);
+							
+							var nl = n.find("li");
+							t.is(2, nl.length);
+							
+							t.is("list", nl.end().id);
+						},
+						
+						function cssgetter(t){
+							var n = $$("cssy");
+							t.t(/5/.test(n.css("paddingTop")));
+						},
+						
+						function csssetterSingle(t){
+							var n = $$("cssy");
+							n.css("padding", "10px");
+							t.t(/10/.test(n.css("paddingTop")));
+						},
+						
+						// TODO: fadeIn (async) / fadeOut / animate
+						//	attr (see css)
+						// clone
+						// setSelectable, isDescendant
+						
+						// hasClass, addClass, toggleClass, removeClass
+						function classy(t){
+							var n = $$("classy");
+							
+							t.t(n.hasClass("foo"), "basic hasclass true");
+							t.f(n.hasClass("bam"), "basic hasclass false");
+							
+							n.addClass("bam");
+							t.t(n.hasClass("bam"), "after known addclass");
+							
+							n.removeClass("bam");
+							t.f(n.hasClass("bam"), "after known removeclass");
+							
+							n.toggleClass("bam");
+							t.t(n.hasClass("bam"), "after known addclass noargs");
+							
+							t.t(n.hasClass("foo"), "sanity, class exists");
+							n.toggleClass("foo", true);
+							t.t(n.hasClass("foo"), "toggleclass force true should leave");
+							n.toggleClass("foo");
+							t.f(n.hasClass("foo"), "toggleClass should remove");
+						},
+						
+						function empty(t){
+							
+							var n = $$("list");
+							
+							t.is(2, n.find("li").length);
+							
+							n.empty();
+							
+							t.is(0, n.find("li").length, "should be empty");
+							
+							n.innerHTML = "<li>new</li>";
+							t.is(1, n.find("li").length);
+							
+						},
+						
+						function destroy(t){
+							
+							var n = dojo.place("<p class='unique'>foo</p>", dojo.body());
+
+							t.is(1, dojo.query("p.unique").length);
+							
+							var s = dojo.node(n);
+							s.destroy();
+							
+							t.is(0, dojo.query("p.unique").length);
+							
+						},
+						
+						function place(t){
+							
+							var target = dojo.node("placey");
+							t.is(1, target.find("li").length);
+							
+							var n = dojo.node("movery").place("placey");
+							t.is(2, target.find("li").length);
+							
+							n.place("placey", "first");
+							t.is(2, target.find("li").length);
+							t.is("movery", target.find("li")[0].id);
+							
+							n.place(target);
+							t.is(2, target.find("li").length);
+							
+						},
+						
+						function connect(t){
+							
+							var clicked = 0;
+							var listen = dojo.node("evtest");
+							listen.connect("onclick", function(e){
+								clicked++;
+							})
+							
+							dojo.trigger("tehtrigger", "click");
+							t.is(1, clicked, "was not triggered");
+							
+							listen.disconnect("onclick");
+
+							dojo.trigger("tehtrigger", "click");
+							t.is(1, clicked, "did not disconnect");
+							
+						}
+						
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+		<div id="bar"></div>
+		<ul id="list"><li>a</li><li>a</li></ul>
+		<p id="cssy" style="border:1px solid #000; padding:5px;">Lorem.</p>
+		<p id="classy" class="foo baz">The quick brown fox.</p>
+
+		<div>
+			<ul id="placey"><li>a</li></ul><ul><li id="movery">b</li></ul>
+		</div>
+
+		<div id="evtest">
+			<p id="tehtrigger">trigger</p>
+		</div>
+		
+	</body>
+</html>

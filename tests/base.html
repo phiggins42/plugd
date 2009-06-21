@@ -18,10 +18,13 @@
 		</style>
 		
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
-		<script type="text/javascript" src="../base.js"></script>
+
 		<script type="text/javascript">
 			dojo.require("doh.runner");
-
+			dojo.require("dojo.NodeList-manipulate");
+			dojo.require("dojo.NodeList-traverse");
+			dojo.require("plugd.base");
+			
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
@@ -50,44 +53,14 @@
 						},
 						
 						// FIXME: need async tests for "slow", "fast", and "mild" -- ugh
-						
-						function appendTo(t){
-							
-							dojo.query("#bar > li").appendTo("#foo");
-							t.is(2, dojo.query("#foo > li").length);
-							
-						},
-
-						function append(t){
-						
-							dojo.query("#appendTest").append("#appendMe");
-							var id = dojo.query("#appendTest > #appendMe")[0].id;
-							t.is(id, "appendMe");
-							
-						},
-
-						function appendClone(t){
-							dojo.query("div.needsData").append("p.cloneMe", true);
-							t.is(4, dojo.query("#cloneTest p").length);
-						},
-						
+												
 						function destroy(t){
 							
 							dojo.query("#bar").destroy();
 							t.is(undefined, dojo.byId("bar"));
 							
 						},
-						
-						function wrap(t){
-							
-							var n = dojo.query("#foo").wrap("div")[0].id;
-							// returned the right list:
-							t.is(n, "foo");
-							// parent is a div
-							t.is(dojo.byId("foo").parentNode.nodeName.toLowerCase(), "div")
-							
-						},
-						
+												
 						function create(t){
 						
 							var n = dojo.create("div");
@@ -129,7 +102,7 @@
 								.create("<p class='created'>created</p>")
 									.removeClass('created')
 									.addClass('changed')
-									.appendTo(".inbar")
+									.appendTo("#foo")
 								.end()
 								// do more with id="foo" matches:
 								// ...
@@ -141,20 +114,20 @@
 							
 						},
 						
-						function wrapList(t){
-							
-							dojo.query("#foo")
-								.wrap("div", true)
-									.addClass("hasBar")
-								.end()
-								.addClass("innerBar")
-							;
-								
-							var n = dojo.query(".hasBar > .innerBar").length;
-							t.is(1, n);
-							
-						},
-						
+//						function wrapList(t){
+//							
+//							dojo.query("#foo")
+//								.wrap("div", true)
+//									.addClass("hasBar")
+//								.end()
+//								.addClass("innerBar")
+//							;
+//								
+//							var n = dojo.query(".hasBar > .innerBar").length;
+//							t.is(1, n);
+//							
+//						},
+//						
 						function get(t){
 							if(dojo.NodeList.prototype.__compatMode){
 								t.is(dojo.byId("appendTest"), dojo.query("#appendTest").get());
@@ -196,13 +169,14 @@
 							t.is(v, "bar");
 						},
 						
-						function val_multi(t){
-						
-							var l = dojo.query("#withval, #newval").val();
-							t.is(2, l.length);
-							t.is(l[0], dojo.byId("withval").value);
-							t.is(l[1], dojo.byId("newval").value);
-						},
+//						function val_multi(t){
+//						
+//							var l = dojo.query("#withval, #newval").val();
+//							console.dir(l);
+//							t.is(2, l.length);
+//							t.is(l[0], dojo.byId("withval").value);
+//							t.is(l[1], dojo.byId("newval").value);
+//						},
 						
 						function val_multi_set(t){
 							var n = "newValue";

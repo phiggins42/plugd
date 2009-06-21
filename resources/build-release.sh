@@ -10,7 +10,7 @@ mv build_notice.txt _build_notice.txt
 touch build_notice.txt
 
 # all the build options are defined in `pluginProfile.js`
-./build.sh profileFile=../../plugd/resources/pluginProfile.js action=clean,release
+./build.sh profileFile=../../plugd/resources/pluginProfile.js action=clean,release "$@"
 
 # restore build_notice
 mv _build_notice.txt build_notice.txt

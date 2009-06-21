@@ -9,34 +9,34 @@
 		
 		<script type="text/javascript">
 			dojo.require("doh.runner");
+			dojo.require("dojo.NodeList-manipulate");
 
 			dojo.addOnLoad(function(){
 				doh.register("t", 
 					[
 					
-						function prepend(t){
-							
-							dojo.query("#pa").prepend("<span>before:</span>");
-							var s = dojo.query("#pa span");
-							t.is(1, s.length);
-							t.is("before:", s[0].innerHTML);
-							
-						},
+//						function prepend(t){
+//							
+//							dojo.query("#pa").prepend("<span>before:</span>");
+//							var s = dojo.query("#pa span");
+//							t.is(1, s.length);
+//							t.is("before:", s[0].innerHTML);
+//							
+//						},
 						
-						function prepend_td(t){
-							var tds = dojo.query("td"); 
-							var x = tds.prepend("<p>touched:</p>");
-							
-							t.is(tds.length, x.length);
-							
-							t.is(tds.length, dojo.query("td p").length)
-						},
+//						function prepend_td(t){
+//							var tds = dojo.query("td"); 
+//							var x = tds.prepend("<p>touched:</p>");
+//							
+//							t.is(tds.length, x.length);
+//							
+//							t.is(tds.length, dojo.query("td p").length)
+//						},
 						
 						function content(t){
 							
-							var h = dojo.query(".first").content();
-							t.is(1, h.length);
-							t.is("first", h[0]);
+							var h = dojo.query(".first").text();
+							t.is("first", dojo.trim(h));
 							
 						},
 						

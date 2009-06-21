@@ -489,13 +489,15 @@ dojo.provide("plugd.base");
 				return d.create(tagName);
 			})._stash(this); 
 		},
-		
+
+/* in Dojo trunk/1.4:		
 		clone: function(){
 			// summary: Clone the matched nodes, and return a stashed NodeList of the new nodes
 			return this.map(function(n){ // dojo.NodeList
 				return d.clone(n);
 			})._stash(this); 
 		},
+*/		
 		
 		// no need for combine or chain, we'll let you make choppy animations, too:
 		animate: function(/* Object */props, /* Integer? */duration, /* Function? */easing, /* Function? */onEnd){
@@ -554,8 +556,9 @@ dojo.provide("plugd.base");
 				}
 			}); 
 		},
-		
-		wrap: function(/* String */nodeType, /* newList? */newList){
+
+/*		
+		wrap: function(nodeType, newList){
 			// summary: Wrap a list of nodes in a nodeType, returning this NodeList, or
 			//		a new `dojo.NodeList` of the newly created elements by setting a parameter
 			//
@@ -590,15 +593,16 @@ dojo.provide("plugd.base");
 			});
 			return !newList ? this : nl._stash(this); // dojo.NodeList
 		},
-		
-		appendTo: function(/* String|DomNode */selector){
+*/		
+/* in Dojo 1.4 / NodeList-manipulate		
+		appendTo: function(selector){
 			// summary: Append each of the nodes in this list to some other node.
 			// 
 			// description:
 			//		Append each of the nodes in this list to some other node defined
 			//		by a passed selector or node reference. Only the first result 
 			//		of the selector query will be used.
-			//
+			// selector: String|DomNode
 			// example:
 			// |	dojo.query("li.clicked").appendTo("ul#someId");
 			
@@ -610,8 +614,9 @@ dojo.provide("plugd.base");
 				}) : this; 
 				// Fails silently, too - hooray for convenience 
 		},
-		
-		append: function(/* String|DomNode */selector, /* Boolean? */clone){
+*/
+/* in Dojo 1.4 / NodeList-manipulate		
+		append: function(selector, clone){
 			// summary: Append some found node to this NodeList.
 			//
 			// description:
@@ -620,7 +625,9 @@ dojo.provide("plugd.base");
 			//		If not cloning, the found node will be added to the last
 			//		element in this list, which could be a single-element list
 			//		anyway. 
-			//
+			// selector: String|DomNode
+			// clone: Boolean?
+			//		Clone the nodes, or simply pass the one element to all
 			// example:
 			//	|	dojo.query(".bar").append(d.create('div'));
 			//
@@ -639,6 +646,7 @@ dojo.provide("plugd.base");
 			}
 			return this; // dojo.NodeList
 		},
+*/
 		
 		size: function(boxType){
 			// summary: 
@@ -722,10 +730,11 @@ dojo.provide("plugd.base");
 		// END REDUNDANT REMOVAL, make sure there is one after this always we intend to keep
 		// as to not break with a stray comma after exlude block removal.		
 		//>>excludeEnd("redundant")
-				
+
+/* In Dojo 1.4 / NodeList-manipulate				
 		// now I'm just making stuff up, this may or may not be the API:
 		// (it's not. jq .attr always returns a list iirc)
-		val: function(/* String? */value){
+		val: function(value){
 			// summary: Get or set a list of values of this list.
 			//
 			// set: String?
@@ -745,7 +754,7 @@ dojo.provide("plugd.base");
 				return v.length === 1 ? v[0] : v; // dojo.NodeList|String
 			}
 		},
-		
+*/		
 		// this is a fun one, and down here to avoid comma issues:
 		hover: function(/* Function */over, /* Function? */out){
 			// summary: Registers functions for this list of nodes to be run
@@ -841,8 +850,8 @@ dojo.provide("plugd.base");
 		//	or someone has called dojo.conflict())
 		//	|	if(dojo.config.conflict){ /* $ is available */ }
 		//
-		$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
-		$.fn.ready = d.addOnLoad;
+		window.$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
+		window.$.fn.ready = d.addOnLoad;
 		d.config.conflict = true; // set to true so other things can know we're in conflict mode
 	}
 
