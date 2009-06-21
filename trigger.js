@@ -56,4 +56,21 @@ dojo.provide("plugd.trigger");
 	
 	d.NodeList.prototype.trigger = d.NodeList._adaptAsForEach(triggerEvent);
 	
+	if(d._Node && !d._Node.fn.trigger){
+		d._Node.fn.trigger = function(ev){
+			// summary:
+			//		Fire some some event originating from this node.
+			//		Only available if both the trigger and node plugin 
+			//		are enabled. 
+			//
+			// ev: String
+			//		Some string event name to fire. eg: "onclick", "submit"
+			//
+			// example:
+			//	|	dojo.node("someAnchorId").trigger("click");
+			triggerEvent(this, ev);
+			return this;
+		}
+	}
+	
 })(dojo);

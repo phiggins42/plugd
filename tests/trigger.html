@@ -4,6 +4,7 @@
 	<head>
 		<title>Testing dojo.fx</title>
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../node.js"></script>
 		<script type="text/javascript" src="../trigger.js"></script>
 		<script type="text/javascript">
 			dojo.require("doh.runner");
@@ -13,7 +14,7 @@
 					[
 						function simple(t){
 							
-							var d = new dojo.Deferred();
+							var d = new doh.Deferred();
 							var clicks = 0;
 							var timer = setTimeout(function(){
 								d.errback();
@@ -42,7 +43,7 @@
 						
 						function simplequery(t){
 							
-							var d = new dojo.Deferred();
+							var d = new doh.Deferred();
 							dojo.query("#foo").onclick(function(e){
 								t.is("click", e.type);
 								d.callback(true);
@@ -59,7 +60,7 @@
 						function simpleFunc(t){
 
 							var fires = 0;
-							var d = new dojo.Deferred();
+							var d = new doh.Deferred();
 							var obj = {
 								method: function(){
 									// console.log('fired', this);
@@ -89,7 +90,7 @@
 						},
 												
 						function triggerArgs(t){
-							var d = new dojo.Deferred();
+							var d = new doh.Deferred();
 							dojo.trigger(null, function(a,b,c){
 								t.is(1, a);
 								t.is(2, b);
@@ -98,6 +99,17 @@
 							}, 1, 2, 3);
 							return d;
 							
+						},
+						
+						function nodetrigger(t){
+							var d = new doh.Deferred();
+							var n = dojo.node("nodetest");
+							
+							n.connect("onclick", function(e){
+								d.callback(true);
+							}).trigger("onclick");
+							
+							return d;
 						}
 					
 					]
@@ -131,5 +143,6 @@
 			<li id="my_1">1</li><li id="my_2">2</li><li id="my_3">3</li>
 		</ul>
 		
+		<p id="nodetest">hi</p>
 	</body>
 </html>
