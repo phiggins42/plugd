@@ -2,7 +2,7 @@ dojo.provide("plugd.node");
 // summary: The `Node` Module. Provides dojo._Node, and dojo.node
 
 (function(d){
-	
+		
 	d._Node = function(){
 		// summary: 
 		//		A private Class-like object which is decorated onto each node
@@ -161,6 +161,20 @@ dojo.provide("plugd.node");
 			return d.query(selector, this)._stash(this); // dojo.NodeList
 		},
 		
+		toList: function(){
+			// summary:
+			//		Promote this Node instance into a single-item `dojo.NodeList`
+			//
+			// example:
+			//	|	var n = dojo.node("foo");
+			//	|	n.toList().map(function(node){ });
+			//	|	n.toList().onclick(function(e){}).end().innerHTML = "<p>Hi!</p>";
+			//		
+			// returns: dojo.NodeList
+			
+			return d.query(this)._stash(this);
+		},
+		
 		// events:
 		_connects:[],
 		
@@ -189,10 +203,10 @@ dojo.provide("plugd.node");
 			//		Connect a click event to an anonymous function setting the scope to `someObj`
 			//	|	dojo.node("someThing").connect("onclick", someObj, function(e){ ... });
 			
-			var a = d._toArray(arguments),
-				sig = [this, a.shift()].concat(a) // uhm - try a.unshift(this) pete. 
-			;
-			this._connects.push(d.connect.apply(this, sig));
+			var a = d._toArray(arguments);
+			a.unshift(this);
+			
+			this._connects.push(d.connect.apply(this, a));
 			return this;
 		},
 		
@@ -299,7 +313,7 @@ dojo.provide("plugd.node");
 		//		does a basic sanity check around the node-finding. Returns either 
 		//		the enhanced Node instance or undefined if not found.
 		//
-		//		BOTH ehanced methods and native DOM properties are available in this node.
+		//		BOTH enhanced methods and native DOM properties are available in this node.
 		//		eg: the .addClass method is "magic", whereas items like .innerHTML and .id are
 		//		available direcly as the native setter/getter ways.
 		//
@@ -317,6 +331,7 @@ dojo.provide("plugd.node");
 		//		in an identical manner.
 		//
 		// example:
+		//		
 		//	|	var n = dojo.node("foo");
 		//	|	if(n.hasClass("bar")){
 		//	|		n.connect("mouseenter", function(e){ ... })	
