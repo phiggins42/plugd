@@ -149,6 +149,16 @@
 							dojo.trigger("tehtrigger", "click");
 							t.is(1, clicked, "did not disconnect");
 							
+						},
+						
+						function basicclonetest(t){
+							
+							$$("cloneme").clone().place("clonetest").id = "cloneme2";
+
+							var nl = dojo.query("#clonetest > div");
+							
+							t.is(2, nl.length);
+							
 						}
 						
 					]
@@ -170,5 +180,8 @@
 			<p id="tehtrigger">trigger</p>
 		</div>
 		
+		<div id="clonetest">
+			<div id="cloneme"></div>
+		</div>
 	</body>
 </html>

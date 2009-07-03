@@ -16,22 +16,17 @@ dojo.provide("plugd.node");
 		//
 		//		THIS API SHOULD NOT BE USED DIRECTLY. This is a sibling [private] function
 		//		to `dojo.node`, which will return an instance of this Class.
-		//
-		//		A Public extension point is provided as `dojo._Node.fn`, simply mix new functions
-		//		into this prototype alias to enable.
 		//	
 		// example:
 		//		Adds a `setColor` method to all Nodes passed through `dojo.node`. 
-		//	|	dojo.mixin(dojo._Node.fn, {
+		//	|	dojo.extend(dojo._Node, {
 		//	|		setFontColor: function(color){ return this.style("color", color); }
 		//	|	});
 		//
 	};
 	
-	d._Node.fn = d._Node.prototype;
 	var mix = d._mixin;
-	
-	d.mixin(d._Node.fn, {
+	d.extend(d._Node, {
 		
 		// Animations
 		fadeOut: function(/* Object? */props){
@@ -41,7 +36,7 @@ dojo.provide("plugd.node");
 			// example:
 			//	|	dojo.node("foo").fadeOut();
 			
-			d.fadeOut(mix({ node: this }, props)).play();
+			this._anim = d.fadeOut(mix({ node: this }, props)).play();
 			return this; // dojo._Node
 		},
 		
@@ -52,8 +47,8 @@ dojo.provide("plugd.node");
 			// example:
 			//	|	dojo.node("foo").fadeIn();
 			
-			d.fadeIn(mix({ node: this }, props)).play();
-			return this;
+			this._anim = d.fadeIn(mix({ node: this }, props)).play();
+			return this; // dojo.Node
 		},
 		
 		animate: function(props){
@@ -64,8 +59,8 @@ dojo.provide("plugd.node");
 			// example:
 			//	|	dojo.node("bar").animate({ properties:{ opacity:0.2, padding:30 }});
 			
-			d.animateProperty(mix({ node: this }, props)).play();
-			return this;
+			this._anim = d.animateProperty(mix({ node: this }, props)).play();
+			return this; // dojo.Node
 		},
 		
 		// DOM operations. 
@@ -99,15 +94,15 @@ dojo.provide("plugd.node");
 			// 
 			// example:
 			//	|	dojo.node("someId").place("anotherId", "before");
-
+			
 			d.place(this, location, position);
 			return this; // dojo._Node
 		},
-
+		
 		attr: function(key, val){
 			// summary: 
 			//		Attribute getter/setter. Syntax identical to `dojo.attr`
-
+			
 			if(val === undefined){
 				return d.attr(this, key); // Anything
 			}else{
@@ -122,7 +117,7 @@ dojo.provide("plugd.node");
 			//
 			// example:
 			//	|	dojo.node("foo").empty();
-
+			
 			d.empty(this);
 			return this; // dojo._Node
 		},
@@ -130,16 +125,16 @@ dojo.provide("plugd.node");
 		destroy: function(){
 			// summary: 
 			//		Destroy this node, and cleanup event connections.
-
+			
 			d.forEach(this._connects, d.disconnect);
 			d.destroy(this);
-			delete this; // heh, why?
+			
 		},
 		
 		clone: function(){
 			// summary:
 			//		Clone this node, returning a new instance of the decorated Node.
-
+			
 			var n = d.clone(this);
 			return d.node(n); // dojo._Node
 		},
@@ -347,7 +342,7 @@ dojo.provide("plugd.node");
 		//>>excludeEnd("nodebug");
 			// fixme: check if the n/id is already a dojo._Node instance?
 			n.constructor = d._Node;
-			mix(n, d._Node.fn);
+			mix(n, d._Node.prototype);
 		//>>excludeStart("nodebug", kwArgs.noDebug);
 		}
 		//>>excludeEnd("nodebug");
@@ -358,10 +353,8 @@ dojo.provide("plugd.node");
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on")
 	if(d.config.conflict){
 	//>>excludeEnd("autoConflict");
-		
 		// setup the double-bling in conflict mode.
 		d.global["$$"] = d.node;
-
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on")	
 	}
 	//>>excludeEnd("autoConflict");
