@@ -207,7 +207,7 @@ dojo.provide("plugd.node");
 		
 		disconnect: function(ev){
 			// summary:
-			//		Disconnect the events attached to this node by name.
+			//		Disconnect the events attached to this node by event name.
 			// 
 			// example:
 			//		Connect and disconnect an onclick event:
@@ -329,7 +329,7 @@ dojo.provide("plugd.node");
 		//		
 		//	|	var n = dojo.node("foo");
 		//	|	if(n.hasClass("bar")){
-		//	|		n.connect("mouseenter", function(e){ ... })	
+		//	|		n.connect("mouseenter", function(e){ ... }).style.top = "10px";
 		//	|	} 
 		//	
 		// example:

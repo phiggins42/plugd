@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.keys / dojo.vals</title>
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("plugd.keys");
+			
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						function keys(t){
+							
+							var obj = {
+								a:"b", b:"c", c:"d"
+							};
+							
+							var k = dojo.keys(obj);
+							var v = dojo.vals(obj);
+							
+							t.t(dojo.isArray(k));
+							t.t(dojo.isArray(v));
+							
+							t.is(3, k.length);
+							t.is(3, v.length);
+							
+							dojo.forEach(k, function(item, index){
+								t.is(obj[item], v[index], "checking order" +  index);
+							});
+							
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+		<h1>Base Plugins QuickTest</h1>
+	</body>
+</html>
