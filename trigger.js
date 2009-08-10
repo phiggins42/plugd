@@ -1,7 +1,15 @@
 dojo.provide("plugd.trigger");
 (function(d){
-
-	d._trigger = function(node, event){
+	
+	var isfn = d.isFunction, 
+		leaveRe = /mouse(enter|leave)/, 
+		_fix = function(_, p){
+			return "mouse" + (p == "enter" ? "over" : "out"); 
+		},
+		mix = d._mixin
+	;
+	
+	d._trigger = function(node, event, extraArgs){
 		// summary: 
 		//		Helper for `dojo.trigger`, which handles the DOM cases. We should never
 		//		be here without a nodeNode reference and a string eventname.
@@ -9,16 +17,21 @@ dojo.provide("plugd.trigger");
 		event = event && event.slice(0, 2) == "on" ? event.slice(2) : event;
 		if(d.doc.createEvent){
 			var evObj = d.doc.createEvent("HTMLEvents");
+			event = event.replace(leaveRe, _fix);
 			evObj.initEvent(event, true, true);
 			node.dispatchEvent(evObj);
 		}else if(d.doc.createEventObject){
-			node.fireEvent("on" + event);
+			var onevent = "on" + event;
+			try{
+				node.fireEvent(onevent);
+			}catch(e){
+				// a lame duck to work with
+				isfn(node[onevent]) && node[onevent]({ type: event, target: node, fake: true });
+			}
 		}
 	};
-
-	var isfn = d.isFunction;
-	
-	d.trigger = function(obj, event){
+		
+	d.trigger = function(obj, event, extraArgs){
 		// summary: 
 		//		Trigger some event. It can be either a Dom Event, Custom Event, 
 		//		or direct function call. 
@@ -42,6 +55,9 @@ dojo.provide("plugd.trigger");
 		//		In the object-firing case, this method can be a function or
 		//		a string version of a member function, just like `dojo.hitch`.
 		//
+		// extraArgs: Object...
+		//		Currently unused. 
+		//
 		// example: 
 		//	|	dojo.connect(node, "onclick", function(e){ /* stuff */ });
 		//	|	// later:
@@ -64,7 +80,7 @@ dojo.provide("plugd.trigger");
 		//		return value is received from the triggered event. 
 
 		return (isfn(obj) || isfn(event) || isfn(obj[event])) ? 
-			d.hitch.apply(d, arguments)() : d._trigger(obj, event);
+			d.hitch.apply(d, arguments)() : d._trigger.apply(d, arguments);
 	};
 	
 	// adapt for dojo.query:
