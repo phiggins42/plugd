@@ -236,6 +236,22 @@
 							}
 							
 							return d;
+						},
+						
+						function customBubbles(t){
+							
+							var d = new doh.Deferred();
+							
+							var trap = dojo.byId("custombubbles");
+							dojo.connect(trap, "onCustom", function(e){
+								console.dir(e);
+								d.callback(true);
+							});
+							
+							dojo.trigger("bubbletrigger", "onCustom");
+							
+							return d;
+							
 						}
 					
 					]
@@ -281,6 +297,9 @@
 		
 		<p id="unconnected"></p>
 		
+		<div id="custombubbles">
+			<p id="bubbletrigger"></p>
+		</div>
 		
 	</body>
 </html>
