@@ -46,7 +46,7 @@ dojo.provide("plugd.PeriodicUpdater");
 			// mix defaults, start maybe:
 			d.mixin(this, args);
 			this.node = d.byId(node);
-			if(this.autoStart){ this.start(); }
+			this.autoStart && this.start();
 		},
 
 		start: function(){
