@@ -4,7 +4,7 @@ dojo.provide("plugd.keys");
 	
 	// dojo.keys is an object hash of contstants like dojo.keys.ENTER
 	// save them to restore in a moment
-	var k = d._mixin({}, dojo.keys);
+	var k = d.keys; // d._mixin({}, dojo.keys);
 
 	// overload the dojo.keys ns
 	d.keys = function(obj){
