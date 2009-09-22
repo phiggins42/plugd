@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.connectLive</title>
+
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript" src="../connectLive.js"></script>
+		<script type="text/javascript" src="../trigger.js"></script>
+		
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+
+			dojo.addOnLoad(function(){
+				doh.register("t", 
+					[
+						
+						function basicSanity(t){
+							var d = new doh.Deferred();
+							
+							var handle = dojo.connectLive("#foo", "click", function(e){
+								dojo.disconnectLive(handle);
+								d.callback(true);
+							});
+							
+							dojo.trigger("foo", "click");
+							dojo.trigger("foo", "click");
+							
+							return d;
+						},
+						
+						function bubbleTest(t){
+							
+							var d = new doh.Deferred();
+							
+							var handle = dojo.connectLive("#foo", "click", function(e){
+								dojo.disconnectLive(handle);
+								d.callback(true);
+							});
+							
+							dojo.trigger("footrigger", "click");
+							
+							return d;
+							
+						},
+						
+						function multiMatchTest(t){
+							
+							var d = new doh.Deferred(), 
+								count = 0,
+								cb = function(){
+									count++;
+									if(count == 2){
+										d.callback(true);
+									}
+								}
+							;
+							
+							dojo.connectLive("#foo", "click", cb);
+							dojo.connectLive("#footrigger", "click", cb);
+							
+							dojo.trigger("footrigger", "click");
+							
+							return d;
+							
+						},
+						
+						function multiNode(t){
+							
+							var d = new doh.Deferred();
+							var count = 0;
+							
+							var handle = dojo.connectLive("div.needsData", "click", function(e){
+								count++;
+								if(count == 3){
+									dojo.disconnectLive(handle);
+									d.callback(true);
+								}
+							});
+				
+							dojo.query("#cloneTest div").trigger("click");
+							
+							
+							
+							return d;
+						}
+					
+					]
+				);
+				doh.run();
+			});
+		</script>
+	<body>
+
+		<ul id="foo"><li class="bar" id="footrigger">one</li></ul>
+		<ul id="bar"><li class="inbar">one</li></ul>
+
+		<div id="cloneTest">
+			<div class="needsData"></div>
+			<div class="needsData"></div>
+			<div class="needsData"></div>
+		</div>
+
+		<div id="appendTest"></div> <div id="appendMe">now</div>
+
+		<p id="showMe" style="display:none">I'm hidden</p>
+		
+		<input id="withval" value="baz" type="text"> 
+		<input id="nullval" value="" type="text">
+		<input id="newval" value="baz" type="text">
+		
+		<ul>
+			<li id="my_1">1</li><li id="my_2">2</li><li id="my_3">3</li>
+		</ul>
+		
+		<p id="nodetest">hi</p>
+	</body>
+</html>
