@@ -158,33 +158,6 @@
 							
 						},
 						
-						function val_get(t){
-							var v = dojo.query("#withval").val();
-							t.is(v, "baz");
-						},
-						
-						function val_set(t){
-							dojo.query("#withval").val("bar");
-							var v = dojo.query("#withval").val();
-							t.is(v, "bar");
-						},
-						
-//						function val_multi(t){
-//						
-//							var l = dojo.query("#withval, #newval").val();
-//							console.dir(l);
-//							t.is(2, l.length);
-//							t.is(l[0], dojo.byId("withval").value);
-//							t.is(l[1], dojo.byId("newval").value);
-//						},
-						
-						function val_multi_set(t){
-							var n = "newValue";
-							dojo.query("#withval, #newval").val(n);
-							t.is(n, dojo.byId("withval").value);
-							t.is(n, dojo.byId("newval").value);
-						},
-						
 						function generate_custom(t){
 							var id = dojo.generateId("my_");
 							t.is("my_4", id);
@@ -375,6 +348,24 @@
 						
 						function conflict_query(t){
 							t.is(1, $("#foo").length);
+						},
+						
+						function testnow(t){
+							t.t(dojo.now());
+						},
+						
+						function testnowdiff(t){
+							var d = new doh.Deferred();
+							
+							var x = dojo.now();
+							setTimeout(function(){
+								var n = dojo.now();
+								t.t(n > x); // did time pass?
+								t.t(n - x >= 500); // did 500ms pass?
+								d.callback(true);
+							}, 500);
+							
+							return d;
 						}
 					]
 				);

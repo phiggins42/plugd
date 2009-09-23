@@ -369,9 +369,27 @@ dojo.provide("plugd.base");
 		//	|		console.log("key is", key); // a, c
 		//	|	}))
 		//
+		scope = scope || d.global;
 		for(var key in obj){
-			callback.call(scope || d.global, obj[key], key, obj);
+			callback.call(scope, obj[key], key, obj);
 		}
+	}
+	
+	d.now = function(){
+		// summary: Get a timestamp from NOW. Can be used for XHR timestamps,
+		//		or anywhere else a unique timestamp is required.
+		//
+		// example:
+		//	Slightly more convenient than `cacheBust:true`
+		//	|	dojo.xhrGet({ url:"foo.php?" + dojo.now() });
+		//
+		// example:
+		//	|	var n = dojo.now();
+		//	|	for(var i = 0; i < 100; i++){
+		//	|		/* do something expensive, lots */
+		//	|	}
+		//	|	console.log("took", dojo.now() - n, "ms");
+		return +(new Date()); // Number
 	}
 	
 	// wrap them into dojo.NodeList
@@ -821,8 +839,11 @@ dojo.provide("plugd.base");
 		//	example:
 		//	|	dojo.query("<div class='foo'>bar</div>").removeClass("foo").appendTo("#baz");
 		//
-		var c = d.isString(query) && query.charAt(0) == "<";
-		return oldQuery(c ? d.create(query) : query, scope) // dojo.NodeList
+		var c = d.isString(query) && query.charAt(0) == "<",
+			r = oldQuery(c ? d.create(query) : query, scope);
+		// r.selector = query; // maybe nice to add?
+		// r.context = scope; // ditto?
+		return r; // dojo.NodeList
 	}
 	
 	//>>excludeEnd("magicQuery");
