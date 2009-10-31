@@ -40,7 +40,7 @@ dojo.provide("plugd.base");
 		showProperty  = useLayout ? "visible" : (d.config.useBlock ? "block" : ""),
 		
 		_getDuration = function(arg){
-			return (arg in speedMap) ? speedMap[arg] : speedMap.fast;
+			return speedMap[arg in speedMap ? arg : "fast"];
 		},
 		
 		// these too are for ShrinkSafe's benefit. 
@@ -375,6 +375,38 @@ dojo.provide("plugd.base");
 		}
 	}
 	
+	d.compose = function(/* Function... */){
+		// summary: Returns the composition of a list of functions.
+		//
+		// description: 
+		//		Returns the composition of a list of functions, where each
+		//		function consumes the return value of the function that follows.
+		//		
+		//		additionally, if one of the functions returns an array, the values
+		//		of that array are passed to the next function in the composition
+		//		as positional arguments.
+		//
+		//		This function is provided with a plethora of other useful functional
+		//		programming utilities in the official `dojox.lang.functional` package
+		//		named `lambda`.
+		//
+		// example:
+		//	|	var greet = function(name){ return "Hi: " + name; };
+		//	|	var exclaim = function(statement){ return statement + "!"; };
+		//	|	var welcome = dojo.compose(greet, exclaim);
+		//	|	welcome("Pete");
+		//	|	// Hi: Pete!
+		
+		var list = d._toArray(arguments);
+		return function(){ // function
+			var a = arguments;
+			d.forEach(list, function(fn){
+				a = fn.apply(this, d.isArrayLike(a) ? a : [a]);
+			});
+			return a; // Anything
+		}
+	}
+	
 	d.now = function(){
 		// summary: Get a timestamp from NOW. Can be used for XHR timestamps,
 		//		or anywhere else a unique timestamp is required.
@@ -389,7 +421,7 @@ dojo.provide("plugd.base");
 		//	|		/* do something expensive, lots */
 		//	|	}
 		//	|	console.log("took", dojo.now() - n, "ms");
-		return +(new Date()); // Number
+		return +new Date(); // Number
 	}
 	
 	// wrap them into dojo.NodeList
@@ -749,7 +781,7 @@ dojo.provide("plugd.base");
 		// as to not break with a stray comma after exlude block removal.		
 		//>>excludeEnd("redundant")
 
-/* In Dojo 1.4 / NodeList-manipulate				
+/* In Dojo 1.4 / NodeList-manipulate
 		// now I'm just making stuff up, this may or may not be the API:
 		// (it's not. jq .attr always returns a list iirc)
 		val: function(value){

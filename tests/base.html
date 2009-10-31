@@ -366,6 +366,71 @@
 							}, 500);
 							
 							return d;
+						},
+						
+						function compose(t){
+							
+							var first = function(param){
+								return "A" + param;
+							}
+							
+							var second = function(total){
+								return total + "A";
+							}
+							
+							var fn = dojo.compose(first, second);
+							
+							var x = fn("a");
+							
+							t.is("AaA", x);
+						},
+						
+						function compose_example(t){
+							
+							var greet = function(name){ return "hi: " + name; };
+							var exclaim = function(statement){ return statement + "!"; };
+							var welcome = dojo.compose(greet, exclaim);
+							
+							t.is(welcome("moe"), "hi: moe!");
+							
+						},
+						
+						function compose_array_return(t){
+							
+							var one = function(a){
+								return [a, a + "a"]
+							}
+							var two = function(a, b){
+								t.is("aa", b);
+								t.is("a", a);
+								return b + a;
+							}
+							
+							var meh = dojo.compose(one, two);
+							var ret = meh("a");
+							
+							t.is("aaa", ret);
+							
+						},
+						
+						function deep_compose(t){
+							
+							var adda = function(a){
+								return a + "a";
+							}
+							var addb = function(b){
+								return b + "b";
+							}
+							
+							var foo = dojo.compose(adda, dojo.compose(adda, addb), addb);
+							var bar = dojo.compose(adda, adda, addb, addb);
+							
+							t.is(foo("c"), bar("c"));
+							t.is(foo("x"), "xaabb");
+							
+							var baz = dojo.compose(foo, bar);
+							t.is(baz("z"), "zaabbaabb");
+							
 						}
 					]
 				);
