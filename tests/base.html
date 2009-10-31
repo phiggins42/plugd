@@ -431,6 +431,68 @@
 							var baz = dojo.compose(foo, bar);
 							t.is(baz("z"), "zaabbaabb");
 							
+						},
+						
+						function delayTest(t){
+							
+							var n = dojo.now(),
+								d = new doh.Deferred()
+							;
+							
+							dojo.delay(function(){
+								t.t(dojo.now() - n >= 100);
+								d.callback(true);
+							}, 100);
+							
+							return d;
+						},
+						
+						function delayArgs(t){
+							
+							var d = new doh.Deferred();
+							var a = "a", b = "b", c = "c";
+							dojo.delay(function(aa, bb, cc){
+								
+								t.is(3, arguments.length);
+								t.is(a, aa);
+								t.is(b, bb);
+								t.is(c, cc);
+								
+								d.callback(true);
+								
+							}, 100, a, b, c);
+							
+							return d;
+							
+						},
+						
+						function deferTest(t){
+							
+							var d = new doh.Deferred();
+							dojo.defer(function(){
+								d.callback(true);
+							});
+							
+							return d;
+						},
+						
+						function reduceTest(t){
+							
+							var stuff = [
+								{ name:"peter", age:27 },
+								{ name:"joe", age:42 }
+							];
+							
+							var names = dojo.reduce(stuff, "name");
+							var ages = dojo.reduce(stuff, "age");
+							
+							t.t(dojo.isArray(names));
+							t.t(dojo.isArray(ages));
+							
+							t.is("peter", names[0]);
+							t.is("joe", names[1]);
+							t.is(27, ages[0]);
+							
 						}
 					]
 				);

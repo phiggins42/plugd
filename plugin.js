@@ -2,7 +2,7 @@ dojo.provide("plugd.plugin");
 (function(d){
 	
 	// setup the alias:
-	var nl = d.NodeList.prototype;
+	d.fn = d.NodeList.prototype;
 	
 	d.plugin = function(pluginNamespace, fn, way){
 		// summary: 
@@ -46,7 +46,7 @@ dojo.provide("plugd.plugin");
 		//>>excludeEnd("safetyFirst");
 	
 		var f = d[pluginNamespace] = fn;
-		nl[pluginNamespace] = d.NodeList[way || "_adaptAsForEach"](f);
+		d.fn[pluginNamespace] = d.NodeList[way || "_adaptAsForEach"](f);
 	
 		return f; // Function
 	}

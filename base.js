@@ -406,6 +406,52 @@ dojo.provide("plugd.base");
 			return a; // Anything
 		}
 	}
+
+/*=====
+	d.delay = function(fn, timeout, args..){
+		// summary: Delay the execution of some function by a timeout. Any number
+		//		of positional arguments may come after the timeout value. Similar 
+		//		to setTimeout, but with normalized argument handling.
+		//
+		// fn: Function
+		//		The function to execute
+		//
+		// timeout: Integer
+		//		Time (in ms) to delay the execution
+		//
+		// args: Anything
+		//		Any number of positional arguments to pass along to the delayed function
+		// 
+		// example:
+		//	|	// alert after 1 full second
+		//	|	dojo.delay(function(){ alert("hi!") }, 1000);
+		//
+		// example:
+		//	|	// with curried arguments:
+		//	|	dojo.delay(function(a, b, c){ code(); }, 100, "a", "b", "c");
+		//
+		// returns: Timer
+		//		Returns the setTimeout handle for use with clearTimeout
+		return setTimeout(function(){}, timeout);
+	};
+=====*/	
+	
+	d.delay = function(){
+		var args = d._toArray(arguments), fn = args.shift(), timeout = args.shift();
+		return setTimeout(function(){
+			fn.apply(this, args);
+		}, timeout);
+	}
+	
+	d.defer = function(fn){
+		// summary: Defer execution until the current callback stack has cleared. Similar to 
+		//		a setTimeout(..., 0).
+		//
+		// example: 
+		//	|	dojo.defer(function(){ alert('UI Updated.'); });
+		//
+		d.delay(fn, 0);
+	}
 	
 	d.now = function(){
 		// summary: Get a timestamp from NOW. Can be used for XHR timestamps,
@@ -421,8 +467,40 @@ dojo.provide("plugd.base");
 		//	|		/* do something expensive, lots */
 		//	|	}
 		//	|	console.log("took", dojo.now() - n, "ms");
-		return +new Date(); // Number
+		return +(new Date()); // Number
 	}
+
+	d.reduce = function(arr, key){
+		// summary: Reduce an array of objects to an array of values from a key in each object.
+		//
+		// arr: Array
+		//		The array to map down
+		//
+		// key: String
+		//		The key to extract the value from on each iteration of the Array `arr`
+		//
+		// example:
+		//	|	var people = [{name:"joe", age:27 }, {name:"pete", age:29}];
+		//	|	var names = dojo.reduce(people, "name");
+		//	|	var ages = dojo.reduce(people, "ages");
+		//	| 	console.log(names, ages);
+		//	|	// [joe, pete], [27, 29]
+		return d.map(arr, function(item){
+			return item[key];
+		});
+	}
+
+/*=====
+	d.all = function(list, iterator, thisObj){
+		// summary: Alias to `dojo.every`
+	}
+	d.any = function(list, iterator, thisObj){
+		// summary: Alias to `dojo.some`
+	}
+=====*/
+
+	d.all = d.every;
+	d.any = d.some;
 	
 	// wrap them into dojo.NodeList
 	d.extend(NodeList, {
