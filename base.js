@@ -45,7 +45,6 @@ dojo.provide("plugd.base");
 		
 		// these too are for ShrinkSafe's benefit. 
 		NodeList = d.NodeList,
-		mirror = NodeList.prototype,
 		_each = NodeList._adaptAsForEach,
 		
 		// for dojo.generateId
@@ -53,10 +52,18 @@ dojo.provide("plugd.base");
 		id_count = 0, 
 		
 		// because IE is insane:
-		_jankyEvent = /enter|over/
+		_jankyEvent = /enter|over/,
+		
+		// dojo.selection function defition (one-time cost to determine):
+		_selection = "getSelection",
+		selection = d.global[_selection] || d.doc[_selection] || function(){
+			return d.doc.selection.createRange().text || "";
+		}
 	;
 
 	// namespace-polluting functions:
+	d[_selection] = function(){ return selection() + ""; }
+	
 	d.unique = function(/* Function */testFn, /* String? */b){
 		// summary: 
 		//		Return a unique string ID for something, based on a passed uniqueness test
@@ -443,7 +450,7 @@ dojo.provide("plugd.base");
 		}, timeout);
 	}
 	
-	d.defer = function(fn){
+	d.defer = function(/* Function */fn){
 		// summary: Defer execution until the current callback stack has cleared. Similar to 
 		//		a setTimeout(..., 0).
 		//
@@ -806,8 +813,9 @@ dojo.provide("plugd.base");
 			//		Determine the contentBox (as opposed to the default "maginBox");
 			//	|	dojo.query("#something").size("contentBox").w;
 
+			boxType = boxType || "marginBox";
 			var s = this.map(function(n){ 
-				return d[boxType || "marginBox"](n);
+				return d[boxType](n);
 			});
 			return s.length == 1 ? s[0] : s; // Array|Object
 		},
@@ -909,6 +917,15 @@ dojo.provide("plugd.base");
 			//	|			}
 			//	|		);
 			//
+			// example:
+			//	Use a function for both over and out states:
+			//	|	dojo.query("ul > li").hover(function(e){
+			//	|		var isOver = /enter|over/.test(e.type);
+			//	|		if(isOver){ doSomething(); }else{
+			//	|			doSomethingElse();
+			//	|		}
+			//	|	});
+			//	
 			return this.onmouseenter(over).onmouseleave(out || over) // dojo.NodeList
 		},
 		
@@ -924,7 +941,7 @@ dojo.provide("plugd.base");
 			//
 
 			return this.hover(function(e){ // dojo.NodeList
-				d[(_jankyEvent.test(e.type) ? "add" : "remove") + "Class"](this, className);
+				d.toggleClass(this, className, _jankyEvent.test(e.type));
 			});
 		}
 		
@@ -981,8 +998,8 @@ dojo.provide("plugd.base");
 		//	or someone has called dojo.conflict())
 		//	|	if(dojo.config.conflict){ /* $ is available */ }
 		//
-		window.$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
-		window.$.fn.ready = d.addOnLoad;
+		d.global.$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
+		d.global.$.fn.ready = d.addOnLoad;
 		d.config.conflict = true; // set to true so other things can know we're in conflict mode
 	}
 

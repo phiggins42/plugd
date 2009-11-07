@@ -15,6 +15,9 @@ dojo.provide("plugd.keys");
 		return ret;
 	}
 	
+	// restore the cloned keymap onto the new function
+	d._mixin(d.keys, k);
+	
 	// for fun
 	d.vals = function(obj){
 		var ret = [];
@@ -23,8 +26,5 @@ dojo.provide("plugd.keys");
 		}
 		return ret;
 	}
-	
-	// restore the cloned keymap onto the new function
-	d.mixin(d.keys, k);
 	
 })(dojo);
