@@ -359,10 +359,13 @@
 							
 							var x = dojo.now();
 							setTimeout(function(){
+								
+								d.callback(true);
+								
 								var n = dojo.now();
 								t.t(n > x); // did time pass?
 								t.t(n - x >= 500); // did 500ms pass?
-								d.callback(true);
+								
 							}, 500);
 							
 							return d;
@@ -440,8 +443,8 @@
 							;
 							
 							dojo.delay(function(){
-								t.t(dojo.now() - n >= 100);
 								d.callback(true);
+								t.t(dojo.now() - n >= 100);
 							}, 100);
 							
 							return d;
@@ -499,6 +502,7 @@
 				doh.run();
 			});
 		</script>
+	</head>
 	<body>
 
 		<h1>Base Plugins QuickTest</h1>

@@ -25,7 +25,7 @@ dependencies = {
 	superMagic: "on",
 	
 	// standard build options:
-	version:"1.3.0-p",
+	version:"1.4.0-p",
 	layerOptimize:"shrinksafe.keepLines",
 	optimize:"shrinksafe",
 	stripConsole:"normal",

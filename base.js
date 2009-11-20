@@ -64,7 +64,7 @@ dojo.provide("plugd.base");
 	// namespace-polluting functions:
 	d[_selection] = function(){ return selection() + ""; }
 	
-	d.unique = function(/* Function */testFn, /* String? */b){
+	d.unique = function(/* Function */testFn, /* String? */base){
 		// summary: 
 		//		Return a unique string ID for something, based on a passed uniqueness test
 		//		function. Anything that returns a truthy value will suffice. 
@@ -75,7 +75,7 @@ dojo.provide("plugd.base");
 		//		until a falsy value is returned. The first failed string is returned to the
 		//		original caller, and is unique to whichever scope the caller intended.
 		//
-		// b: String?
+		// base: String?
 		//		An optional base to use as the prefix of the ID. defaults to "djid_"
 		//
 		// example:
@@ -95,12 +95,13 @@ dojo.provide("plugd.base");
 		//	|	var newDijitId = d.unique(dijit.byId, "dijit_auto");
 		//	|	new dijit.Dialog({ id: newDijitId, title:"Random" });
 		//
-		do{ globalId = (b || "djid_") + (++id_count); }
+		base = base || "djid_";
+		do{ globalId = base + (++id_count); }
 		while(testFn(globalId));
 		return globalId; // String
 	}
 
-	d.generateId = function(/* String? */b){
+	d.generateId = function(/* String? */base){
 		// summary: Generate an ID for a domNode, ensuring the id does not
 		//		exist previously in the DOM.
 		//
@@ -109,7 +110,7 @@ dojo.provide("plugd.base");
 		//		exist in the DOM at the time of execution. A unique number 
 		//		is appended to some string, and checked for uniqueness.
 		//
-		//	b: String?
+		//	base: String?
 		//		An optional base string to use for the id prefix. Defaults
 		//		to `djid_`
 		//
@@ -122,7 +123,7 @@ dojo.provide("plugd.base");
 		// example:
 		//	| dojo.create("div", { id: dojo.generateId() })
 		//
-		return d.unique(d.byId, b); // String
+		return d.unique(d.byId, base); // String
 	}
 	
 	d.load = function(){
@@ -147,12 +148,18 @@ dojo.provide("plugd.base");
 		//	|	dojo.load("dojo.NodeList-fx", function(){
 		//	|		dojo.query(".hidden").fadeIn().play();
 		//	|	});
+		//
+		// example:
+		//		Load multiple modules and register a `dojo.addOnLoad` function
+		//	|	dojo.load("dojo.fx", "dojo.NodeList-fx", function(){
+		//	|		dojo.query(".blah").anim({ opacity:0.5 });
+		//	|	})
 
 		var a = d._toArray(arguments), l = a.length,
 			f = l && !d.isString(a[l - 1]) ? a.pop() : null;
 
 		d.forEach(a, d.require, d);
-		f && d.addOnLoad(f);
+		f && d.ready(f);
 	}
 	
 	d.show = function(/* String|DomNode */n, /* String? */arg){
@@ -930,7 +937,7 @@ dojo.provide("plugd.base");
 		},
 		
 		hoverClass: function(/* String */className){
-			// summary: add or remove a passed class name to these nodes
+			// summary: add or remove a passed class name to these nodes when hovered
 			//
 			// className: String
 			//		The class string to add or remove based on hover state.
@@ -943,6 +950,46 @@ dojo.provide("plugd.base");
 			return this.hover(function(e){ // dojo.NodeList
 				d.toggleClass(this, className, _jankyEvent.test(e.type));
 			});
+		},
+		
+		grab: function(url, extraArgs, method){
+			// summary: Grab some remote HTML and inject into these nodes.
+			//
+			// url: String
+			//		A url to fetch. Uses `dojo.xhr`, so must be same domain
+			//
+			// extraArgs: dojo._ioArgs?
+			//		An Optional parameter to mix in other standard dojo._ioArgs
+			//		into this request. (such as sync, timeout, error callbacks, 
+			//		and so on.)
+			// 
+			// method: String?
+			//		An optional HTTP verb to use. defaults to `GET`. Defines the transport 
+			//		to use, like POST/PUT/DELETE, and so on. 
+			//
+			// example:
+			//	|	dojo.query("#header").grab("header.html");
+			//
+			// example:
+			//	By using extraArgs we can make this NodeList xhr action synchronous
+			//	so the following chained functions apply to the newly injected markup.
+			//	|	dojo.query("ul li").grab("listitem.html", { sync:true })
+			//	|		.query("a").onclick(function(e){ dojo.stopEvent(e); });
+			//
+			// example:
+			//	An extraArgs load: function can be used to manipulate the data before
+			//	it is injected into the node. Simply return valid HTML from the callback.
+			//	|
+			//	|	dojo.query("ul#bar").grab("foo.json", { 
+			//	|		handleAs:"json",
+			//	|		load:function(response){
+			//	|			return dojo.replace("<li>{title}</li>", response);
+			//	|		}
+			//	|	});
+			
+			this.length && d.xhr(method || "GET", d._mixin({ url:url }, extraArgs))
+				.addCallback(this, function(r){ this.addContent(r, "only"); });
+			return this; // dojo.NodeList
 		}
 		
 	});
@@ -999,7 +1046,7 @@ dojo.provide("plugd.base");
 		//	|	if(dojo.config.conflict){ /* $ is available */ }
 		//
 		d.global.$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
-		d.global.$.fn.ready = d.addOnLoad;
+		d.global.$.fn.ready = d.ready;
 		d.config.conflict = true; // set to true so other things can know we're in conflict mode
 	}
 
