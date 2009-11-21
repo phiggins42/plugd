@@ -18,7 +18,7 @@ dojo.provide("plugd.node");
 		//		to `dojo.node`, which will return an instance of this Class.
 		//	
 		// example:
-		//		Adds a `setColor` method to all Nodes passed through `dojo.node`. 
+		//		Adds a `setFontColor` method to all Nodes passed through `dojo.node`. 
 		//	|	dojo.extend(dojo._Node, {
 		//	|		setFontColor: function(color){ return this.style("color", color); }
 		//	|	});
@@ -53,7 +53,7 @@ dojo.provide("plugd.node");
 		
 		animate: function(props){
 			// summary:
-			//		Animate one (or many) CSS properties of this node. Accepts identical paramters to
+			//		Animate one (or many) CSS properties of this node. Accepts identical parameters to
 			//		`dojo.animateProperty`, though omitting the `node:` member (assumed to be this node)
 			//
 			// example:
@@ -80,7 +80,7 @@ dojo.provide("plugd.node");
 			//		Set multiple styles with an object hash
 			//	|	dojo.node("someId").css({ opacity:1, padding:"5px" })
 			
-			if(val === undefined && !d.isObject(key)){
+			if(val === undefined && d.isString(key)){
 				return d.style(this, key); // String
 			}else{
 				d.style(this, key, val);
@@ -103,7 +103,7 @@ dojo.provide("plugd.node");
 			// summary: 
 			//		Attribute getter/setter. Syntax identical to `dojo.attr`
 			
-			if(val === undefined){
+			if(val === undefined && d.isString(key)){
 				return d.attr(this, key); // Anything
 			}else{
 				d.attr(this, key, val);
