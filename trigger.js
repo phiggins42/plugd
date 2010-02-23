@@ -26,7 +26,12 @@ dojo.provide("plugd.trigger");
 				node.fireEvent(onevent);
 			}catch(e){
 				// a lame duck to work with
-				isfn(node[onevent]) && node[onevent]({ type: event, target: node, fake: true });
+				isfn(node[onevent]) && node[onevent](mix({ type: event, target: node, fake: true }, extraArgs));
+				// handle bubbling of custom events. 
+				if(node !== dojo.doc && node.parentNode){
+					node = node.parentNode;
+					d._trigger.apply(d, arguments);
+				}
 			}
 		}
 	};

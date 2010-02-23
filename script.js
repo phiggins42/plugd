@@ -48,7 +48,7 @@ dojo.provide("plugd.script");
 					if(e.type == "load" || re.test(s.readyState)){
 						d.disconnect(c);
 						callback && callback.call(s, e);
-						if(!preserve){ h.removeChild(s); }
+						!preserve && h.removeChild(s);
 					}
 				})
 			;

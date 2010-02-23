@@ -20,14 +20,14 @@ dojo.require("dojo.fx.easing");
 			case "32" : opts.top = -13; break;
 		}
 		
-		dojo.query("li", n).forEach(function(n){
+		d.query("li", n).forEach(function(n){
 
-			dojo.connect(n, "mouseenter", function(){
-				dojo.anim(n, { marginTop:opts.top }, 320, dojo.fx.easing.backOut);
+			d.connect(n, "mouseenter", function(){
+				d.anim(n, { marginTop:opts.top }, 320, d.fx.easing.backOut);
 			});
 			
-			dojo.connect(n, "mouseleave", function(){
-				dojo.anim(n, { marginTop:0 }, 500, dojo.fx.easing.bounceOut);
+			d.connect(n, "mouseleave", function(){
+				d.anim(n, { marginTop:0 }, 500, d.fx.easing.bounceOut);
 			});
 
 		});

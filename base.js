@@ -349,9 +349,8 @@ dojo.provide("plugd.base");
 	======*/
 	
 	d.sub = d.subscribe;
-	d.pub = function(){
-		var a = d._toArray(arguments);
-		d.publish(a.shift(), a);
+	d.pub = function(t){
+		d.publish(t, d._toArray(arguments, 1));
 	}
 	
 	d.forIn = function(obj, callback, scope){
@@ -385,6 +384,7 @@ dojo.provide("plugd.base");
 		//
 		scope = scope || d.global;
 		for(var key in obj){
+			// FIXME: i feel like these are backwards? should it be function(key, value) ?
 			callback.call(scope, obj[key], key, obj);
 		}
 	}
@@ -422,7 +422,7 @@ dojo.provide("plugd.base");
 	}
 
 /*=====
-	d.delay = function(fn, timeout, args..){
+	d.delay = function(fn, timeout, args...){
 		// summary: Delay the execution of some function by a timeout. Any number
 		//		of positional arguments may come after the timeout value. Similar 
 		//		to setTimeout, but with normalized argument handling.
@@ -450,8 +450,8 @@ dojo.provide("plugd.base");
 	};
 =====*/	
 	
-	d.delay = function(){
-		var args = d._toArray(arguments), fn = args.shift(), timeout = args.shift();
+	d.delay = function(fn, timeout){
+		var args = d._toArray(arguments, 2);
 		return setTimeout(function(){
 			fn.apply(this, args);
 		}, timeout);
@@ -511,10 +511,22 @@ dojo.provide("plugd.base");
 	d.any = function(list, iterator, thisObj){
 		// summary: Alias to `dojo.some`
 	}
+	d.each = function(list, iterator, thisObj){
+		// summary: Shorthand for forEach or forIn, depending on what you pass it.
+		//
+		// example:
+		//	|	d.each({ a:"b" }, function(value, keyName){ });
+		//
+		// example:
+		//	|	d.each([1,2,3], function(item, index){ });
+	}
 =====*/
 
 	d.all = d.every;
 	d.any = d.some;
+	d.each = function(list){
+		return list && d[(d.isArrayLike(list) ? "forEach" : "forIn")].apply(d, arguments);
+	}
 	
 	// wrap them into dojo.NodeList
 	d.extend(NodeList, {
@@ -1045,7 +1057,8 @@ dojo.provide("plugd.base");
 		//	or someone has called dojo.conflict())
 		//	|	if(dojo.config.conflict){ /* $ is available */ }
 		//
-		d.global.$ = d.mixin(function(){ return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} });
+		d.global.$ = d.mixin(function(){ 
+			return d.mixin(d.query.apply(this, arguments), $.fn); }, { fn: {} } );
 		d.global.$.fn.ready = d.ready;
 		d.config.conflict = true; // set to true so other things can know we're in conflict mode
 	}
