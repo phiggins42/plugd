@@ -19,6 +19,7 @@ dojo.provide("plugd.trigger");
 			var evObj = d.doc.createEvent("HTMLEvents");
 			event = event.replace(leaveRe, _fix);
 			evObj.initEvent(event, true, true);
+			extraArgs && mix(evObj, extraArgs);
 			node.dispatchEvent(evObj);
 		}else if(d.doc.createEventObject){
 			var onevent = "on" + event;
@@ -60,8 +61,10 @@ dojo.provide("plugd.trigger");
 		//		In the object-firing case, this method can be a function or
 		//		a string version of a member function, just like `dojo.hitch`.
 		//
-		// extraArgs: Object...
-		//		Currently unused. 
+		// extraArgs: Object?
+		//		An object to mix into the `event` object passed to any bound 
+		//		listeners. Be careful not to override important members, like
+		//		`type`, or `preventDefault`. It will likely error.
 		//
 		// example: 
 		//	|	dojo.connect(node, "onclick", function(e){ /* stuff */ });
@@ -80,6 +83,16 @@ dojo.provide("plugd.trigger");
 		//	|	// fire an anonymous function:
 		//	|	dojo.trigger(d.global, function(){ /* stuff */ });
 		//
+		// example:
+		//	|	// with a connected function like:
+		//	|	dojo.connect(dojo.doc, "onclick", function(e){
+		//	|		if(e && e.manuallydone){
+		//	|			console.log("this was a triggered onclick, not natural");
+		//	|		}
+		//	|	});
+		//	|	// fire onclick, passing in a custom bit of info
+		//	|	dojo.trigger("someId", "onclick", { manuallydone:true });
+		//
 		// returns: Anything
 		//		Will not return anything in the Dom event case, but will return whatever
 		//		return value is received from the triggered event. 
@@ -91,7 +104,7 @@ dojo.provide("plugd.trigger");
 	// adapt for dojo.query:
 	/*=====
 	dojo.extend(dojo.NodeList, {
-		trigger: function(event){
+		trigger: function(event, data){
 			// summary:
 			//		Trigger some DOM Event originating from each of the nodes in this
 			//		`dojo.NodeList`. 
@@ -99,9 +112,13 @@ dojo.provide("plugd.trigger");
 			// event: String
 			//		Any strig identifier for the event.type to be triggered.
 			//
+			// data: Object
+			//		Just like `extraArgs` for `dojo.trigger`, additional data
+			//		to mix into the event object.
+			//
 			// example:
 			//	|	dojo.query("a").trigger("onclick");
-
+			
 			return this; // dojo.NodeList
 		}
 	});
@@ -111,7 +128,7 @@ dojo.provide("plugd.trigger");
 	// if the node.js module is available, extend trigger into that.
 	if(d._Node && !d._Node.prototype.trigger){
 		d.extend(d._Node, {
-			trigger: function(ev){
+			trigger: function(ev, data){
 				// summary:
 				//		Fire some some event originating from this node.
 				//		Only available if both the `dojo.trigger` and `dojo.node` plugin 
@@ -120,11 +137,15 @@ dojo.provide("plugd.trigger");
 				// ev: String
 				//		Some string event name to fire. eg: "onclick", "submit"
 				//
+				// data: Object
+				//		Just like `extraArgs` for `dojo.trigger`, additional data
+				//		to mix into the event object.
+				//
 				// example:
 				//	|	// fire onlick orginiating from a node with id="someAnchorId"
 				//	|	dojo.node("someAnchorId").trigger("click");
 
-				d._trigger(this, ev);
+				d._trigger(this, ev, data);
 				return this; // dojo._Node
 			}
 		});

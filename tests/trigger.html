@@ -244,7 +244,6 @@
 							
 							var trap = dojo.byId("custombubbles");
 							dojo.connect(trap, "onCustom", function(e){
-								console.dir(e);
 								d.callback(true);
 							});
 							
@@ -252,6 +251,41 @@
 							
 							return d;
 							
+						},
+						
+						function customData(t){
+							var d = new doh.Deferred();
+							
+							var trap = dojo.byId("customData");
+							var h = dojo.connect(trap, "onData", function(e, data){
+								dojo.disconnect(h);
+								if(e.bar && e.bar == "baz"){
+									d.callback(true);
+								}else{
+									d.errback('oops');
+								}
+							});
+							
+							dojo.trigger(trap, "onData", { bar:"baz" });
+
+							return d;
+						},
+						
+						function standardEventCustomData(t){
+							var d = new doh.Deferred();
+							
+							var trap = dojo.byId("customData");
+							dojo.connect(trap, "onclick", function(e, data){
+								if(e.bar && e.bar == "baz"){
+									d.callback(true);
+								}else{
+									d.errback('oops');
+								}
+							});
+							
+							dojo.trigger(trap, "onclick", { bar:"baz" });
+							
+							return d;
 						}
 					
 					]
@@ -301,6 +335,8 @@
 		<div id="custombubbles">
 			<p id="bubbletrigger"></p>
 		</div>
+		
+		<div id="customData"></div>
 		
 	</body>
 </html>
