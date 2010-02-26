@@ -392,11 +392,14 @@
 						}
 					}
 				}
-				var mixedTests = [];
-				dojo.forEach(dojo.NodeList.events, function(ev){
-					mixedTests.push(makeMixedCase(ev));
-				});
-				doh.register("mixed", mixedTests);
+				
+				// these don't work. IE/opera fire event names case insensitive 
+				
+				//var mixedTests = [];
+				//dojo.forEach(dojo.NodeList.events, function(ev){
+				//	mixedTests.push(makeMixedCase(ev));
+				//});
+				//doh.register("mixed", mixedTests);
 				
 				doh.run();
 			});

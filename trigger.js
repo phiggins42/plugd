@@ -6,52 +6,48 @@ dojo.provide("plugd.trigger");
 		_fix = function(_, p){
 			return "mouse" + (p == "enter" ? "over" : "out"); 
 		},
-		mix = d._mixin
-	;
-
-	// the guts of the node triggering logic:
-	var realTrigger = d.doc.createEvent ? 
-		function(n, e, a){
-			// the sane branch
-			var ev = d.doc.createEvent("HTMLEvents");
-			e = e.replace(leaveRe, _fix);
-			ev.initEvent(e, true, true);
-			a && mix(ev, a);
-			n.dispatchEvent(ev);
-		} : 
-		function(n, e, a){
-			// the IE branch
-			var ev = "on" + e, stop = false;
-			try{
-				n.fireEvent(ev);
-			}catch(er){
-				// a lame duck to work with. we're probably a 'custom event'
-				var evdata = mix({ 
-					type: e, target: n, faux: true,
-					// HACK: [needs] added support for customStopper to _base/event.js
-					_stopper: function(){ stop = this.cancelBubble; }
-				}, a);
+		mix = d._mixin,
+		
+		// the guts of the node triggering logic:
+		// the function accepts node (not string|node), "on"-less event name,
+		// and an object of args to mix into the event. 
+		realTrigger = d.doc.createEvent ? 
+			function(n, e, a){
+				// the sane branch
+				var ev = d.doc.createEvent("HTMLEvents");
+				e = e.replace(leaveRe, _fix);
+				ev.initEvent(e, true, true);
+				a && mix(ev, a);
+				n.dispatchEvent(ev);
+			} : 
+			function(n, e, a){
+				// the janktastic branch
+				var ev = "on" + e, stop = false;
+				try{
+					n.fireEvent(ev);
+				}catch(er){
+					// a lame duck to work with. we're probably a 'custom event'
+					var evdata = mix({ 
+						type: e, target: n, faux: true,
+						// HACK: [needs] added support for customStopper to _base/event.js
+						_stopper: function(){ stop = this.cancelBubble; }
+					}, a);
 				
-				isfn(n[ev]) && n[ev](evdata);
-				
-				// handle bubbling of custom events, unless the event was stopped.
-				while(!stop && n !== d.doc && n.parentNode){
-					n = n.parentNode;
 					isfn(n[ev]) && n[ev](evdata);
+				
+					// handle bubbling of custom events, unless the event was stopped.
+					while(!stop && n !== d.doc && n.parentNode){
+						n = n.parentNode;
+						isfn(n[ev]) && n[ev](evdata);
+					}
 				}
-
-//				if(!stop && n !== d.doc && n.parentNode){
-//					n = n.parentNode;
-//					realTrigger.apply(d, arguments);
-//				}
 			}
-		}
 	;
 	
-	d._trigger = function(node, event, extraArgs){
+	d._trigger = function(/* DomNode|String */node, /* String */event, extraArgs){
 		// summary: 
 		//		Helper for `dojo.trigger`, which handles the DOM cases. We should never
-		//		be here without a nodeNode reference and a string eventname.
+		//		be here without a domNode reference and a string eventname.
 		node = d.byId(node); 
 		event = event && event.slice(0, 2) == "on" ? event.slice(2) : event;
 		realTrigger.apply(this, arguments);
