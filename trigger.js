@@ -8,6 +8,45 @@ dojo.provide("plugd.trigger");
 		},
 		mix = d._mixin
 	;
+
+	// the guts of the node triggering logic:
+	var realTrigger = d.doc.createEvent ? 
+		function(n, e, a){
+			// the sane branch
+			var ev = d.doc.createEvent("HTMLEvents");
+			e = e.replace(leaveRe, _fix);
+			ev.initEvent(e, true, true);
+			a && mix(ev, a);
+			n.dispatchEvent(ev);
+		} : 
+		function(n, e, a){
+			// the IE branch
+			var ev = "on" + e, stop = false;
+			try{
+				n.fireEvent(ev);
+			}catch(er){
+				// a lame duck to work with. we're probably a 'custom event'
+				var evdata = mix({ 
+					type: e, target: n, faux: true,
+					// HACK: [needs] added support for customStopper to _base/event.js
+					_stopper: function(){ stop = this.cancelBubble; }
+				}, a);
+				
+				isfn(n[ev]) && n[ev](evdata);
+				
+				// handle bubbling of custom events, unless the event was stopped.
+				while(!stop && n !== d.doc && n.parentNode){
+					n = n.parentNode;
+					isfn(n[ev]) && n[ev](evdata);
+				}
+
+//				if(!stop && n !== d.doc && n.parentNode){
+//					n = n.parentNode;
+//					realTrigger.apply(d, arguments);
+//				}
+			}
+		}
+	;
 	
 	d._trigger = function(node, event, extraArgs){
 		// summary: 
@@ -15,26 +54,7 @@ dojo.provide("plugd.trigger");
 		//		be here without a nodeNode reference and a string eventname.
 		node = d.byId(node); 
 		event = event && event.slice(0, 2) == "on" ? event.slice(2) : event;
-		if(d.doc.createEvent){
-			var evObj = d.doc.createEvent("HTMLEvents");
-			event = event.replace(leaveRe, _fix);
-			evObj.initEvent(event, true, true);
-			extraArgs && mix(evObj, extraArgs);
-			node.dispatchEvent(evObj);
-		}else if(d.doc.createEventObject){
-			var onevent = "on" + event;
-			try{
-				node.fireEvent(onevent);
-			}catch(e){
-				// a lame duck to work with
-				isfn(node[onevent]) && node[onevent](mix({ type: event, target: node, fake: true }, extraArgs));
-				// handle bubbling of custom events. 
-				if(node !== dojo.doc && node.parentNode){
-					node = node.parentNode;
-					d._trigger.apply(d, arguments);
-				}
-			}
-		}
+		realTrigger.apply(this, arguments);
 	};
 		
 	d.trigger = function(obj, event, extraArgs){
@@ -65,6 +85,10 @@ dojo.provide("plugd.trigger");
 		//		An object to mix into the `event` object passed to any bound 
 		//		listeners. Be careful not to override important members, like
 		//		`type`, or `preventDefault`. It will likely error.
+		//
+		//		Additionally, extraArgs is moot in the object-triggering case,
+		//		as all arguments beyond the `event` are curried onto the triggered
+		//		function.
 		//
 		// example: 
 		//	|	dojo.connect(node, "onclick", function(e){ /* stuff */ });
@@ -125,6 +149,16 @@ dojo.provide("plugd.trigger");
 	=====*/
 	if(d.NodeList){ d.NodeList.prototype.trigger = d.NodeList._adaptAsForEach(d._trigger); }
 	
+	// theoretically faster. lots more bytes. 
+//	if(d.NodeList){ 
+//		d.NodeList.prototype.trigger = function(ev, data){
+//			ev = ev && ev.slice(0, 2) == "on" ? ev.slice(2) : ev;
+//			return this.forEach(function(n){
+//				realTrigger(n, ev, data);
+//			});
+//		}
+//	}
+//	
 	// if the node.js module is available, extend trigger into that.
 	if(d._Node && !d._Node.prototype.trigger){
 		d.extend(d._Node, {

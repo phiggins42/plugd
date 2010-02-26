@@ -10,8 +10,10 @@
 
 		<script type="text/javascript">
 			dojo.require("doh.runner");
-
 			dojo.addOnLoad(function(){
+				
+				
+				
 				doh.register("t", 
 					[
 						function simple(t){
@@ -286,10 +288,116 @@
 							dojo.trigger(trap, "onclick", { bar:"baz" });
 							
 							return d;
+						},
+						
+						function mixedCaseEvent(t){
+							
+							var d = new doh.Deferred();
+							
+							
+							var n = dojo.byId("mixedCase");
+							var h = dojo.connect(n, "onCustom", function(e){
+								dojo.disconnect(h);
+								d.errback("should not have fired" + e.type);
+							});
+							
+							try{
+								dojo.trigger(n, "oncustom");
+							}catch(e){
+								console.warn(e);
+							}
+							
+							setTimeout(function(){
+								dojo.disconnect(h);
+								d.callback(true);
+							}, 400);
+							
+							return d;
+							
+						},
+						
+						function oppositeMixedCase(t){
+							var d = new doh.Deferred();
+							
+							var n = dojo.byId("mixedCase2");
+							var h = dojo.connect(n, "onClick", function(e){
+								dojo.disconnect(h);
+								d.errback("should not have fired camel onClick:" + e.type);
+							});
+							
+							dojo.trigger(n, "onclick");
+							
+							setTimeout(function(){
+								dojo.disconnect(h);
+								d.callback(true);
+							}, 400);
+							
+							return d;
+						},
+						
+						function stoppingPropagation(t){
+							
+							var d = new doh.Deferred();
+							
+							var parent = dojo.byId("propagationtest");
+							dojo.connect(parent, "customclick", function(e){
+								d.errback("was not stopped"); // shouldn't reach.
+							});
+							
+							dojo.connect(dojo.byId("prop_stopper"), "customclick", function(e){
+								//dojo.stopEvent(e);
+								// or 
+								e.stopPropagation();
+								setTimeout(function(){
+									d.callback(true);
+								}, 300);
+							});
+							
+							dojo.trigger("prop_sender", "customclick");
+							
+							return d;
+							
 						}
 					
 					]
 				);
+				
+				var makeMixedCase = function(ev){
+					var cev = ev.charAt(0).toUpperCase() + ev.substr(1);
+					return {
+						name: "nativeEvent" + cev,
+						runTest: function(t){
+
+							// FIXME: this fails in IE. trigger("onClick") fires a 
+							// native "onclick", not the functional brand. 
+
+							var d = new doh.Deferred();
+							var timer; 
+
+							var n = dojo.byId("mixedCase3");
+							var h = dojo.connect(n, "on" + ev, function(e){
+								dojo.disconnect(h);
+								clearTimeout(timer);
+								d.errback("should not have fired native on" + ev + " from on" + cev + ":" + e.type);
+							});
+
+							dojo.trigger(n, "on" + cev);
+
+							timer = setTimeout(function(){
+								dojo.disconnect(h);
+								d.callback(true);
+							}, 100);
+
+							return d;
+						}
+					}
+				}
+				var mixedTests = [];
+				dojo.forEach(dojo.NodeList.events, function(ev){
+					mixedTests.push(makeMixedCase(ev));
+				});
+				doh.register("mixed", mixedTests);
+				
 				doh.run();
 			});
 		</script>
@@ -337,6 +445,16 @@
 		</div>
 		
 		<div id="customData"></div>
+		
+		<div id="mixedCase"></div>
+		<div id="mixedCase2"></div>
+		<div id="mixedCase3"></div>
+		
+		<div id="propagationtest">
+			<ul id="prop_stopper">
+				<li id="prop_sender">ohai!</li>
+			</ul>
+		</div>
 		
 	</body>
 </html>
