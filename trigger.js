@@ -22,14 +22,24 @@ dojo.provide("plugd.trigger");
 			} : 
 			function(n, e, a){
 				// the janktastic branch
-				var ev = "on" + e, stop = false;
+				var ev = "on" + e, stop = false, lc = e.toLowerCase(), node = n; 
 				try{
+// FIXME: is this worth it? for mixed-case native event support:? Opera ends up in the
+//	createEvent path above, and also fails on _some_ native-named events. 
+//					if(lc !== e && d.indexOf(d.NodeList.events, lc) >= 0){
+//						// if the event is one of those listed in our NodeList list
+//						// in lowercase form but is mixed case, throw to avoid
+//						// fireEvent. /me sighs. http://gist.github.com/315318
+//						throw("janktastic");
+//					}
 					n.fireEvent(ev);
 				}catch(er){
+                    console.warn("in catch", er);
 					// a lame duck to work with. we're probably a 'custom event'
 					var evdata = mix({ 
 						type: e, target: n, faux: true,
 						// HACK: [needs] added support for customStopper to _base/event.js
+						// some tests will fail until del._stopPropagation has support.
 						_stopper: function(){ stop = this.cancelBubble; }
 					}, a);
 				
@@ -48,9 +58,9 @@ dojo.provide("plugd.trigger");
 		// summary: 
 		//		Helper for `dojo.trigger`, which handles the DOM cases. We should never
 		//		be here without a domNode reference and a string eventname.
-		node = d.byId(node); 
-		event = event && event.slice(0, 2) == "on" ? event.slice(2) : event;
-		realTrigger.apply(this, arguments);
+		var n = d.byId(node), ev = event && event.slice(0, 2) == "on" ? event.slice(2) : event;
+		realTrigger(n, ev, extraArgs);
+
 	};
 		
 	d.trigger = function(obj, event, extraArgs){
@@ -103,6 +113,10 @@ dojo.provide("plugd.trigger");
 		//	|	// fire an anonymous function:
 		//	|	dojo.trigger(d.global, function(){ /* stuff */ });
 		//
+		// example: 
+		//	|	// fire and anonymous function in the scope of obj
+		//	|	dojo.trigger(obj, function(){ this == obj; });
+		//
 		// example:
 		//	|	// with a connected function like:
 		//	|	dojo.connect(dojo.doc, "onclick", function(e){
@@ -116,7 +130,6 @@ dojo.provide("plugd.trigger");
 		// returns: Anything
 		//		Will not return anything in the Dom event case, but will return whatever
 		//		return value is received from the triggered event. 
-
 		return (isfn(obj) || isfn(event) || isfn(obj[event])) ? 
 			d.hitch.apply(d, arguments)() : d._trigger.apply(d, arguments);
 	};
@@ -126,7 +139,7 @@ dojo.provide("plugd.trigger");
 	dojo.extend(dojo.NodeList, {
 		trigger: function(event, data){
 			// summary:
-			//		Trigger some DOM Event originating from each of the nodes in this
+			//		Trigger some Event originating from each of the nodes in this
 			//		`dojo.NodeList`. 
 			//
 			// event: String
@@ -143,18 +156,8 @@ dojo.provide("plugd.trigger");
 		}
 	});
 	=====*/
-	if(d.NodeList){ d.NodeList.prototype.trigger = d.NodeList._adaptAsForEach(d._trigger); }
-	
-	// theoretically faster. lots more bytes. 
-//	if(d.NodeList){ 
-//		d.NodeList.prototype.trigger = function(ev, data){
-//			ev = ev && ev.slice(0, 2) == "on" ? ev.slice(2) : ev;
-//			return this.forEach(function(n){
-//				realTrigger(n, ev, data);
-//			});
-//		}
-//	}
-//	
+	d.NodeList.prototype.trigger = d.NodeList._adaptAsForEach(d._trigger); 
+
 	// if the node.js module is available, extend trigger into that.
 	if(d._Node && !d._Node.prototype.trigger){
 		d.extend(d._Node, {

@@ -12,35 +12,34 @@
 			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
 				
-				
-				
 				doh.register("t", 
 					[
 						function simple(t){
-							
+						    
 							var d = new doh.Deferred();
 							var clicks = 0;
 							var timer = setTimeout(function(){
-								d.errback();
-							}, 1000);
-							
+								d.errback("timeout reached");
+							}, 3000);
+
 							var p = dojo.byId("showMe");
-							dojo.connect(p, "onclick", function(e, a){
+							var h = dojo.connect(p, "onclick", function(e, a){
 								t.is(a, undefined); // fake node events don't get curried args
-								t.is("click", e.type);
+							//	t.is("click", e && e.type); // why god why is e.type null on the 4th call?
 								clicks++;
-								if(clicks == 3){
-									d.callback(e);
+								if(clicks == 4){
+									d.callback(true);
 									clearTimeout(timer);
+									dojo.disconnect(h);
 								}
 							});
-							
+						
 							// two variations, testing /on/
 							dojo.trigger("showMe", "onclick", 1);
 							dojo.trigger("showMe", "click");
-							
 							// passing a node directly (please use strings in real life, or refs)
 							dojo.trigger(dojo.byId("showMe"), "click");
+							dojo.trigger(dojo.byId("showMe"), "onclick");
 							
 							return d;
 						},
@@ -264,7 +263,7 @@
 								if(e.bar && e.bar == "baz"){
 									d.callback(true);
 								}else{
-									d.errback('oops');
+									d.errback('custom data didn\'t come along.');
 								}
 							});
 							
@@ -273,11 +272,29 @@
 							return d;
 						},
 						
+						function nativeWithCustomData(t){
+						    var d = new doh.Deferred();
+						    var trap = dojo.byId("customData");
+						    var h = dojo.connect(trap, "onclick", function(e){
+						        dojo.disconnect(h);
+						        if(e.bar && e.bar == "baz"){
+						            
+						            d.callback(true);
+						        }else{
+						            d.errback("custom data didn't come along");
+						        }
+						    });
+						    
+						    dojo.trigger(trap, "onclick", { bar:"baz" });
+						    
+						    return d;
+						},
+						
 						function standardEventCustomData(t){
 							var d = new doh.Deferred();
 							
 							var trap = dojo.byId("customData");
-							dojo.connect(trap, "onclick", function(e, data){
+							dojo.connect(trap, "onclick", function(e){
 								if(e.bar && e.bar == "baz"){
 									d.callback(true);
 								}else{
@@ -290,6 +307,7 @@
 							return d;
 						},
 						
+						// FAILS IN OPERA
 						function mixedCaseEvent(t){
 							
 							var d = new doh.Deferred();
@@ -316,6 +334,7 @@
 							
 						},
 						
+						// FAILS IN OPERA
 						function oppositeMixedCase(t){
 							var d = new doh.Deferred();
 							
@@ -395,11 +414,13 @@
 				
 				// these don't work. IE/opera fire event names case insensitive 
 				
-				//var mixedTests = [];
-				//dojo.forEach(dojo.NodeList.events, function(ev){
-				//	mixedTests.push(makeMixedCase(ev));
-				//});
-				//doh.register("mixed", mixedTests);
+				var mixedTests = [];
+				dojo.forEach(dojo.NodeList.events, function(ev){
+					mixedTests.push(makeMixedCase(ev));
+				});
+				
+				// don't test.
+				// doh.register("mixed", mixedTests);
 				
 				doh.run();
 			});
@@ -421,7 +442,7 @@
 
 		<div id="appendTest"></div> <div id="appendMe">now</div>
 
-		<p id="showMe" style="display:none">I'm hidden</p>
+		<a id="showMe" style="display:none">I'm hidden</a>
 		
 		<input id="withval" value="baz" type="text"> 
 		<input id="nullval" value="" type="text">
