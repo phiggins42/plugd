@@ -43,11 +43,15 @@ dojo.crash = function(x){
 	//	|	dojo.connect(node, "onclick", dojo, "crash");
 	//
 	// example:
+	//	Alternate onclick crash, using dojo.query()
+	//	|	dojo.query(".badlink").onclick(dojo.crash);
+	// 
+	// example:
 	//	Crash randomly:
 	//	|	setInterval(function(){
 	//	|		if(Math.random() * 100 > 75){
 	//	|			dojo.crash();
 	//	|		}
 	//	|	}, 1000);
-	for(x in document.open);
+	for(x in close);
 };
