@@ -149,11 +149,11 @@ dojo.provide("plugd.debugging");
 		};
 	});
 
-	var oa = d.attr;
+	var da = d.attr;
 	d.attr = function(){
 		var r;
 		try{
-			r = oa.apply(d, arguments);
+			r = da.apply(d, arguments);
 		}catch(e){
 			warn("attr", "Called attr with:", arguments, " and trapped an exception.")
 		}
