@@ -155,7 +155,7 @@ dojo.provide("plugd.debugging");
 		try{
 			r = da.apply(d, arguments);
 		}catch(e){
-			warn("attr", "Called attr with:", arguments, " and trapped an exception.")
+			warn("attr", "Called attr with:", arguments, " and trapped an exception. Error was:", e);
 		}
 		return r;
 	}
