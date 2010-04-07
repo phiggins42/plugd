@@ -155,7 +155,7 @@ dojo.provide("plugd.debugging");
 		try{
 			r = oa.apply(d, arguments);
 		}catch(e){
-			warn(meth, "Called attr with:", arguments, " and trapped an exception.")
+			warn("attr", "Called attr with:", arguments, " and trapped an exception.")
 		}
 		return r;
 	}
