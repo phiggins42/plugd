@@ -149,6 +149,16 @@ dojo.provide("plugd.debugging");
 		};
 	});
 
+	var oa = d.attr;
+	d.attr = function(){
+		var r;
+		try{
+			r = oa.apply(d, arguments);
+		}catch(e){
+			warn(meth, "Called attr with:", arguments, " and trapped an exception.")
+		}
+		return r;
+	}
 	
 })(dojo);
 //>>excludeEnd("extradebug");
