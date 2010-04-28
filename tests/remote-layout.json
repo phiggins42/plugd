@@ -1,0 +1,49 @@
+{
+
+	type:"dijit.layout.BorderContainer",
+	props:{
+		style:"width:100%; height:100%"
+	},
+	children:[
+		{
+			type:"dijit.layout.ContentPane",
+			props:{
+				region:"left",
+				splitters:"true",
+				style:"width:100px",
+				content:"<h1>Word.<h1>"
+			}
+		},
+		{
+			type:"dijit.layout.TabContainer",
+			props:{
+				region:"center",
+			},
+			children:[
+				{
+					type:"dijit.layout.ContentPane",
+					props:{
+						title:"Tab 1",
+						href:"_snippet.html"
+					}
+				},
+				{
+					type:"dijit.layout.ContentPane",
+					props:{
+						title:"Tab 2",
+						selected:true,
+						href:"_snippet.html"
+					}
+				}
+			]
+		},
+		{
+			type:"dijit.layout.ContentPane",
+			props:{
+				region:"right",
+				style:"width:200px",
+				content:"<p>Right Pane</p>"
+			}
+		}
+	]
+}
