@@ -334,13 +334,13 @@ dojo.provide("plugd.base");
 			//		in order.
 			//
 			// example:
-			//	|	dojo.publish("foo", "bar!");
+			//	|	dojo.pub("foo", "bar!");
 			//
 			// example:
-			//	|	dojo.publish("foo", ["bar"]) 
+			//	|	dojo.pub("foo", ["bar"]) 
 			//
 			// example: 
-			//	|	dojo.publish("foo", { bar:"bar" }, "baz", "bam");
+			//	|	dojo.pub("foo", { bar:"bar" }, "baz", "bam");
 		}
 		dojo.sub = function(){
 			// summary: Convenience alias to `dojo.subscribe`, pairing with `dojo.pub`

@@ -1,7 +1,18 @@
 dojo.provide("plugd.layout");
 (function(d){
 
-	var clsCache = {}, 
+	var clsCache = {},
+
+		uniqueTypes = function(part){
+			// reduce all the .type members of this definition into a list of
+			// modules to dojo.require.
+			var types = [];
+			
+			for(var i in part){ part[i].type && types.push(part[i].type); }
+			
+			return types;
+		},
+		
 		create = d.layout = function(part){
 			
 			// do some mangling:
@@ -25,6 +36,16 @@ dojo.provide("plugd.layout");
 		}
 	;
 
+	d.layoutDfd = function(part){
+		var dfd = new d.Deferred;
+		var requires = uniqueTypes(part);
+		d.forEach(requires, d.require, d);
+		d.ready(function(){
+			d.callback(create(part));
+		});
+		return dfd;
+	}
+	
 /*=====	
 	d.layout = function(def){
 		// summary: Create a Layout from a passed definition

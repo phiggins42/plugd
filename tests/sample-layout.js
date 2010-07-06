@@ -55,6 +55,7 @@ var layout = {
 };
 
 dojo.ready(function(){
+	
 	// make it. chain it even.
 	var main = dojo.layout(layout).placeAt(dojo.body());
 	main.startup();

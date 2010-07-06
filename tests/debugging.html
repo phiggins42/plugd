@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.fx</title>
+		
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script src="../debugging.js"></script>
+		
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			
+			dojo.addOnLoad(function(){
+				
+				var oc = console.warn, warnings = 0, expected = 0;
+				console.warn = function(){
+					warnings++;
+					oc.apply(console, arguments);
+				}
+				
+				doh.register("t", 
+					[
+						function sanity(t){
+							var x = dojo.byId(); // null/missing id
+							var y = dojo.byId("bar"); // no node with id==bar in dom
+							
+							expected += 2;
+							t.is(expected, warnings);
+						},
+						
+						function stylefoo(t){
+						    
+						    // you should write this as dojo.style(node, { .... });
+							dojo.style("styletarget", "color", "red");
+							dojo.style("styletarget", "backgroundColor", "green");
+							dojo.style("styletarget", "backgroundColor", "red");
+							
+							expected += 2;
+							t.is(expected, warnings);
+							
+							// will not warn, despite being same previous style target
+							dojo.style("styletarget", {
+								color:"red", backgroundColor:"green"
+							});
+							t.is(expected, warnings);
+						},
+						
+						function publish(t){
+							dojo.publish("foo", 1);
+							t.is(++expected, warnings);
+							
+							dojo.publish("foo", [1]);
+							t.is(expected, warnings);
+							
+							dojo.publish(null, [1, 2, 3]);
+							t.is(++expected, warnings);
+							
+							dojo.publish(function(){}, [1,2,3]);
+							t.is(++expected, warnings);
+						},
+						
+						function arrays(t){
+							
+							dojo.some([], function(){});
+							dojo.every([], function(){});
+							dojo.forEach([], function(){});
+							dojo.map([], function(a){ return a });
+							dojo.filter([], function(a){ return a; });
+							
+							expected += 5;
+							t.is(expected, warnings);
+							
+							var x;
+							dojo.forEach(x, function(item){});
+							t.is(++expected, warnings);
+
+						},
+						function querying(t){
+						    dojo.query();
+						    dojo.query(".thereisnonodestomatch");
+						    
+						    expected += 2; 
+						    t.is(expected, warnings);
+						    
+						    dojo.query("div", "foobar"); // context is null
+						    t.is(++expected, warnings);
+						    
+						    dojo.query("div", null);
+						    t.is(++expected, warnings);
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="styletarget">abc</div>
+	</body>
+</html>

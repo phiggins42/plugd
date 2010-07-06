@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo._data / NodeList.data</title>
+		
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("plugd.NodeList-data");
+			dojo.addOnLoad(function(){
+				
+				var $ = dojo.query;
+				
+				doh.register("t", 
+					[
+						function basicdata(t){
+							
+							$("#foo").data("bar", 6);
+							t.is(6, $("#foo").data("bar"));
+							
+						},
+						
+						function hashdata(t){
+							
+							$("#foo").data({
+								bar:"baz",
+								foo:"bap"
+							});
+							
+							t.is("baz", $('#foo').data("bar"));
+							t.is("bap", $('#foo').data("foo"));
+							
+						},
+						
+						function butdoesitchain(t){
+							
+							$("#foo").data("bar", 42).style("color", "red");
+							t.is(42, $("#foo").data("bar"));
+						},
+						
+						function getanobjectback(t){
+							
+							$("#foo").data("afoo", 1);
+							$("#foo").data("bfoo", 2);
+							
+							// getters return lists:
+							var obj = $("#foo").data()[0];
+							
+							t.is(1, obj.afoo);
+							t.is(2, obj.bfoo);
+							
+						},
+						
+						function plaindata(t){
+							dojo.query("li").data("bar", 42)
+								.forEach(function(n){
+									t.is(42, dojo._data(n, "bar"));
+								});
+						},
+						
+						function removeData(t){
+							dojo.query("li").removeData("bar");
+							dojo.query("li").forEach(function(n){
+								t.t(!d._data(n, "bar"));
+							})
+						},
+						
+						function obj(t){
+							var x = dojo.query("#foo").data({ bar: { baz:"bam" }}).data("bar")[0];
+							t.is("bam", x.baz);
+							
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="foo">woot.</div>
+		<ul id="bar">
+			<li>baz</li>
+			<li>bam</li>
+		</ul>
+	</body>
+</html>
