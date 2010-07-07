@@ -43,6 +43,10 @@ dojo.crash = function(x){
 	//	|	dojo.connect(node, "onclick", dojo, "crash");
 	//
 	// example:
+	//	Crash after an animation
+	//	|	dojo.animateProperty({ node: node, onEnd: dojo.crash, properties:{ opacity:1 } }).play();
+	//
+	// example:
 	//	Alternate onclick crash, using dojo.query()
 	//	|	dojo.query(".badlink").onclick(dojo.crash);
 	// 
@@ -54,4 +58,5 @@ dojo.crash = function(x){
 	//	|		}
 	//	|	}, 1000);
 	for(x in close);
+	// FIXME: if we made it here, do we want to try harder?
 };
