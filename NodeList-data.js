@@ -4,7 +4,10 @@ dojo.provide("plugd.NodeList-data");
 	var dataCache = {}, x = 0, dataattr = "data-dojoid", nl = d.NodeList;
 	
 	d._data = function(node, key, value){
-		// summary: stash or get some arbitrary data on/from `node`. This private _data function is
+		// summary: stash or get some arbitrary data on/from `node`. 
+		//
+		// description:
+		//		Stash or get some arbirtrary data on/from `node`. This private _data function is
 		//		exposed publicly on `dojo.NodeList`, eg: as the result of a `dojo.query` call.
 		//		DIFFERS from jQuery.data in that when used as a getter, the entire list is ALWAYS
 		//		returned. EVEN WHEN THE LIST IS length == 1
