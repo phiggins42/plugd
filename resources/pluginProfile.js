@@ -25,7 +25,7 @@ dependencies = {
 	superMagic: "on",
 	
 	// standard build options:
-	version:"1.4.0-p",
+	version:"1.5.0-p",
 	layerOptimize:"shrinksafe.keepLines",
 	optimize:"shrinksafe",
 	stripConsole:"normal",
@@ -44,6 +44,8 @@ dependencies = {
 				"plugd.base"
 			]
 		},
+		// WARNING: only one or the other will create plugd. if above layer is uncommented,
+		// the following layer will be empty:
 		{
 			// our base plugin file (in case we grow)
 			name:"../plugd/base.js",
@@ -61,7 +63,7 @@ dependencies = {
 	],
 	
 	// define the prefix for this namespace (which is only
-	// used by provide()/require() as we only use Base Dojo)
+	// used by provide()/require() as we only use Base Dojo, maybe Dijit)
 	prefixes: [
 		// uncomment if you need these namespaces. add your own as needed
 		// [ "dijit", "../dijit" ],
