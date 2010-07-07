@@ -1,4 +1,5 @@
-;(function(d){
+dojo.provide("plugd.block");
+(function(d){
 		
 	d.declare("dojo._Blocker", null, {
 		// summary: The blocker instance used by dojo.block to overlay a node
