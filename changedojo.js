@@ -1,13 +1,18 @@
 dojo.provide("plugd.changedojo");
+/*=====
+	
+	plugd.changedojo = {
+		// summary: Make the Dojo namespace behave like jQuery. 
+		//	example:
+		//	|	dojo(function(){ .. dom is ready .. });
+		//	|	dojo("#someId").forEach(fn).chain().more().cowbell();
+		//	|	dojo.byId("someId");
+	};
+	
+=====*/
 (function(d){
 
-	// summary: Make the Dojo namespace behave like jQuery. 
-	//	example:
-	//	|	dojo(function(){ /* onload */});
-	//	|	dojo("#someId").forEach(fn).chain().more().cowbell();
-	//	|	dojo.byId("someId");
-
-    // replace the old dojo with something a function
+	// replace the old dojo with something a function
 	var d = dojo;
 	dojo = function(a){
 		if(d.isFunction(a)){
