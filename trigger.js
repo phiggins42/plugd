@@ -34,7 +34,6 @@ dojo.provide("plugd.trigger");
 //					}
 					n.fireEvent(ev);
 				}catch(er){
-                    console.warn("in catch", er);
 					// a lame duck to work with. we're probably a 'custom event'
 					var evdata = mix({ 
 						type: e, target: n, faux: true,
@@ -55,12 +54,11 @@ dojo.provide("plugd.trigger");
 	;
 	
 	d._trigger = function(/* DomNode|String */node, /* String */event, extraArgs){
-		// summary: 
+		// summary:
 		//		Helper for `dojo.trigger`, which handles the DOM cases. We should never
 		//		be here without a domNode reference and a string eventname.
 		var n = d.byId(node), ev = event && event.slice(0, 2) == "on" ? event.slice(2) : event;
 		realTrigger(n, ev, extraArgs);
-
 	};
 		
 	d.trigger = function(obj, event, extraArgs){
