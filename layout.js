@@ -2,16 +2,6 @@ dojo.provide("plugd.layout");
 (function(d){
 
 	var clsCache = {},
-
-		uniqueTypes = function(part){
-			// reduce all the .type members of this definition into a list of
-			// modules to dojo.require.
-			var types = [];
-			
-			for(var i in part){ part[i].type && types.push(part[i].type); }
-			
-			return types;
-		},
 		
 		create = d.layout = function(part){
 			
@@ -35,16 +25,6 @@ dojo.provide("plugd.layout");
 			return main; // dijit._Widget
 		}
 	;
-
-	d.layoutDfd = function(part){
-		var dfd = new d.Deferred;
-		var requires = uniqueTypes(part);
-		d.forEach(requires, d.require, d);
-		d.ready(function(){
-			d.callback(create(part));
-		});
-		return dfd;
-	}
 	
 /*=====	
 	d.layout = function(def){
