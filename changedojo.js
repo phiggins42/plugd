@@ -14,7 +14,7 @@ dojo.provide("plugd.changedojo");
 
 	// replace the old dojo with something a function
 	var d = dojo;
-	dojo = function(a){
+	dojo = window[d._scopeName] = function(a){
 		if(d.isFunction(a)){
 			d.ready(a);
 			return dojo;
