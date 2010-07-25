@@ -3,8 +3,9 @@
 Yet another [http://dojotoolkit.org Dojo] namespace: _plugd_ is a collection of useful functionality built on and 
 around Base `dojo.js` ... also known as Dojo: the missing APIs. 
 
-PlugD requires Dojo 1.5.0 or higher. PlugD 0.0.3 supports Dojo 1.2.x.
-
+PlugD requires Dojo 1.3 or higher. PlugD 0.0.3 supports Dojo 1.2.x. No promise of varied versions is made. Head always works against 
+Dojo's trunk, though there may be slight inconsistencies attempting to pair Plugd > 1.5 with a Dojo < 1.5 ...
+ 
 ## About
 
 These are experiments in extensions on Base Dojo (and probably more specifically dojo.query). 
@@ -71,7 +72,7 @@ Starting with _plugd_ is easy. You need Dojo, and the `base.js` file from the pr
 
 Load them into a page:
 
-    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.2.0/dojo/dojo.xd.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"></script>
     <script src="base.js"></script>
 
 If you are new to Dojo, the [http://sitepen.com/labs/guides/?guide=DojoQuickStart SitePen QuickStart] is an excellent 
