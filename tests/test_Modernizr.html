@@ -19,6 +19,8 @@
 
 			dojo.require("plugd.feature");
 			dojo.require("plugd.feature._Modernizr");
+			dojo.require("plugd.feature._WebForms");
+			
 			dojo.addOnLoad(function(){
 				
 //				console.profile("feature");
@@ -27,13 +29,8 @@
 				
 				dojo.empty("bar");
 				var htmlelm = dojo.doc.documentElement;
-				dojo.forEach(htmlelm.className.split(" "), function(item){
-					var supported = true;
-					if(item.indexOf("no-") == 0){
-						supported = false;
-						item = item.substr(3);
-					}
-					dojo.place("<li class='" + (!supported ? "not" : "") + "supported'>" + item + "</li>", "bar");
+				dojo.forEach(dojo.feature.list(), function(item){
+					dojo.place("<li class='" + (!dojo.feature(item) ? "not" : "") + "supported'>" + item + "</li>", "bar");
 				});
 
 //				console.profile("feature-2ndtime");

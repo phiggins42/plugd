@@ -1,9 +1,7 @@
 dojo.provide("plugd.feature");
-(function(d){
+/*=====
 	
-	var tests = {}, htmlelm = d.doc.documentElement;
-		
-	d.feature = function(test, omitClass){
+	dojo.feature = function(test, omitClass){
 		// summary: Returns a boolean, synchronously, to test something.
 		//
 		// test: String|Array
@@ -19,7 +17,7 @@ dojo.provide("plugd.feature");
 		//		to ensure the test is run and a class is _never_ added.
 		//		
 		// example:
-		//	|	if(dojo.feature("opacity")){ /* use png */ }
+		//	|	if(dojo.feature("opacity")){  }
 		//
 		// example:
 		//	|	if(dojo.feature(["opacity", "css3", "placeholder"])){
@@ -28,28 +26,10 @@ dojo.provide("plugd.feature");
 		//
 		// returns: Boolean
 		//		Or undefined if no test has been created for a given testname
-		
-		// multi means all must pass to be true:
-		if(d.isArray(test)){ 
-			return d.every(test, function(t){
-				return d.feature(t, omitClass)
-			}); 
-		}
-		
-		// single test consideration:
-		if(tests[test] !== true || tests[test] !== false){
-			if(d.isFunction(tests[test])){
-				tests[test] = !!tests[test]();
-				// add a class name to the `html` element for CSS uses
-				!omitClass && d.addClass(htmlelm, (!tests[test] ? "no-" : "") + test); 
-			}
-		}
-		
-		// always return something:
-		return tests[test];
+		return true;
 	}
 	
-	d.feature.test = function(test, testcb, now, omitClass){
+	dojo.feature.test = function(test, testcb, now, omitClass){
 		// summary: Add a test condition to this enviroment. key is the testname, 
 		//
 		// testcb: Function|Boolean
@@ -87,28 +67,64 @@ dojo.provide("plugd.feature");
 		//	|	if(d.feature("something")){ 
 		//	|		// no everyone can use 'something', but there will never be a classname added
 		//	|	}
-		
-		tests[test] = testcb;
-		return now && d.feature(test, omitClass); // LikeABoolean
-	}
+		return true; // LikeABoolean		
+	};
 	
-	d.feature.all = function(omitClass){
+	dojo.feature.all = function(omitClass){
 		// summary: run all registered tests immediately, applying classnames and whatnot
 		// omitClass: Boolean?
 		//		Passed along to the test running, to avoid adding a class to the html element for the test
-		for(var i in tests){ d.feature(i, omitClass) }
 	};
 	
-	d.feature.list = function(){
+	dojo.feature.list = function(){
 		// summary: Get a list of the tests that have been registered, despite having run or not.
+		// returns: Array
+	};
+	
+=====*/
+(function(d){
+	
+	var tests = {}, 
+		htmlelm = d.doc.documentElement,
+		feature = d.feature = function(test, omitClass){
+		
+			// multi means all must pass to be true:
+			if(d.isArray(test)){ 
+				return d.every(test, function(t){
+					return feature(t, omitClass)
+				}); 
+			}
+		
+			// single test consideration:
+			if(tests[test] !== true || tests[test] !== false){
+				if(d.isFunction(tests[test])){
+					tests[test] = !!tests[test]();
+					// add a class name to the `html` element for CSS uses
+					!omitClass && d.addClass(htmlelm, (!tests[test] ? "no-" : "") + test); 
+				}
+			}
+		
+			// always return something:
+			return tests[test];
+		}
+	;
+	
+	feature.test = function(test, testcb, now, omitClass){
+		tests[test] = testcb;
+		return now && feature(test, omitClass); // LikeABoolean
+	};
+	
+	feature.all = function(omitClass){
+		for(var i in tests){ feature(i, omitClass) }
+	};
+	
+	feature.list = function(){
 		var ret = []; 
 		for(var i in tests){ ret.push(i); }
 		return ret; // Array
 	}
 	
-	// one basic test, always: js is always enabled if we've run, clearly. // FIXME: this isn't useful.
-	d.feature.test("js", function(){ return true; }, true);
-	d.removeClass(htmlelm, "no-js"); // but this requires people to know something ahead of time
+	d.config.hasNoJsClass && d.removeClass(htmlelm, "no-js"); // but this requires people to know something ahead of time
 	
 	// run all tests onLoad if set to
 	d.config.detectOnLoad && d.ready(d.feature, "all"); // FIXME: detectOnLoad doesn't pass along omitClass
