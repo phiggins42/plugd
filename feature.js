@@ -1,11 +1,10 @@
 dojo.provide("plugd.feature");
-
 (function(d){
 	
 	var tests = {}, htmlelm = d.doc.documentElement;
 		
 	d.feature = function(test){
-		// summary: Returns a boolean synchronously to test something.
+		// summary: Returns a boolean, synchronously to test something.
 		//
 		// test: String|Array
 		//		A string get of something to test.
@@ -68,7 +67,15 @@ dojo.provide("plugd.feature");
 		now && d.feature(test);
 	}
 	
-	// basic test: js is always enabled if we've run, clearly.
+	d.feature.all = function(){
+		// summary: run all registered tests immediately, applying classnames and whatnot
+		for(var i in tests){ d.feature(i) }
+	};
+	
+	// one basic test, always: js is always enabled if we've run, clearly.
 	d.feature.test("js", function(){ return true; }, true);
+	
+	// run all tests onLoad if set to
+	d.config.detectOnLoad && d.ready(d.feature, "all");
 	
 })(dojo);
