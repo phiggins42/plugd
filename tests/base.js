@@ -6,4 +6,5 @@ if(dojo.isBrowser){
 	doh.registerUrl("plugd.tests.node", dojo.moduleUrl("plugd.tests", "node.html"));
 	doh.registerUrl("plugd.tests.keys", dojo.moduleUrl("plugd.tests", "keys.html"));
 	doh.registerUrl("plugd.tests.data", dojo.moduleUrl("plugd.tests", "data.html"));
+	doh.registerUrl("plugd.tests.feature", dojo.moduleUrl("plugd.tests", "feature.html"));
 }

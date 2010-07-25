@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.feature</title>
+		
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("plugd.feature");
+			
+			dojo.addOnLoad(function(){
+
+				var html = dojo.doc.documentElement;
+							
+				doh.register("t", 
+					[
+					
+						function jsclass(t){
+						    // js test always runs
+							t.t(dojo.hasClass(html, "js"));
+						}
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
