@@ -17,9 +17,46 @@
 				doh.register("t", 
 					[
 					
-						function jsclass(t){
+						function basic(t){
 						    // js test always runs
-							t.t(dojo.hasClass(html, "js"));
+						    t.f(!!dojo.feature("undefinedfeature"))
+						},
+						
+						function addTest(t){
+						    
+						    dojo.feature.test("something", function(){ return true; });
+						    
+						    t.f(dojo.hasClass(html, "something"), "html should not have something");
+						    t.f(dojo.hasClass(html, "no-something"), "html should not have no-something");
+						    
+						    t.t(dojo.feature("something"), "something should have returned true");
+						    
+						    t.t(dojo.hasClass(html, "something"), "something should exist now on html");
+						    t.f(dojo.hasClass(html, "no-something"), "no-something should not exist on html");
+						    
+						},
+						
+						function omitClass(t){
+						    
+						    t.f(dojo.hasClass(html, "dontadd"));
+						    dojo.feature.test("dontadd", function(){ return true; }, true, true);
+                            t.f(dojo.hasClass(html, "dontadd"));
+						    
+						    var x = dojo.feature("dontadd");
+						    t.f(dojo.hasClass(html, "dontadd"));
+						    
+						},
+						
+						function addclass(t){
+						    t.f(dojo.hasClass(html, "foo"));
+						    dojo.feature.test("foo", function(){ return true; }, true);
+						    t.t(dojo.hasClass(html, "foo"));
+						},
+						
+						function addClassNo(t){
+						    t.f(dojo.hasClass(html, "no-bar"), "before");
+						    dojo.feature.test("bar", function(){ return false; }, true);
+						    t.t(dojo.hasClass(html, "no-bar"), "before");
 						}
 					]
 				);

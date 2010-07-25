@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing dojo.feature + Modernizr</title>
+		
+		<style type="text/css">
+		    li { color:#fff; width:200px; float:left; padding:8px; }
+			li.supported {
+				background:green;
+			}
+			li.notsupported {
+				background:red;
+			}
+		</style>
+		
+		<script type="text/javascript" src="../../dojo/dojo.js"></script>
+		<script type="text/javascript">
+
+			dojo.require("plugd.feature");
+			dojo.require("plugd.feature._Modernizr");
+			dojo.addOnLoad(function(){
+				
+//				console.profile("feature");
+				dojo.feature.all();
+//				console.profileEnd();
+				
+				dojo.empty("bar");
+				var htmlelm = dojo.doc.documentElement;
+				dojo.forEach(htmlelm.className.split(" "), function(item){
+					var supported = true;
+					if(item.indexOf("no-") == 0){
+						supported = false;
+						item = item.substr(3);
+					}
+					dojo.place("<li class='" + (!supported ? "not" : "") + "supported'>" + item + "</li>", "bar");
+				});
+
+//				console.profile("feature-2ndtime");
+				dojo.feature.all();
+//				console.profileEnd();
+
+			});
+			
+		</script>
+	</head>
+	<body>
+	    <h2>Your browser supports:</h2>
+		<ul id="bar">
+			<li>Tests will go here</li>
+		</ul>
+	</body>
+</html>
