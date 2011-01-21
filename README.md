@@ -45,6 +45,7 @@ a page, the following new Dojo API's are made available:
   * dojo.compose()
   * dojo.delay(), dojo.defer()
   * dojo.now()
+  * dojo.debounce(), dojo.throttle()
  
 And the following methods are added to `dojo.NodeList` (what you get back from calling `dojo.query(selector)` (or `$(selector)` after 
 running `dojo.conflict()`):
@@ -125,7 +126,7 @@ to use it under the same [http://dojotoolkit.org/license terms and conditions] o
 In addition to the stable collection of functions in {{{base.js}}}, the _plugd_ namespace holds a collection of
 small utility modules. Below is an overview:
 
-  * block.js - block parts of a page. deprecated, would use dojox.widget.Standby in official repository
+  * block.js - block parts of a page. deprecated, would use dojox.widget.Standby in official Dojo repository
   * changedojo.js - modify the behavior of the Dojo namespace to become a function aliased to dojo.query
   * connectlive.js - a poor implementation of live/delegated events. deprecated, Dojo 1.6 will have an official implementation
   * crash.js - make IE crash. 
@@ -133,7 +134,7 @@ small utility modules. Below is an overview:
   * escape.js - html encode and decode utilities. 
   * experimental.js - the name says it all, stay away from here.
   * exportNS.js - provides a function to export one namespace to another. Used for MooJo, which exports dojo.* onto window.*
-  * feature.js - experimental feature detection framework
+  * feature.js - experimental feature detection framework, moved to [http://github.com/phiggins42/has.js has.js]. 
   * fixed.js - experimental position:fixed with animation
   * hover.js - provides preloading hover image states
   * keys.js - provides Object.keys and Object.vals as dojo.keys(Object) and dojo.vals(Obj) respectively
@@ -141,7 +142,7 @@ small utility modules. Below is an overview:
   * magic.js - experimental. adds a Deferred-based dojo.require() and exportNS functionality
   * menu.js - simple CSS ul > li type hover menu
   * node.js - provides dojo.node(id) giving access to Dojo API's and DOM Node attributes directly.
-  * NodeList-data.js - provides a basic version of $().data with more cowbell
+  * NodeList-data.js - provides a basic version of $().data with more cowbell, available in Dojo 1.6
   * PeriodicUpdater.js - a Class-like object mimicking Prototype's PeriodicUpdater
   * plugin.js - simple plugin registration API. not recommended. 
   * script.js - provides dojo.addScript, a simple JSONP/script injection mechanism. See dojo.io.script for robust
@@ -151,4 +152,4 @@ small utility modules. Below is an overview:
   * twit.js - sample twitter badge for reading and rendering a timeline
   * xhr.js - deprecated experimental content-handler detection
   
-Each individual module is generally very small, and **heavily** commented. Dive in an experiment. 
+Each individual module is generally very small, and **heavily** commented. Dive in and experiment. 
