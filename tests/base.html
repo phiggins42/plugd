@@ -193,7 +193,7 @@
 						},
 						
 						function qw_whitespace(t){
-							t.is(4, dojo.qw("a     b      c     d").length);
+							t.is(4, dojo.qw("a	   b	  c		d").length);
 						},
 						
 						function qw_mixed(t){
@@ -496,7 +496,88 @@
 							t.is("joe", names[1]);
 							t.is(27, ages[0]);
 							
+						},
+						
+						function throttled(t){
+							
+							var d = new doh.Deferred();
+							
+							var x = 0;
+							var fn = dojo.throttle(function(a){
+								x = a; 
+							}, 100);
+							
+							fn(1); fn(2); fn(3); fn(4);
+							
+							setTimeout(function(){
+								t.is(x, 1, "first one won");
+								d.callback(true);
+							}, 300);
+							
+							return d;
+							
+						},
+						
+						function throttledTime(t){
+							var d = new doh.Deferred();
+							
+							var x = 0,
+								fn = dojo.throttle(function(a){
+									x = a;
+								}, 500)
+							;
+							
+							fn(10); fn(100);
+							
+							t.is(x, 10, "run once");
+							setTimeout(function(){
+								t.is(x, 10, "check after 600ms, 2nd never ran");
+								d.callback();
+							}, 600);
+							
+							return d;
+						},
+						
+						function debounced(t){
+							
+							var d = new doh.Deferred();
+							
+							var x = 0;
+							var fn = dojo.debounce(function(a){
+								x = a; 
+							}, 100);
+							
+							fn(1); fn(2); fn(3); fn(4);
+							
+							setTimeout(function(){
+								t.is(x, 4, "last one won");
+								d.callback(true);
+							}, 300);
+							
+							return d;
+							
+						},
+						
+						function debouncedTime(t){
+							var d = new doh.Deferred();
+							
+							var x = 0,
+								fn = dojo.debounce(function(a){
+									x = a;
+								}, 500)
+							;
+							
+							fn(10); fn(100);
+							
+							t.is(x, 0, "hasn't actually run yet");
+							setTimeout(function(){
+								t.is(x, 100, "check after 600ms, 2nd exec ran");
+								d.callback();
+							}, 600);
+							
+							return d;
 						}
+						
 					]
 				);
 				doh.run();
