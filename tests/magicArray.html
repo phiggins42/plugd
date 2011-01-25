@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Testing plugd Array wrappers</title>
+		
+		<style type="text/css">
+			.thing {
+				margin:0; padding:0;
+				width:200px;
+				height:200px;
+			}
+			.cb {
+				height:100px;
+				width:400px;
+				padding:20px;
+			}
+		</style>
+		
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
+
+		<script type="text/javascript">
+			dojo.require("doh.runner");
+			dojo.require("plugd.magicArray");
+			dojo.ready(function(){
+
+				var stockOb = { a:1, b:2, c: 3, d:4 },
+					stockAr = [ 1, 2, 3, 4 ],
+					thisObj = {
+						right: true
+					}
+				;
+				
+				doh.register("t", 
+					[
+						function some(t){
+						
+							var ret = dojo.some(stockAr, function(item, index, ar){
+								t.is(ar[index], item);
+								return item == 4;
+							});
+							
+							t.t(ret);
+							
+							var x = 1;
+							var ret2 = dojo.some(stockOb, function(val, key, obj){
+								t.is(obj[key], val);
+								t.is(x, val); x++;
+								return val == 4;
+							});
+							
+							t.t(ret2);
+							
+							dojo.some(stockOb, function(k,v){
+								t.t(this.right);
+							}, thisObj);
+						},
+						
+						function every(t){
+							
+							var it = dojo.every(stockAr, function(item, index, ar){
+								return ar[index] == item;
+							});
+							
+							t.t(it);
+							
+							it = dojo.every(stockOb, function(item, index, ar){
+								return ar[index] == item;
+							});
+							
+							t.t(it);
+							
+							dojo.every(stockOb, function(k,b){
+								t.t(this.right);
+								return true;
+							}, thisObj);
+							
+						},
+						
+						function map(t){
+							
+							var it = dojo.map(stockAr, function(item){
+								return item - 1;
+							});
+							
+							dojo.forEach(it, function(item, index){
+								t.is(item, index)
+							});
+							
+							it = dojo.map(stockOb, function(item){
+								return item - 1; 
+							});
+							
+							dojo.forEach(it, function(item, index){
+								t.is(item, index);
+							});
+							
+							dojo.map(stockOb, function(k,v){
+								return t.t(this.right);
+							}, thisObj);
+						},
+						
+						function indexOf(t){
+
+							t.is(dojo.indexOf(stockOb, 1), "a");
+							t.is(dojo.indexOf(stockOb, 2), "b");
+							t.is(dojo.indexOf(stockOb, 9), -1);
+							
+							t.is(0, dojo.indexOf(stockAr, 1));
+							t.is(1, dojo.indexOf(stockAr, 2));
+							t.is(-1, dojo.indexOf(stockAr, 9));
+							
+							
+						},
+						
+						function forEach(t){
+							
+							dojo.forEach(stockAr, function(item, index, ar){
+								t.is(ar[index], item, arguments);
+							});
+							
+							dojo.forEach(stockOb, function(item, index, ar){
+								t.is(ar[index], item, arguments);
+							});
+							
+							dojo.forEach(stockOb, function(k,v){
+								t.t(this.right);
+							}, thisObj);
+
+						},
+						
+						function filter(t){
+							var filtered = dojo.filter(stockAr, function(item, index){
+								return item > 2;
+							});
+							
+							t.is(2, filtered.length);
+							t.is(3, filtered[0]);
+							t.is(4, filtered[1]);
+
+							filtered = dojo.filter(stockOb, function(item, index){
+								return item > 2;
+							});
+							
+							t.is(3, filtered.c);
+							t.is(4, filtered.d);
+							t.is(undefined, filtered.a);
+							
+							dojo.filter(stockOb, function(k,v){
+								return t.t(this.right);
+							}, thisObj);
+							
+						}
+						
+					]
+				);
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Base Array AOP QuickTest</h1>
+	</body>
+</html>

@@ -140,6 +140,7 @@ small utility modules. Below is an overview:
   * keys.js - provides Object.keys and Object.vals as dojo.keys(Object) and dojo.vals(Obj) respectively
   * layout.js - create rich UI layouts from a standard JSON definition
   * magic.js - experimental. adds a Deferred-based dojo.require() and exportNS functionality
+  * magicArray.js - if your iterators were too fast, and you want forIn variants of stock Array functions, use this.
   * menu.js - simple CSS ul > li type hover menu
   * node.js - provides dojo.node(id) giving access to Dojo API's and DOM Node attributes directly.
   * NodeList-data.js - provides a basic version of $().data with more cowbell, available in Dojo 1.6
