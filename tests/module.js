@@ -7,7 +7,6 @@ try{
 	dojo.require("plugd.tests.block");
 	dojo.require("plugd.tests.escape");
 	dojo.require("plugd.tests.magic");
-//	dojo.require("plugd.tests.ancestor");
 }catch(e){
 	doh.debug(e);
 }
