@@ -1,7 +1,6 @@
-dojo.provide("plugd.escape");
-// html-entities plugin:
-(function(d){
+define(["dojo"], function(dojo){
 	
+	var d = dojo;
 		// two regexp functions to replace a character with an encoded entity
 	var ere = /.{1}/g,
 		_encodeChar = function(ch){
@@ -74,4 +73,5 @@ dojo.provide("plugd.escape");
 	}
 	d._setupReverse();
 	
-})(dojo);
+	return d;
+});

@@ -1,6 +1,7 @@
-dojo.provide("plugd.keys");
-// super magic dojo.keys overload
-(function(d){
+define(["dojo"], function(dojo){
+
+    // summary: super magic dojo.keys overload
+	var d = dojo;
 	
 	// dojo.keys is an object hash of contstants like dojo.keys.ENTER
 	// save them to restore in a moment
@@ -26,5 +27,7 @@ dojo.provide("plugd.keys");
 		}
 		return ret;
 	}
+
+    return d;
 	
-})(dojo);
+});

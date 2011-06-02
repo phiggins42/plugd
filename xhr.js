@@ -1,7 +1,6 @@
-dojo.provide("plugd.xhr");
+define(["dojo"], function(dojo){
 
-(function(d){
-
+	var d = dojo;
 	var list2obj = function(multiText){
 		var obj = {}, split = multiText.split("\n");
 		dojo.forEach(split, function(line){
@@ -29,4 +28,5 @@ dojo.provide("plugd.xhr");
 		return this[handler](xhr);
 	}
 
-})(dojo);
+	return d;
+});

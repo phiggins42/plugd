@@ -1,8 +1,6 @@
-dojo.provide("plugd.layout");
-(function(d){
-
-	var clsCache = {},
-		
+define(["dojo"], function(dojo){
+	
+	var d = dojo, clsCache = {},
 		create = d.layout = function(part){
 			
 			// do some mangling:
@@ -26,7 +24,7 @@ dojo.provide("plugd.layout");
 		}
 	;
 	
-/*=====	
+/*===== 
 	d.layout = function(def){
 		// summary: Create a Layout from a passed definition
 		//
@@ -47,4 +45,6 @@ dojo.provide("plugd.layout");
 	}
 =====*/
 
-})(dojo);
+	return d;
+	
+});

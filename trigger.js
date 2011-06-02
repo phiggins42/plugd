@@ -1,7 +1,6 @@
-dojo.provide("plugd.trigger");
-(function(d){
-	
-	var isfn = d.isFunction, 
+define(["dojo"], function(dojo){
+    
+	var d = dojo, isfn = d.isFunction, 
 		leaveRe = /mouse(enter|leave)/, 
 		_fix = function(_, p){
 			return "mouse" + (p == "enter" ? "over" : "out"); 
@@ -181,5 +180,6 @@ dojo.provide("plugd.trigger");
 			}
 		});
 	}
-	
-})(dojo);
+
+	return d;
+});

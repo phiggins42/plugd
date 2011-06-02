@@ -1,6 +1,6 @@
-(function(d){
+define(["dojo"], function(dojo){
 
-	var cache = {}, connected = {},
+	var d = dojo, cache = {}, connected = {},
 		_liveHandler = function(e){
 			// summary: Handles all the delegated clicks.
 			var t = e && e.type;
@@ -73,4 +73,6 @@
 		console.log(event, cache[event], connected[event]);
 	}
 
-})(dojo);
+	return d;
+	
+});

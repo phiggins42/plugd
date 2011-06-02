@@ -1,5 +1,6 @@
-dojo.provide("plugd.plugin");
-(function(d){
+define(["dojo"], function(dojo){
+	
+	var d = dojo;
 	
 	// setup the alias:
 	d.fn = d.NodeList.prototype;
@@ -51,4 +52,4 @@ dojo.provide("plugd.plugin");
 		return f; // Function
 	}
 
-})(dojo);
+});

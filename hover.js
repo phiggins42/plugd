@@ -1,8 +1,6 @@
-// dojo.provide("plugd.hover"); // this is a feature, not a bug ...
-//
-//	A Simple Hover-State plugin, managing the src of an Image for rollover 
-//
-;(function(d, $){
+define(["dojo"], function(dojo){
+    
+    var d = dojo, $ = d.query;
 
 	var p, cacheImage = function(/* String */src){
 		// summary: A Function to place a new image instance in the DOM to preload it off-screen
@@ -105,4 +103,6 @@
 		
 	});
 
-})(dojo, dojo.query);
+    return d;
+    
+});

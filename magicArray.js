@@ -1,6 +1,7 @@
-dojo.provide("plugd.magicArray");
-(function(d){
+define(["dojo"], function(dojo){
 
+	var d = dojo;
+	
 	/*=====
 		plugd.magicArray = {
 			// summary: A module that overwrites various Base Dojo Array APIs
@@ -27,7 +28,7 @@ dojo.provide("plugd.magicArray");
 			//		|		console.log(val == "b"); // true
 			//		|	});
 			//
-			// 		When working with an ArrayLike object, the original Array 
+			//		When working with an ArrayLike object, the original Array 
 			//		utility function is called and behaves in a backwards-compatible
 			//		manner. 
 			// 
@@ -126,4 +127,4 @@ dojo.provide("plugd.magicArray");
 		}
 	});
 
-})(dojo)
+})

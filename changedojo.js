@@ -1,6 +1,6 @@
-dojo.provide("plugd.changedojo");
-/*=====
-	
+define(["dojo"], function(dojo){
+
+	/*===== 
 	plugd.changedojo = {
 		// summary: Make the Dojo namespace behave like jQuery. 
 		//	example:
@@ -8,9 +8,7 @@ dojo.provide("plugd.changedojo");
 		//	|	dojo("#someId").forEach(fn).chain().more().cowbell();
 		//	|	dojo.byId("someId");
 	};
-	
-=====*/
-(function(d){
+	=====*/
 
 	// replace the old dojo with something a function
 	var d = dojo;
@@ -29,4 +27,6 @@ dojo.provide("plugd.changedojo");
 	// mix dojo back into itself. 
 	for(var i in d){ dojo[i] = d[i]; }
 
-})(dojo);
+	return dojo;
+
+});

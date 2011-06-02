@@ -1,6 +1,6 @@
-// experimental, not for real use yet.
-(function(d){
-	
+define(["dojo"], function(dojo){
+
+	var d = dojo;
 	d.extend(d.NodeList, {
 		menu: function(){
 			return this.forEach(function(n){
@@ -41,4 +41,5 @@
 		}
 	});
 	
-})(dojo);
+	return d;
+});

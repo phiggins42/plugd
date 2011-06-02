@@ -1,6 +1,6 @@
-dojo.provide("plugd.magic");
-dojo.require("plugd.base");
-(function(d){
+define(["dojo", "./base"], function(dojo, plugd){
+    
+    var d = dojo;
 		
 	d.dfdLoad = function(){
 		// summary: A version of `dojo.load` that returns a `dojo.Deferred` for those familar
@@ -44,5 +44,7 @@ dojo.require("plugd.base");
 	}
 	d.config.conflict && d._addMagic(); 
 	//>>excludeEnd("superMagic");
+
+	return d;
 	
-})(dojo);
+});

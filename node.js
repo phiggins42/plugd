@@ -1,8 +1,7 @@
-dojo.provide("plugd.node");
-// summary: The `Node` Module. Provides dojo._Node, and dojo.node
-
-(function(d){
+define(["dojo"], function(dojo){
 		
+	var d = dojo;
+	
 	d._Node = function(){
 		// summary: 
 		//		A private Class-like object which is decorated onto each node
@@ -358,5 +357,6 @@ dojo.provide("plugd.node");
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on")	
 	}
 	//>>excludeEnd("autoConflict");
-	
-})(dojo);
+
+	return dojo;
+});

@@ -1,8 +1,6 @@
-// experimental: don't use yet
-dojo.provide("plugd.social");
-dojo.require("dojo.fx.easing");
-(function(d){
-
+define(["dojo", "dojo/fx/easing"], function(dojo, ease){
+    
+    var d = dojo;
 	var defaults = {
 		top:-18
 	};
@@ -23,11 +21,11 @@ dojo.require("dojo.fx.easing");
 		d.query("li", n).forEach(function(n){
 
 			d.connect(n, "mouseenter", function(){
-				d.anim(n, { marginTop:opts.top }, 320, d.fx.easing.backOut);
+				d.anim(n, { marginTop:opts.top }, 320, ease.backOut);
 			});
 			
 			d.connect(n, "mouseleave", function(){
-				d.anim(n, { marginTop:0 }, 500, d.fx.easing.bounceOut);
+				d.anim(n, { marginTop:0 }, 500, ease.bounceOut);
 			});
 
 		});
@@ -35,13 +33,8 @@ dojo.require("dojo.fx.easing");
 	}
 	
 	d.NodeList.prototype.social = d.NodeList._adaptAsForEach(d.social);
+
+	return d;
 	
-})(dojo);
-
-dojo.addOnLoad(function(){
-
-	dojo.query(".social").social();
-
 });
-
 

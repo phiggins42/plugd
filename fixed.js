@@ -1,7 +1,5 @@
-// dojo.provide("plugd.fixed");
-dojo.require("dijit._base.place");
-(function(){
-	
+define(["dojo", "dijit/_base/place"], function(dojo, place){
+    	
 	var pos = "position", d = dojo, 
 		prop = d.isIE < 7 ? "absolute" : "fixed";
 
@@ -77,4 +75,6 @@ dojo.require("dijit._base.place");
 		}
 	});
 	
-})();
+	return d;
+	
+});

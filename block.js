@@ -1,6 +1,6 @@
-dojo.provide("plugd.block");
-(function(d){
-		
+define(["dojo"], function(dojo){
+	
+	var d = dojo;
 	d.declare("dojo._Blocker", null, {
 		// summary: The blocker instance used by dojo.block to overlay a node
 		//
@@ -154,4 +154,6 @@ dojo.provide("plugd.block");
 		unblock: _each(d.unblock)
 	});
 	
-})(dojo);
+	return d;
+	
+});

@@ -1,16 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Testing dojo.node</title>
-		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>
-		<!--script type="text/javascript" src="../base.js"></script-->
-		<script type="text/javascript" src="../node.js"></script>
-
-		<!-- testing click/connect stuff -->
-		<script type="text/javascript" src="../trigger.js"></script>
-		
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>		
 		<script type="text/javascript">
+		    dojo.require("plugd.node");
+		    dojo.require("plugd.trigger");
 			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
 				doh.register("t", 

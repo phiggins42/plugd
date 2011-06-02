@@ -1,8 +1,8 @@
-dojo.provide("plugd.base");
-;(function(d){
+define(["dojo"], function(dojo){
 
 	// first, some simple aliases
-	var	place = d.place,
+	var d = dojo,
+		place = d.place,
 		style = d.style,
 		
 		// shrinksafe loves this
@@ -11,25 +11,25 @@ dojo.provide("plugd.base");
 		
 		// used for the "smart" show()/hide()/toggle()
 		speedMap = {
-			"slow"    : 1800,
-			"fast"    : 420,
+			"slow"	  : 1800,
+			"fast"	  : 420,
 			//>>excludeStart("sillyness", kwArgs.silly == "off");
 			// these are just to be silly:
 			"granny"  : 7600,
 			"racecar" : 200,
-			"snail"   : 1200,
+			"snail"	  : 1200,
 			"rocket"  : 100,
 			"peller"  : 3500,
 			// this is "public API" bewlow, down here so we can build-exclude 
 			// the above silly-ness and not worry about the comma breaking 
 			// after build.
 			//>>excludeEnd("sillyness");
-			"mild"    : 900
+			"mild"	  : 900
 		},
 		
 		// so djConfig.keepLayout is a Boolean, and defaults to false
 		// which is display:none vs true which is visibility:hidden
-		useLayout 	  = d.config.keepLayout || false,
+		useLayout	  = d.config.keepLayout || false,
 		
 		// define some constants, for our re-use and the benefit of shrinksafe
 		styleProperty = useLayout ? visibility : display,
@@ -70,7 +70,7 @@ dojo.provide("plugd.base");
 		//		function. Anything that returns a truthy value will suffice. 
 		//	
 		// testFn: Function
-		// 		A function which _must_ return a truthy value indicating the uniqueness
+		//		A function which _must_ return a truthy value indicating the uniqueness
 		//		of some item. The intended string id is passed to this function continually
 		//		until a falsy value is returned. The first failed string is returned to the
 		//		original caller, and is unique to whichever scope the caller intended.
@@ -136,7 +136,7 @@ dojo.provide("plugd.base");
 		//	|	dojo.load("dojo.dnd.Mover");
 		//
 		// example:
-		// 		As a synonym for `dojo.addOnLoad`
+		//		As a synonym for `dojo.addOnLoad`
 		//	|	dojo.load(function(){ /* document ready */ });
 		//
 		// example:
@@ -270,7 +270,7 @@ dojo.provide("plugd.base");
 		//
 		// example:
 		//		Multiple Whitespace treated as one:
-		// |	dojo.qw("a  b  c    d").length; // 4
+		// |	dojo.qw("a	b  c	d").length; // 4
 		//
 		return str ? d.map(str.split(/\ +/), d.trim) : []; // Array
 	}
@@ -286,7 +286,7 @@ dojo.provide("plugd.base");
 		//		The type of node to create. Something like "div", "a", "ul",
 		//		or a valid DOM structure like: "<div class='bar'></div>". 
 		//		With Dojo versions < 1.3, a simple markup creation process
-		//		is used. >= 1.3, `dojo._toDom` is substititued.  
+		//		is used. >= 1.3, `dojo._toDom` is substititued.	 
 		//
 		// attrs: Object?
 		//		An object-hash (property bag) of attributes
@@ -308,7 +308,7 @@ dojo.provide("plugd.base");
 		//	|	var anchor = dojo.create("a");
 		//
 		// example:
-		//  Create an anchor with a title, href and onclick handler:
+		//	Create an anchor with a title, href and onclick handler:
 		//	|	var anchor = dojo.create("a",{
 		//	|		href:"foo.php", title:"A Link",
 		//	|		onclick:function(e){
@@ -422,7 +422,7 @@ dojo.provide("plugd.base");
 	}
 
 /*=====
-	d.delay = function(fn, timeout, args...){
+	d.delay = function(fn, timeout, args){
 		// summary: Delay the execution of some function by a timeout. Any number
 		//		of positional arguments may come after the timeout value. Similar 
 		//		to setTimeout, but with normalized argument handling.
@@ -433,7 +433,7 @@ dojo.provide("plugd.base");
 		// timeout: Integer
 		//		Time (in ms) to delay the execution
 		//
-		// args: Anything
+		// args: Anything..
 		//		Any number of positional arguments to pass along to the delayed function
 		// 
 		// example:
@@ -448,7 +448,7 @@ dojo.provide("plugd.base");
 		//		Returns the setTimeout handle for use with clearTimeout
 		return setTimeout(function(){}, timeout);
 	};
-=====*/	
+=====*/ 
 	
 	d.delay = function(fn, timeout){
 		var args = d._toArray(arguments, 2);
@@ -497,7 +497,7 @@ dojo.provide("plugd.base");
 		//	|	var people = [{name:"joe", age:27 }, {name:"pete", age:29}];
 		//	|	var names = dojo.reduce(people, "name");
 		//	|	var ages = dojo.reduce(people, "ages");
-		//	| 	console.log(names, ages);
+		//	|	console.log(names, ages);
 		//	|	// [joe, pete], [27, 29]
 		return d.map(arr, function(item){
 			return item[key];
@@ -553,7 +553,6 @@ dojo.provide("plugd.base");
 		}
 	}
 
-
 /*=====
 	d.all = function(list, iterator, thisObj){
 		// summary: Alias to `dojo.every`
@@ -600,7 +599,7 @@ dojo.provide("plugd.base");
 			//		"racecar" is faster than "fast", but only supported in silly-mode)
 			//		
 			// example:
-			// 	Show all list-items in a list with id="foo" visible:
+			//	Show all list-items in a list with id="foo" visible:
 			//	|	dojo.query("#foo li").show();
 			
 			return this; // dojo.NodeList
@@ -634,7 +633,7 @@ dojo.provide("plugd.base");
 		
 		toggle: function(speed){
 			// summary: Toggle this list of nodes by calling show() or hide() 
-			// 		to invert their state.
+			//		to invert their state.
 			return this; // dojo.NodeList
 		},
 		
@@ -735,7 +734,7 @@ dojo.provide("plugd.base");
 		// PUT ALL REDUNDANT FUNCTIONS HERE, as we'll play with them in dev mode, and provide a way
 		// to leave them, but remove them in production intentionally. set redundant="on" in profile
 
-	/*	FIXME: clarify this. size() returns mixed array or object. 	
+	/*	FIXME: clarify this. size() returns mixed array or object.	
 		width: function(boxType){
 			// summary: 
 			//		Get the width of this node. If the matched selectors are multiple nodes,
@@ -794,7 +793,7 @@ dojo.provide("plugd.base");
 			//
 			// example:
 			//	Add the class "over" to an li, and remove it when not hovered
-			//	| 	dojo.query("#myList li")
+			//	|	dojo.query("#myList li")
 			//	|		.hover(
 			//	|			function(e){
 			//	|				dojo.addClass(e.target,"over")
@@ -933,12 +932,14 @@ dojo.provide("plugd.base");
 
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on");
 	if(d.config.conflict){ 
-	//>>excludeEnd("autoConflict");	
+	//>>excludeEnd("autoConflict"); 
 		d.conflict(); 
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on");	
 	}
-	//>>excludeEnd("autoConflict");	
+	//>>excludeEnd("autoConflict"); 
 	
 	//>>excludeEnd("noConflict");
 
-})(dojo);
+	return d;
+
+});

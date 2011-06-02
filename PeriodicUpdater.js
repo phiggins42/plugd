@@ -1,6 +1,6 @@
-dojo.provide("plugd.PeriodicUpdater");
-(function(d){
+define(["dojo"], function(dojo){
 	
+	var d = dojo;
 	d.declare("dojo.PeriodicUpdater", null, {
 		// summary: A Class used to control the periodic updating of some node
 		//		
@@ -126,5 +126,7 @@ dojo.provide("plugd.PeriodicUpdater");
 			return data;
 		}
 	});
+
+	return dojo;
 	
-})(dojo);
+});

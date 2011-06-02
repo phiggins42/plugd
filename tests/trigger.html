@@ -5,10 +5,9 @@
 		<title>Testing dojo.trigger / NodeList.trigger / Node.trigger</title>
 		
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
-		<script type="text/javascript" src="../node.js"></script>
-		<script type="text/javascript" src="../trigger.js"></script>
-
 		<script type="text/javascript">
+		    dojo.require("plugd.node");
+		    dojo.require("plugd.trigger");
 			dojo.require("doh.runner");
 			dojo.addOnLoad(function(){
 				

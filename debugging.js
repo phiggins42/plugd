@@ -1,4 +1,4 @@
-dojo.provide("plugd.debugging");
+define(["dojo"], function(dojo){
 //
 // summary: 
 //		A largely untested series of duck-puntching checks for common Base Dojo functions
@@ -12,12 +12,12 @@ dojo.provide("plugd.debugging");
 //
 //		pass `simpleWarnings:true` to a djConfig to disable slightly [more] expensive tracing information.
 // 
-//      a debugging flag to allow this to slip into a built version. 
-//      pass extradebug=true as build param/profile option to leave this code in a built environment.
+//		a debugging flag to allow this to slip into a built version. 
+//		pass extradebug=true as build param/profile option to leave this code in a built environment.
 //
 //>>excludeStart("extradebug", !kwArgs.extradebug);
-;(function(d){
 	
+	var d = dojo;
 	var c = console, warn = !d.config.simpleWarnings ? function(){
 		// wrap around the console.warn function to provide extra help
 		var a = d._toArray(arguments);
@@ -83,8 +83,8 @@ dojo.provide("plugd.debugging");
 		}
 		
 		if(arguments.length > 1 && (!context || !db(context))){
-		    // plugd base.js ducks around dojo.query, breaking this arguments.length check
-		    if(!plugd.base) warn("query: you passed a context but it was null or unfound")
+			// plugd base.js ducks around dojo.query, breaking this arguments.length check
+			if(!plugd.base) warn("query: you passed a context but it was null or unfound")
 		}
 		
 		var list = dq.apply(d, arguments);
@@ -125,14 +125,14 @@ dojo.provide("plugd.debugging");
 	};
 	
 	d.forEach(["addClass", "removeClass", "toggleClass"], function(meth){
-	    var m = d[meth];
-	    d[meth] = function(n, clsname){
-	        var node = db(n);
-	        if(!node || !n){
-	            warn(meth, ": must pass a node|id reference. you tried", n);
-	        }
-	        return m.apply(d, arguments);
-	    }
+		var m = d[meth];
+		d[meth] = function(n, clsname){
+			var node = db(n);
+			if(!node || !n){
+				warn(meth, ": must pass a node|id reference. you tried", n);
+			}
+			return m.apply(d, arguments);
+		}
 	});
 	
 	// auto-duck the array utilities. do so last so we can use them unhindered above.
@@ -159,6 +159,7 @@ dojo.provide("plugd.debugging");
 		}
 		return r;
 	}
-	
-})(dojo);
+
+	return d;
+});
 //>>excludeEnd("extradebug");

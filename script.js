@@ -1,9 +1,7 @@
-dojo.provide("plugd.script");
-;(function(d){
+define(["dojo"], function(dojo){
 
 	// one-time lookups / vars:
-
-	var h = d.doc.getElementsByTagName("head")[0],
+	var d = dojo, h = d.doc.getElementsByTagName("head")[0],
 		re = /complete|loaded/,
 		cbtest = /(\w+)=\?/,
 		count = 0
@@ -82,4 +80,6 @@ dojo.provide("plugd.script");
 		
 	}
 	
-})(dojo);
+	return d.addScript;
+	
+});

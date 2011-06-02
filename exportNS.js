@@ -1,6 +1,6 @@
-dojo.provide("plugd.exportNS");
-// this is used to make MooJo
-(function(d){
+define(["dojo"], function(dojo){
+
+	var d = dojo;
 	
 	d.exportNS = function(origin, target, prefix){
 		// summary: Export all the public members of one namespace safely into 
@@ -44,5 +44,6 @@ dojo.provide("plugd.exportNS");
 	//>>excludeStart("autoConflict", kwArgs.autoConflict == "on");	
 	}
 	//>>excludeEnd("autoConflict");
-	
-})(dojo);
+
+	return d;
+});

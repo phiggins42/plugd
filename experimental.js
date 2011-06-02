@@ -1,5 +1,4 @@
-dojo.require("dijit.dijit");
-;(function(){
+define(["dojo", "dijit"], function(dojo, dijit){
 	
 	var d = dojo, dij = dijit;
 	
@@ -39,5 +38,7 @@ dojo.require("dijit.dijit");
 			return nl;
 		}
 	});
+
+    return d;
 	
-})();
+});

@@ -1,8 +1,7 @@
-dojo.provide("plugd.twit");
-dojo.require("dojo.string");
-dojo.require("plugd.script");
-(function(d, nl){
-	
+define(["dojo", "dojo/string", "plugd/script"], function(dojo, string, script){
+
+    var d = dojo, nl = d.NodeList;
+    
 	var urlRe = new RegExp("([A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+)","g"),
 		// quick function to try to match url's in text and replace with anchors
 		replaceLinks = function(str){
@@ -132,4 +131,6 @@ dojo.require("plugd.script");
 	// making the parser read them from the srcNodeRef
 	d.extend(d.Twitter, defaults); 
 	
-})(dojo, dojo.NodeList);
+	return d;
+	
+});
