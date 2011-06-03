@@ -10,7 +10,7 @@ define(["dojo"], function(dojo){
 	};
 	=====*/
 
-	// replace the old dojo with something a function
+	// replace the old dojo with something (a function)
 	var d = dojo;
 	dojo = window[d._scopeName] = function(a){
 		if(d.isFunction(a)){

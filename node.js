@@ -358,5 +358,6 @@ define(["dojo"], function(dojo){
 	}
 	//>>excludeEnd("autoConflict");
 
-	return dojo;
+	return dojo.node;
+	
 });

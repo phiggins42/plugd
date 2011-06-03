@@ -52,4 +52,5 @@ define(["dojo"], function(dojo){
 		return f; // Function
 	}
 
+	return d.plugin; 
 });

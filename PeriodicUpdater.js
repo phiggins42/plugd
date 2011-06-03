@@ -1,7 +1,7 @@
 define(["dojo"], function(dojo){
 	
 	var d = dojo;
-	d.declare("dojo.PeriodicUpdater", null, {
+	return d.declare("dojo.PeriodicUpdater", null, {
 		// summary: A Class used to control the periodic updating of some node
 		//		
 		// description:
@@ -126,7 +126,5 @@ define(["dojo"], function(dojo){
 			return data;
 		}
 	});
-
-	return dojo;
 	
 });
