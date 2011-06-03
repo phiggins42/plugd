@@ -20,12 +20,8 @@
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
 
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			dojo.require("dojo.NodeList-manipulate");
-			dojo.require("dojo.NodeList-traverse");
-			dojo.require("plugd.base");
-			
-			dojo.addOnLoad(function(){
+		    require(["doh/runner", "dojo/NodeList-manipulate", "dojo/NodeList-traverse", "plugd/base", "dojo/domReady!"], function(){
+
 				doh.register("t", 
 					[
 					
@@ -532,8 +528,8 @@
 							t.is(x, 10, "run once");
 							setTimeout(function(){
 								t.is(x, 10, "check after 600ms, 2nd never ran");
-								d.callback();
-							}, 600);
+								d.callback(true);
+							}, 1000);
 							
 							return d;
 						},
@@ -545,14 +541,15 @@
 							var x = 0;
 							var fn = dojo.debounce(function(a){
 								x = a; 
-							}, 100);
+							}, 500);
 							
 							fn(1); fn(2); fn(3); fn(4);
 							
+							t.is(0, x);
 							setTimeout(function(){
 								t.is(x, 4, "last one won");
 								d.callback(true);
-							}, 300);
+							}, 1000);
 							
 							return d;
 							
@@ -572,8 +569,8 @@
 							t.is(x, 0, "hasn't actually run yet");
 							setTimeout(function(){
 								t.is(x, 100, "check after 600ms, 2nd exec ran");
-								d.callback();
-							}, 600);
+								d.callback(true);
+							}, 1000);
 							
 							return d;
 						}

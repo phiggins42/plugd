@@ -181,5 +181,6 @@ define(["dojo"], function(dojo){
 		});
 	}
 
-	return d;
+	return d.trigger;
+	
 });

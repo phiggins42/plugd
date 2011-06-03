@@ -48,7 +48,7 @@ define(["dojo"], function(dojo){
 		},
 		
 		_position: function(){
-			var pos = d._abs(this.node, true);
+			var pos = d.position(this.node, true);
 			// adjust for margins/padding: (edge case, may only be this demo's styles)
 			pos = d.mixin(d.marginBox(this.node), {
 				l: pos.x, t: pos.y
@@ -56,10 +56,10 @@ define(["dojo"], function(dojo){
 	
 			d.style(this.overlay,{ 
 				position:"absolute",
-				left: pos.l + "px", 
+				left: pos.x + "px", 
 				width: pos.w + "px", 
 				height: pos.h + "px",
-				top: pos.t + "px"
+				top: pos.y + "px"
 			});	
 		},
 		

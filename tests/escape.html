@@ -4,15 +4,9 @@
 	<head>
 		<title>Testing dojo.fx</title>
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
-
-		<script type="text/javascript" src="../escape.js"></script>
-
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-
-			var testStr = '<div class="foobar"><a href="p.php?a=12345&amp;b=bomb">bar</a></div>';
-			
-			dojo.addOnLoad(function(){
+		    require(["doh/runner", "plugd/escape", "dojo/domReady!"], function(){
+    			var testStr = '<div class="foobar"><a href="p.php?a=12345&amp;b=bomb">bar</a></div>';
 				doh.register("t", 
 					[
 						function encode(t){
@@ -44,7 +38,9 @@
 					]
 				);
 				doh.run();
-			});
+		        
+		    })
+			dojo.require("doh.runner");
 		</script>
 	</head>
 	<body>

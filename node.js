@@ -170,8 +170,6 @@ define(["dojo"], function(dojo){
 		},
 		
 		// events:
-		_connects:[],
-		
 		connect: function(){
 			// summary:
 			//		Connect some event to this node. Follows `dojo.connect` syntax, assuming this node
@@ -200,7 +198,8 @@ define(["dojo"], function(dojo){
 			var a = d._toArray(arguments);
 			a.unshift(this);
 			
-			this._connects.push(d.connect.apply(this, a));
+			this._connects = this._connects || [];
+			this._connects.push({ ev: /* event name */a[1], h: d.connect.apply(this, a) });
 			return this;
 		},
 		
@@ -213,8 +212,8 @@ define(["dojo"], function(dojo){
 			//	|	dojo.node("foo").connect("onclick", function(e){ ... }).disconnect("onclick");
 			
 			d.forEach(this._connects, function(handle){
-				if(ev == handle || handle[1] == ev || handle[1] == "on" + ev){
-					d.disconnect(handle);
+				if(handle.ev == ev || handle.ev == "on" + ev){
+					dojo.disconnect(handle.h);
 				}
 			});
 			return this;

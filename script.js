@@ -41,7 +41,7 @@ define(["dojo"], function(dojo){
 			d._getJsonp.apply(this, arguments);
 		}else{
 			// actual handling of the script addition and onload
-			var s = d.create("script", { src: src }, h),
+			var s = d.create("script", { src: src, async:true }, h),
 				c = d.connect(s, s.readyState ? "onreadystatechange" : "load", function(e){
 					if(e.type == "load" || re.test(s.readyState)){
 						d.disconnect(c);

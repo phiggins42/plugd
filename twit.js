@@ -1,4 +1,4 @@
-define(["dojo", "dojo/string", "plugd/script"], function(dojo, string, script){
+define(["dojo", "dojo/string", "./script"], function(dojo, string, script){
 
     var d = dojo, nl = d.NodeList;
     
@@ -94,7 +94,7 @@ define(["dojo", "dojo/string", "plugd/script"], function(dojo, string, script){
 		;
 				
 		// fire!
-		d.addScript(url, function(data){
+		script(url, function(data){
 			d.forEach(data, function(item){
 				// process the items in the response:
 				item.text = fix(item.text);
@@ -131,6 +131,6 @@ define(["dojo", "dojo/string", "plugd/script"], function(dojo, string, script){
 	// making the parser read them from the srcNodeRef
 	d.extend(d.Twitter, defaults); 
 	
-	return d;
+	return d.Twitter;
 	
 });

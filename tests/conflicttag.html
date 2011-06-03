@@ -3,12 +3,9 @@
 <html>
 	<head>
 		<title>Testing dojo.fx</title>
-		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="conflict:true"></script>
+		<script type="text/javascript" src="../../dojo/dojo.js" data-dojo-config="conflict:true"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			dojo.require("plugd.base");
-
-			dojo.addOnLoad(function(){
+		    require(["doh/runner", "plugd/base", "dojo/domReady!"], function(){
 				doh.register("t", 
 					[
 					

@@ -130,7 +130,7 @@
 						
 						function connect(t){
 							
-							var clicked = 0;
+							var d = new doh.Deferred(), clicked = 0;
 							var listen = dojo.node("evtest");
 							listen.connect("onclick", function(e){
 								clicked++;
@@ -139,11 +139,15 @@
 							dojo.trigger("tehtrigger", "click");
 							t.is(1, clicked, "was not triggered");
 							
-							listen.disconnect("onclick");
+							listen.disconnect("click");
 
-							dojo.trigger("tehtrigger", "click");
-							t.is(1, clicked, "did not disconnect");
+                            setTimeout(function(){
+    							dojo.trigger("tehtrigger", "click");
+    							t.is(1, clicked, "did not disconnect");
+                                d.callback(true);
+                            }, 100);
 							
+							return d;
 						},
 						
 						function basicclonetest(t){

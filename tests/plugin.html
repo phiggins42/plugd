@@ -8,16 +8,14 @@
 			var djConfig = { conflict: true };
 		</script>
 		<script type="text/javascript" src="../../dojo/dojo.js"></script>
-		<script type="text/javascript" src="../plugin.js"></script>
 		<script type="text/javascript">
-			dojo.require("doh.runner");
+		    require(["doh/runner", "plugd/plugin", "dojo/domReady!"], function(){
 
-			dojo.plugin("makeRed", function(n){
-				// do something to this node:
-				dojo.style(n, "color", "red");
-			});
-
-			dojo.addOnLoad(function(){
+    			dojo.plugin("makeRed", function(n){
+    				// do something to this node:
+    				dojo.style(n, "color", "red");
+    			});
+		        
 				doh.register("t", 
 					[
 					

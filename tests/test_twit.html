@@ -5,12 +5,9 @@
 	<script src="../../dojo/dojo.js"></script>
 	
 	<script type="text/javascript">
-		dojo.require("plugd.twit");
-
-		// only for the one dojoType test:
-		dojo.require("dojo.parser");
-		
-		dojo.addOnLoad(function(){
+	
+	    require(["plugd/twit", "dojo/parser", "dojo/domReady!"], function(){
+	        
 			// defaults:
 			dojo.query("#tweet").twit();
 
@@ -52,7 +49,9 @@
 				count:20
 			});
 			
+			alert('foo');
 			dojo.parser.parse(); // one dojoType test
+			
 		});
 	</script>
 	
@@ -74,8 +73,8 @@
 	<h3>Example 'uxebu'</h3>
 	<p id="degrade">Without JavaScript, I am plain p element</p>
 	
-	<h3>Example 'BryanForbes'</h3>
-	<div dojoType="dojo.Twitter" user="BryanForbes" count="2" replaceLinks="false"><p>${user.name} said "${text}"</p></div>
+	<h3>Example 'dojo'</h3>
+	<div dojoType="dojo.Twitter" user="dojo" count="2" replaceLinks="false"><p>${user.name} said "${text}"</p></div>
 	
 	<h3>Public</h3>
 	<div id="phublic"></div>

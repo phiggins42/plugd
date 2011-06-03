@@ -6,11 +6,8 @@
 		
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
 		<script type="text/javascript">
-		    dojo.require("plugd.node");
-		    dojo.require("plugd.trigger");
-			dojo.require("doh.runner");
-			dojo.addOnLoad(function(){
-				
+		    require(["doh/runner", "plugd/node", "plugd/trigger", "dojo/domReady!"], function(){
+
 				doh.register("t", 
 					[
 						function simple(t){
