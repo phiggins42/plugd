@@ -21,7 +21,7 @@ define(["dojo"], function(dojo){
 		method:"get",
 
 /*======
-		// xhrArgs: Object?
+		// xhrArgs: dojo.io.__XhrArgs?
 		//		An optional object to mix into the XHR request. url and load functions are not
 		//		capable of being overridden, but any other standard `dojo.xhr` argument is.
 		xhrArgs:null,

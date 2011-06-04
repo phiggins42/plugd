@@ -2,12 +2,9 @@
 <html>
 	<head>
 		<title>Testing dojo.node</title>
-		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>		
+		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true, conflict:true"></script>
 		<script type="text/javascript">
-		    dojo.require("plugd.node");
-		    dojo.require("plugd.trigger");
-			dojo.require("doh.runner");
-			dojo.addOnLoad(function(){
+			require(["doh/runner", "plugd/node", "plugd.trigger"], function(){
 				doh.register("t", 
 					[
 						
@@ -141,11 +138,11 @@
 							
 							listen.disconnect("click");
 
-                            setTimeout(function(){
-    							dojo.trigger("tehtrigger", "click");
-    							t.is(1, clicked, "did not disconnect");
-                                d.callback(true);
-                            }, 100);
+							setTimeout(function(){
+								dojo.trigger("tehtrigger", "click");
+								t.is(1, clicked, "did not disconnect");
+								d.callback(true);
+							}, 100);
 							
 							return d;
 						},

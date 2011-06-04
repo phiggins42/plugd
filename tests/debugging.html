@@ -8,9 +8,7 @@
 		<script src="../debugging.js"></script>
 		
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-			
-			dojo.addOnLoad(function(){
+			require(["doh/runner", "plugd/debugging", "dojo/domReady!"], function(){
 				
 				var oc = console.warn, warnings = 0, expected = 0;
 				console.warn = function(){
@@ -29,8 +27,8 @@
 						},
 						
 						function stylefoo(t){
-						    
-						    // you should write this as dojo.style(node, { .... });
+							
+							// you should write this as dojo.style(node, { .... });
 							dojo.style("styletarget", "color", "red");
 							dojo.style("styletarget", "backgroundColor", "green");
 							dojo.style("styletarget", "backgroundColor", "red");
@@ -76,17 +74,17 @@
 
 						},
 						function querying(t){
-						    dojo.query();
-						    dojo.query(".thereisnonodestomatch");
-						    
-						    expected += 2; 
-						    t.is(expected, warnings);
-						    
-						    dojo.query("div", "foobar"); // context is null
-						    t.is(++expected, warnings);
-						    
-						    dojo.query("div", null);
-						    t.is(++expected, warnings);
+							dojo.query();
+							dojo.query(".thereisnonodestomatch");
+							
+							expected += 2; 
+							t.is(expected, warnings);
+							
+							dojo.query("div", "foobar"); // context is null
+							t.is(++expected, warnings);
+							
+							dojo.query("div", null);
+							t.is(++expected, warnings);
 						}
 					]
 				);

@@ -2,16 +2,12 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>Testing dojo.connectLive</title>
+		<title>Testing plugd/connectLive</title>
 
 		<script type="text/javascript" src="../../dojo/dojo.js" djConfig="isDebug: true"></script>
-		<script type="text/javascript" src="../connectLive.js"></script>
-		<script type="text/javascript" src="../trigger.js"></script>
-		
 		<script type="text/javascript">
-			dojo.require("doh.runner");
-
-			dojo.addOnLoad(function(){
+			require(["doh/runner", "plugd/connectLive", "plugd/trigger"], function(){
+				
 				doh.register("t", 
 					[
 						
